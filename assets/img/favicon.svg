@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Clean, Flat Solid Light Blue Background (Highly visible and modern) -->
+  <rect width="512" height="512" rx="120" fill="#e0f2fe" />
+
+  <!-- THE TARGET (Centered at 210, 302) -->
+  <!-- Target Flat Shadow -->
+  <circle cx="202" cy="310" r="130" fill="#0b0914" opacity="0.12" />
+  
+  <!-- Red Outer Ring -->
+  <circle cx="210" cy="302" r="130" fill="#f43f5e" stroke="#0b0914" stroke-width="12" />
+  <!-- White Middle Ring -->
+  <circle cx="210" cy="302" r="90" fill="#ffffff" stroke="#0b0914" stroke-width="12" />
+  <!-- Red Inner Ring -->
+  <circle cx="210" cy="302" r="50" fill="#f43f5e" stroke="#0b0914" stroke-width="12" />
+  <!-- White Bullseye Center -->
+  <circle cx="210" cy="302" r="16" fill="#ffffff" stroke="#0b0914" stroke-width="8" />
+
+  <!-- FLAT SHADOW OF ARROW -->
+  <g transform="translate(202, 310) rotate(-45)" opacity="0.12">
+    <line x1="0" y1="0" x2="280" y2="0" stroke="#0b0914" stroke-width="20" stroke-linecap="round" />
+    <path d="M 195 0 L 255 36 L 270 36 L 230 0 Z" fill="#0b0914" />
+    <path d="M 195 0 L 255 -36 L 270 -36 L 230 0 Z" fill="#0b0914" />
+  </g>
+
+  <!-- THE ARROW (Translated to Center and Rotated 45° Dynamically) -->
+  <g transform="translate(210, 302) rotate(-45)">
+    <!-- Wooden Shaft -->
+    <line x1="0" y1="0" x2="280" y2="0" stroke="#0b0914" stroke-width="16" stroke-linecap="round" />
+    <line x1="0" y1="0" x2="278" y2="0" stroke="#d97706" stroke-width="8" stroke-linecap="round" />
+    
+    <!-- Minimalist Indigo Fletchings (Ties into the Quizium Brand Indigo #6366f1) -->
+    <!-- Top Feather -->
+    <path d="M 195 0 L 255 36 L 270 36 L 230 0 Z" fill="#6366f1" stroke="#0b0914" stroke-width="10" stroke-linejoin="round" />
+    <!-- Bottom Feather -->
+    <path d="M 195 0 L 255 -36 L 270 -36 L 230 0 Z" fill="#6366f1" stroke="#0b0914" stroke-width="10" stroke-linejoin="round" />
+    
+    <!-- Arrow Nock -->
+    <circle cx="278" cy="0" r="7" fill="#f43f5e" stroke="#0b0914" stroke-width="4" />
+  </g>
+
+  <!-- SINGLE ELEGANT SPARK / IMPACT STAR -->
+  <g transform="translate(135, 227) scale(0.85)">
+    <!-- Spark Shadow -->
+    <path d="M 0,-24 Q 0,0 24,0 Q 0,0 0,24 Q 0,0 -24,0 Q 0,0 0,-24 Z" fill="#0b0914" transform="translate(-2, 4)" opacity="0.15" />
+    <!-- Outer gold border -->
+    <path d="M 0,-24 Q 0,0 24,0 Q 0,0 0,24 Q 0,0 -24,0 Q 0,0 0,-24 Z" fill="#fbbf24" stroke="#0b0914" stroke-width="8" stroke-linejoin="round" />
+    <!-- Inner bright highlight -->
+    <path d="M 0,-14 Q 0,0 14,0 Q 0,0 0,14 Q 0,0 -14,0 Q 0,0 0,-14 Z" fill="#fffbeb" />
+  </g>
+</svg>

@@ -12,7 +12,7 @@ export const fetchManifest = async () => {
         throw new Error('Manifest fetch failed');
     } catch (error) {
         console.warn('Failed to load quiz manifest, using fallback list:', error);
-        return ['f1', 'cs', 'cnts'];
+        return ['f1', 'cs', 'cnts', 'pds'];
     }
 };
 

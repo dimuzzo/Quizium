@@ -298,21 +298,7 @@
 }
 
 /* Responsive Overrides */
-@media (max-width: 992px) {
-    .workshop-layout {
-        flex-direction: column;
-        height: auto;
-        padding: 16px;
-        gap: 16px;
-    }
-
-    .workshop-panel {
-        height: 600px;
-        flex: none;
-    }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .workshop-screen-main {
         height: 100dvh;
         overflow: hidden; /* back to contained */
@@ -323,7 +309,7 @@
         gap: 12px;
     }
 
-    /* Show tabs on mobile */
+    /* Show tabs on mobile & tablet */
     .workshop-tabs.mobile-only {
         display: flex;
     }
@@ -338,6 +324,7 @@
         display: none; /* Hidden by default, toggled via .active class */
         height: 100%;
         margin-bottom: 0;
+        flex: 1;
     }
 
     .workshop-panel.active {
@@ -370,12 +357,15 @@
 .workshop-close-btn {
     white-space: nowrap;
     transition: all 0.2s ease;
+    background: var(--error-bg) !important;
+    color: var(--error-text) !important;
+    border: 1px solid rgba(239, 68, 68, 0.25) !important;
 }
 
 .workshop-close-btn:hover {
-    color: var(--error-text);
-    border-color: var(--error);
-    background: var(--error-bg);
+    background: var(--error) !important;
+    color: white !important;
+    border-color: var(--error) !important;
 }
 
 .workshop-filename-input:focus {

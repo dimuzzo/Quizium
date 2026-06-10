@@ -1,0 +1,1662 @@
+{
+  "metadata": {
+    "id": "pds",
+    "name": "PDS",
+    "icon": "🛠️",
+    "color": "#8b5cf6",
+    "bg": "#f3e8ff",
+    "language": "IT",
+    "category": "UNI"
+  },
+  "questions": [
+    {
+      "id": 1,
+      "type": "multiple",
+      "question": "(INTERNALS) Quale delle seguenti affermazioni descrive correttamente il ruolo del linker?",
+      "options": [
+        "Alloca la memoria e mappa gli indirizzi relativi in indirizzi fisici.",
+        "Combina diversi file oggetto e risolve i simboli abbinando i nomi a posizioni di memoria.",
+        "Traduce il codice sorgente in codice oggetto rilocabile.",
+        "Gestisce le interruzioni hardware e assegna priorità ai processi in esecuzione."
+      ],
+      "answer": 1,
+      "explanation": "Il linker combina più programmi o file oggetto, incluse le librerie, in un'immagine eseguibile e risolve i simboli, mentre l'allocazione della memoria e la mappatura degli indirizzi fisici spettano al loader."
+    },
+    {
+      "id": 2,
+      "type": "boolean",
+      "question": "(INTERNALS) Il caricamento dinamico (dynamic loading) carica tutte le routine del programma in memoria non appena il programma viene avviato, sprecando spazio utile.",
+      "answer": 0,
+      "explanation": "Falso. Con il caricamento dinamico, una routine non viene caricata finché non viene esplicitamente chiamata, migliorando notevolmente l'utilizzo dello spazio di memoria, specialmente per il codice usato raramente."
+    },
+    {
+      "id": 3,
+      "type": "open",
+      "question": "(INTERNALS) Quali sono i tre stadi in cui può avvenire il binding degli indirizzi e dei dati in memoria e cosa comporta ciascuno di essi?",
+      "explanation": "Il binding può avvenire in tre stadi distinti. Il primo è a tempo di compilazione, in cui viene generato codice assoluto se la posizione di memoria è già nota a priori (richiede ricompilazione se cambia). Il secondo è a tempo di caricamento (load time), in cui viene generato codice rilocabile se l'indirizzo non è noto. Il terzo è a tempo di esecuzione, in cui il binding è ritardato fino al runtime, permettendo lo spostamento del processo in memoria ma richiedendo hardware dedicato come i registri base e limite."
+    },
+    {
+      "id": 4,
+      "type": "multiple",
+      "question": "(INTERNALS) In che modo il sistema operativo assicura la protezione della memoria per i processi utente?",
+      "options": [
+        "Utilizzando un Translation Look-Aside Buffer per ogni processo in esecuzione.",
+        "Controllando che ogni indirizzo generato sia compreso tra il valore del registro base e il valore del registro base sommato al registro limite.",
+        "Mappando tutte le variabili globali su indirizzi fisici assoluti a tempo di compilazione.",
+        "Sospendendo temporaneamente la CPU ad ogni accesso in memoria per verificare manualmente i permessi di esecuzione."
+      ],
+      "answer": 1,
+      "explanation": "Il sistema operativo utilizza un registro base che contiene l'indirizzo fisico di partenza e un registro limite con la dimensione della regione. L'indirizzo generato dal processo deve essere maggiore o uguale al registro base e strettamente minore della somma tra base e limite."
+    },
+    {
+      "id": 5,
+      "type": "boolean",
+      "question": "(INTERNALS) La paginazione elimina completamente la frammentazione esterna ma è ancora soggetta alla frammentazione interna.",
+      "answer": 1,
+      "explanation": "Vero. Poiché la memoria fisica è divisa in frame di dimensione fissa, il sistema alloca sempre frame interi evitando che si creino buchi inutilizzabili tra le allocazioni (frammentazione esterna). Tuttavia, l'ultimo frame assegnato a un processo potrebbe non essere riempito completamente dai dati, causando frammentazione interna."
+    },
+    {
+      "id": 6,
+      "type": "open",
+      "question": "(INTERNALS) Cos'è il Translation Look-Aside Buffer (TLB) e come migliora i tempi di accesso alla memoria durante la paginazione?",
+      "explanation": "Il TLB è una piccola e veloce memoria hardware cache che memorizza le entry della tabella delle pagine (page table) utilizzate più di recente. Senza TLB, l'accesso alla memoria paginata richiederebbe due accessi separati: uno per leggere la page table e uno per i dati veri e propri. Se l'indirizzo della pagina cercata è presente nel TLB, il sistema ottiene immediatamente l'indirizzo fisico, riducendo l'operazione a un singolo accesso alla memoria e abbassando drasticamente il tempo di accesso effettivo."
+    },
+    {
+      "id": 7,
+      "type": "multiple",
+      "question": "(INTERNALS) Qual è uno dei principali svantaggi dello swapping standard nei sistemi operativi tradizionali?",
+      "options": [
+        "Richiede che i processi siano frammentati prima di poter essere scritti su disco.",
+        "Il tempo di trasferimento da e verso il disco è proporzionale alla memoria da scambiare, rendendo i tempi di context switch molto lunghi.",
+        "Non permette ai processi di effettuare mai operazioni di I/O.",
+        "Provoca inevitabilmente la corruzione dei dati se due processi tentano di eseguire lo swap in modo concorrente."
+      ],
+      "answer": 1,
+      "explanation": "Il principale svantaggio è che il tempo di trasferimento della memoria tra RAM e disco di backing store è molto elevato, il che causa tempi di context switch significativamente alti, dell'ordine dei secondi. I sistemi moderni infatti lo usano raramente in questa forma."
+    },
+    {
+      "id": 8,
+      "type": "boolean",
+      "question": "(INTERNALS) Una inverted page table (tabella delle pagine invertita) tiene traccia di tutte le pagine logiche di un singolo processo, richiedendo molta più memoria rispetto a una tabella delle pagine gerarchica.",
+      "answer": 0,
+      "explanation": "Falso. Una inverted page table tiene traccia di tutte le pagine fisiche della memoria, mantenendo una sola entry per ogni frame reale esistente nel sistema. Questo riduce drasticamente la quantità totale di memoria necessaria per memorizzare le tabelle delle pagine."
+    },
+    {
+      "id": 9,
+      "type": "open",
+      "question": "(INTERNALS) Qual è il vantaggio dell'utilizzo delle librerie condivise dinamiche e quale requisito fondamentale devono soddisfare a livello di codice?",
+      "explanation": "Le librerie condivise dinamiche evitano l'enorme spreco di memoria permettendo a più processi di condividere la stessa copia del codice di una libreria in memoria. Per fare ciò e consentire che il binding degli indirizzi avvenga a runtime, il codice della libreria condivisa deve essere position-independent, ovvero capace di funzionare correttamente indipendentemente dall'indirizzo fisico in cui viene caricato dal sistema."
+    },
+    {
+      "id": 10,
+      "type": "multiple",
+      "question": "(INTERNALS) Nell'allocazione della memoria con partizioni variabili, cosa caratterizza la strategia Best-fit?",
+      "options": [
+        "Alloca il primo blocco di memoria libero che sia abbastanza grande per contenere il processo.",
+        "Alloca il buco di memoria più piccolo tra quelli sufficientemente grandi, lasciando come avanzo il buco più piccolo possibile.",
+        "Alloca sempre lo spazio partendo dall'indirizzo fisico più alto disponibile.",
+        "Alloca sempre il blocco di memoria più grande disponibile per massimizzare la frammentazione interna."
+      ],
+      "answer": 1,
+      "explanation": "La strategia Best-fit analizza la memoria per allocare il blocco libero di dimensioni minori che risulti sufficiente per contenere il processo, con il preciso obiettivo di minimizzare lo spazio sprecato localmente nell'allocazione immediata, anche se lascia dei piccoli frammenti."
+    },
+    {
+      "id": 11,
+      "type": "multiple",
+      "question": "(INTERNALS) Qual è il risultato estremo del pure demand paging quando un processo viene avviato?",
+      "options": [
+        "Il processo viene caricato interamente in memoria fisica prima dell'esecuzione.",
+        "Il processo genera un page fault immediato sulla prima istruzione.",
+        "Il sistema operativo precarica solo le pagine del codice, ignorando lo stack.",
+        "Il sistema operativo clona le pagine del processo padre senza copiare i dati in RAM."
+      ],
+      "answer": 1,
+      "explanation": "Nel pure demand paging, il processo inizia con nessuna pagina in memoria. Di conseguenza, il primo tentativo del sistema di eseguire un'istruzione genera un page fault immediato, e ogni pagina viene caricata solo al momento del suo primo accesso effettivo."
+    },
+    {
+      "id": 12,
+      "type": "boolean",
+      "question": "(INTERNALS) L'algoritmo di sostituzione delle pagine Least Recently Used LRU soffre dell'anomalia di Belady.",
+      "answer": 0,
+      "explanation": "Falso. L'anomalia di Belady colpisce l'algoritmo First-In-First-Out FIFO, dove un aumento dei frame può causare più page fault. LRU e l'algoritmo Ottimale OPT appartengono alla classe degli algoritmi a stack, che sono matematicamente immuni a questa anomalia."
+    },
+    {
+      "id": 13,
+      "type": "open",
+      "question": "(INTERNALS) Cosa si intende per thrashing e quale modello comportamentale spiega il motivo per cui il demand paging di solito funziona bene senza causarlo?",
+      "explanation": "Il thrashing è una condizione critica in cui un processo passa la maggior parte del tempo ad attendere l'I/O del disco per risolvere i continui page fault piuttosto che eseguire istruzioni, poiché non possiede abbastanza frame per funzionare. Il demand paging funziona normalmente grazie al modello della località: i processi tendono a operare in specifiche località di memoria che cambiano nel tempo. Il thrashing si verifica solamente quando la somma delle dimensioni di tutte le località correnti dei processi attivi supera la memoria fisica totale disponibile nel sistema."
+    },
+    {
+      "id": 14,
+      "type": "multiple",
+      "question": "(INTERNALS) Qual è lo scopo principale della tecnica Copy-on-Write COW durante la creazione di un processo?",
+      "options": [
+        "Scrivere immediatamente tutto lo spazio di indirizzamento del genitore nel figlio per evitare page fault futuri.",
+        "Permettere a genitore e figlio di condividere le stesse pagine in memoria finché uno dei due non tenta di modificarle.",
+        "Copiare esclusivamente le librerie di sistema nello spazio di indirizzamento virtuale del processo figlio.",
+        "Duplicare preventivamente i descrittori di file aperti per evitare lock simultanei sul file system."
+      ],
+      "answer": 1,
+      "explanation": "La tecnica COW permette ai processi genitore e figlio di condividere inizialmente le stesse identiche pagine fisiche. La copia effettiva di una pagina viene generata dal sistema operativo solo quando uno dei due processi tenta di scriverci sopra, rendendo la creazione dei processi estremamente più veloce ed efficiente."
+    },
+    {
+      "id": 15,
+      "type": "boolean",
+      "question": "(INTERNALS) A differenza della memoria allocata per gli utenti, una parte della memoria del kernel deve essere spesso allocata in pagine fisicamente contigue per facilitare le operazioni dei dispositivi.",
+      "answer": 1,
+      "explanation": "Vero. Molti dispositivi di I/O utilizzano il Direct Memory Access DMA e si aspettano di trasferire dati da o verso un blocco di memoria fisica rigorosamente contiguo, rendendo i sistemi di paginazione standard inadatti senza supporto aggiuntivo, motivo per cui il kernel usa allocatori come il Buddy System."
+    },
+    {
+      "id": 16,
+      "type": "open",
+      "question": "(INTERNALS) Come funziona l'algoritmo di sostituzione delle pagine Second-Chance detto anche Clock Algorithm e quale supporto hardware richiede per funzionare correttamente?",
+      "explanation": "Il Second-Chance algorithm utilizza un buffer circolare simile al quadrante di un orologio e si basa su un bit di riferimento fornito dall'hardware per ciascuna pagina, che viene impostato a 1 ogni volta che la pagina viene letta o scritta. Quando è necessario sostituire una pagina, una lancetta controlla il bit della pagina corrente: se è 0, la pagina viene sostituita immediatamente; se è 1, alla pagina viene data una seconda opportunità azzerando il bit, e la lancetta avanza alla pagina successiva nel buffer."
+    },
+    {
+      "id": 17,
+      "type": "multiple",
+      "question": "(INTERNALS) Qual è uno dei principali svantaggi dell'utilizzo di una politica di allocazione delle pagine di tipo globale Global Replacement?",
+      "options": [
+        "Il tempo di esecuzione di un processo può variare enormemente a causa della competizione per i frame con gli altri processi.",
+        "Limita il throughput complessivo del sistema impedendo ai processi di condividere dinamicamente la memoria libera.",
+        "Costringe ogni processo a prelevare frame solo dal proprio pool locale strettamente limitato, causando inutilizzo della memoria.",
+        "Richiede obbligatoriamente l'impiego di una tabella delle pagine invertita per gestire correttamente gli indirizzi."
+      ],
+      "answer": 0,
+      "explanation": "Nella sostituzione globale, un processo può prelevare frame appartenenti ad altri processi per soddisfare le proprie necessità. Questo aumenta il throughput generale, ma lo svantaggio primario è che le prestazioni e i tempi di esecuzione di un singolo processo diventano imprevedibili, poiché possono essere influenzati negativamente dai page fault generati da processi concorrenti più aggressivi."
+    },
+    {
+      "id": 18,
+      "type": "boolean",
+      "question": "(INTERNALS) Il TLB Reach si ottiene sommando la dimensione totale del TLB in byte alla dimensione di una singola pagina in memoria.",
+      "answer": 0,
+      "explanation": "Falso. Il TLB Reach, che rappresenta la quantità totale di memoria direttamente accessibile senza dover consultare le page table in memoria, si calcola moltiplicando il numero di entry presenti nel TLB per la dimensione della pagina, non effettuando una somma."
+    },
+    {
+      "id": 19,
+      "type": "multiple",
+      "question": "(INTERNALS) Cosa si intende per I/O Interlock o Pinning in un sistema di memoria virtuale?",
+      "options": [
+        "Un meccanismo hardware che impedisce al disco di eseguire letture parallele durante le complesse operazioni di swapping.",
+        "Una tecnica del sistema operativo che blocca temporaneamente una pagina in memoria per evitare che venga sfrattata mentre un dispositivo vi esegue operazioni di I/O.",
+        "Una funzione protettiva della CPU che disabilita tutti gli interrupt esterni durante la gestione a basso livello di un page fault.",
+        "Un algoritmo di crittografia che blocca le letture non autorizzate ai registri dei dispositivi di I/O mappati in memoria."
+      ],
+      "answer": 1,
+      "explanation": "L'I/O interlock, o pinning, fissa una pagina in memoria impostando un lock. Questo assicura che una pagina utilizzata ad esempio per un trasferimento dati in background non venga mai selezionata come vittima dall'algoritmo di sostituzione delle pagine, prevenendo catastrofiche corruzioni dei dati durante il completamento dell'I/O."
+    },
+    {
+      "id": 20,
+      "type": "open",
+      "question": "(INTERNALS) Qual è il beneficio principale dell'utilizzo della compressione della memoria rispetto al tradizionale paging su spazio di swap quando la memoria libera scarseggia?",
+      "explanation": "Il vantaggio principale della compressione della memoria risiede nell'evitare le lente operazioni di input e output sul disco. Anziché scrivere le pagine modificate nello spazio di swap su un disco lento, il sistema raggruppa e comprime i dati di più frame in un unico frame mantenendoli nella RAM. Poiché la velocità di calcolo della CPU per la compressione e decompressione è ordini di grandezza superiore rispetto alla latenza di un disco, questa tecnica garantisce prestazioni nettamente superiori, essendo particolarmente utile sui dispositivi moderni come gli smartphone."
+    },
+    {
+      "id": 21,
+      "type": "multiple",
+      "question": "(INTERNALS) Da quali componenti principali è costituito il Positioning Time, ovvero il tempo di accesso casuale di un disco fisso HDD?",
+      "options": [
+        "Dal tempo di trasferimento dei dati e dal controller overhead.",
+        "Dal seek time e dalla latenza rotazionale.",
+        "Dal tempo di lettura della Flash Translation Layer e dalla garbage collection.",
+        "Dal tempo di decodifica dei bit di parità e dal buffer di svuotamento interno."
+      ],
+      "answer": 1,
+      "explanation": "Il Positioning Time è il tempo totale richiesto per raggiungere un settore specifico ed è composto dal seek time, ovvero il tempo per spostare il braccio sul cilindro, e dalla latenza rotazionale, ovvero il tempo di attesa affinché il settore ruoti sotto la testina."
+    },
+    {
+      "id": 22,
+      "type": "boolean",
+      "question": "(INTERNALS) Nelle memorie non volatili NVM i dati possono essere sovrascritti direttamente nella stessa posizione, ovvero in place, senza alcuna operazione preliminare.",
+      "answer": 0,
+      "explanation": "Falso. Nelle memorie flash i dati non possono essere sovrascritti direttamente in place. Prima di poter riscrivere una pagina, l'intero blocco che la contiene deve essere cancellato, motivo per cui i dispositivi NVM utilizzano una complessa Flash Translation Layer."
+    },
+    {
+      "id": 23,
+      "type": "open",
+      "question": "(INTERNALS) Qual è la differenza principale tra l'utilizzo di un RAM drive e i classici meccanismi di caching gestiti dal sistema operativo?",
+      "explanation": "La differenza principale risiede nel controllo. Le cache e i buffer sono tipicamente gestiti in modo automatico dal sistema operativo o dall'hardware, lasciando all'utente uno scarso controllo. Un RAM drive, invece, è sotto il controllo diretto dell'utente, che può deciderne la dimensione, il file system e i contenuti, permettendo di leggere e scrivere esplicitamente per ottenere uno storage temporaneo ad altissima velocità."
+    },
+    {
+      "id": 24,
+      "type": "multiple",
+      "question": "(INTERNALS) Quale algoritmo di scheduling dei dischi muove la testina da un'estremità all'altra del disco, e una volta raggiunta l'estremità ritorna immediatamente all'inizio senza servire richieste durante il viaggio di ritorno?",
+      "options": [
+        "FCFS First-Come First-Served",
+        "SCAN Elevator Algorithm",
+        "C-SCAN Circular SCAN",
+        "SSTF Shortest Seek Time First"
+      ],
+      "answer": 2,
+      "explanation": "Il C-SCAN Circular SCAN è progettato per fornire tempi di attesa più uniformi rispetto a SCAN. Arrivato alla fine del disco, il braccio ritorna subito all'inizio senza servire richieste lungo il tragitto di ritorno, a differenza dello SCAN che inverte la direzione servendo le richieste."
+    },
+    {
+      "id": 25,
+      "type": "boolean",
+      "question": "(INTERNALS) I codici di correzione degli errori ECC sono in grado sia di rilevare che di correggere fisicamente gli errori permanenti, noti come hard error, causati da difetti fisici nel disco.",
+      "answer": 0,
+      "explanation": "Falso. Sebbene l'ECC possa correggere automaticamente i soft error, come i bit temporaneamente capovolti dalle radiazioni, può solamente rilevare gli hard error. Non può in alcun modo correggere i difetti fisici o i danni permanenti all'hardware."
+    },
+    {
+      "id": 26,
+      "type": "open",
+      "question": "(INTERNALS) Cosa si intende per write amplification nei dispositivi di memoria non volatile NVM e da cosa è causata?",
+      "explanation": "La write amplification è uno scenario prestazionale in cui una singola operazione di scrittura logica innesca una serie estesa di cicli di lettura e scrittura fisici all'interno del dispositivo. Questo fenomeno è causato dalla necessità della memoria flash di eseguire la garbage collection, poiché non supporta la sovrascrittura diretta e deve spostare le pagine ancora valide in nuovi blocchi prima di poter cancellare fisicamente i blocchi vecchi e frammentati."
+    },
+    {
+      "id": 27,
+      "type": "multiple",
+      "question": "(INTERNALS) Qual è la principale differenza tra un'architettura NAS Network-Attached Storage e una SAN Storage Area Network riguardo al livello di accesso ai dati?",
+      "options": [
+        "La NAS fornisce un accesso a livello di blocco, mentre la SAN fornisce un accesso a livello di file.",
+        "La NAS fornisce un accesso a livello di file tramite protocolli come NFS o CIFS, mentre la SAN alloca lo storage a livello di blocco solitamente via Fibre Channel.",
+        "Non vi è alcuna differenza, entrambe forniscono accesso esclusivo a livello di file tramite connessioni USB dirette.",
+        "La NAS richiede l'installazione di hypervisor locali per gestire le LUN, mentre la SAN utilizza esclusivamente bridge ethernet."
+      ],
+      "answer": 1,
+      "explanation": "Il sistema NAS fornisce accesso a livello di file simulando un file system remoto via rete. La SAN, invece, è una rete dedicata ad alta velocità che collega host ad array di storage permettendo un accesso ai dati a basso livello, ovvero a blocchi, spesso mascherando i volumi tramite LUN."
+    },
+    {
+      "id": 28,
+      "type": "boolean",
+      "question": "(INTERNALS) Nel deadline scheduler di Linux, per evitare la starvation, viene data sempre una priorità maggiore alle richieste di scrittura rispetto a quelle di lettura.",
+      "answer": 0,
+      "explanation": "Falso. Nel deadline scheduler di Linux viene in realtà data la priorità alle richieste di lettura, poiché i processi tendono più frequentemente a bloccarsi e aspettare i dati durante le operazioni di lettura rispetto a quanto non facciano durante quelle di scrittura asincrone."
+    },
+    {
+      "id": 29,
+      "type": "open",
+      "question": "(INTERNALS) Spiega le differenze fondamentali in termini di prestazioni e affidabilità tra l'architettura RAID 0 e il RAID 1.",
+      "explanation": "Il RAID 0, noto anche come Striping, distribuisce i dati in parallelo su più dischi per massimizzare in assoluto le prestazioni di I/O, ma non offre alcuna ridondanza: se un singolo disco si guasta l'intero volume risulta corrotto e tutti i dati vengono persi. Il RAID 1, noto come Mirroring, al contrario mantiene costantemente una copia esatta e identica dei dati su un disco duplicato. Questo offre un'altissima affidabilità e tolleranza ai guasti, ma dimezza la capacità di archiviazione utilizzabile rispetto allo spazio fisico totale messo a disposizione dai dischi."
+    },
+    {
+      "id": 30,
+      "type": "multiple",
+      "question": "(INTERNALS) Qual è il principale compromesso tra l'utilizzo di una partizione raw dedicata e l'utilizzo di un file di swap per la gestione dello swap space?",
+      "options": [
+        "Le partizioni raw offrono prestazioni migliori perché evitano l'overhead del file system, ma i file di swap sono più flessibili in quanto facili da ridimensionare o aggiungere.",
+        "I file di swap sono molto più veloci delle partizioni raw, ma non possono essere creati su dispositivi a stato solido NVM.",
+        "Le partizioni raw sono più facili da configurare senza riformattare il disco, ma introducono un overhead maggiore del file system.",
+        "Le partizioni raw permettono la compressione nativa delle pagine in memoria, mentre i file di swap la inibiscono sempre."
+      ],
+      "answer": 0,
+      "explanation": "L'utilizzo di dispositivi dedicati come le partizioni raw evita l'overhead intrinseco del file system garantendo prestazioni ottimali, sebbene questa soluzione sia spazialmente rigida. I file di swap, d'altro canto, offrono la grande convenienza di poter essere aggiunti o ridimensionati dinamicamente senza dover ripartizionare fisicamente l'unità di archiviazione, ma lo fanno a scapito di un maggiore overhead prestazionale."
+    },
+    {
+      "id": 31,
+      "type": "multiple",
+      "question": "(INTERNALS) Come funziona la tecnica del memory-mapped I/O per l'accesso ai dispositivi?",
+      "options": [
+        "I dati del dispositivo vengono copiati sul disco fisso per un accesso più sicuro.",
+        "I registri dei comandi e dei dati del dispositivo sono mappati direttamente nello spazio di indirizzamento del processore.",
+        "Il processore utilizza istruzioni I/O specifiche che bypassano completamente la memoria centrale.",
+        "La CPU invia i comandi a un hypervisor esterno che li traduce in cicli di clock fisici hardware."
+      ],
+      "answer": 1,
+      "explanation": "Nel memory-mapped I/O, i registri del dispositivo sono mappati direttamente nello spazio degli indirizzi del processore, permettendo un accesso più efficiente rispetto all'uso di istruzioni I/O separate."
+    },
+    {
+      "id": 32,
+      "type": "boolean",
+      "question": "(INTERNALS) Il meccanismo di polling (o busy-wait) è considerato altamente efficiente e raccomandato per interagire con i dispositivi lenti.",
+      "answer": 0,
+      "explanation": "Falso, perché il ciclo di busy-wait creato dal polling è ragionevole solo per dispositivi molto veloci. Per i dispositivi lenti risulta altamente inefficiente poiché spreca cicli di CPU che potrebbero essere usati per altre operazioni comportando il rischio di sovrascrivere o perdere dati."
+    },
+    {
+      "id": 33,
+      "type": "open",
+      "question": "(INTERNALS) Qual è il ruolo del controllore DMA (Direct Memory Access) e come migliora l'efficienza del sistema rispetto all'I/O programmato?",
+      "explanation": "Il DMA viene utilizzato per evitare l'elevato overhead dell'I/O programmato durante lo spostamento di grandi quantità di dati. Un controllore DMA dedicato aggira la CPU assumendo il controllo del bus tramite un'operazione nota come bus mastering, trasferendo i dati direttamente tra il dispositivo e la memoria. Questo sistema migliora drasticamente l'efficienza del sistema perché il controller interrompe la CPU solamente quando l'intero trasferimento dei dati è stato completato."
+    },
+    {
+      "id": 34,
+      "type": "multiple",
+      "question": "(INTERNALS) Quale paradigma di esecuzione dell'I/O permette al processo di continuare la sua esecuzione mentre l'operazione di I/O viene svolta, ricevendo un segnale solo al completamento totale dell'operazione?",
+      "options": [
+        "I/O Bloccante (Blocking)",
+        "I/O Non bloccante (Nonblocking)",
+        "I/O Asincrono (Asynchronous)",
+        "I/O Programmato (Programmed I/O)"
+      ],
+      "answer": 2,
+      "explanation": "L'I/O asincrono permette al processo di continuare l'esecuzione in modo concorrente mentre l'operazione di I/O si svolge nel sottosistema. Il sottosistema di I/O segnala il processo utente solamente quando l'intera operazione è giunta al termine."
+    },
+    {
+      "id": 35,
+      "type": "boolean",
+      "question": "(INTERNALS) La prenotazione esclusiva dei dispositivi (Device Reservation) elimina completamente il rischio di deadlock all'interno del sistema operativo.",
+      "answer": 0,
+      "explanation": "Falso. Se i processi prenotano più dispositivi in sequenza, si può verificare un grave rischio di deadlock. Ad esempio, se un processo prenota la stampante e successivamente richiede lo scanner, mentre un altro processo ha già prenotato lo scanner e attende la stampante, entrambi rimarranno bloccati all'infinito."
+    },
+    {
+      "id": 36,
+      "type": "open",
+      "question": "(INTERNALS) Spiega il concetto di Spooling e descrivi il suo classico caso d'uso legato all'utilizzo delle stampanti.",
+      "explanation": "Lo Spooling (Simultaneous Peripheral Operation On-Line) è una tecnica che trattiene l'output destinato a un dispositivo in grado di gestire una sola richiesta alla volta. L'output viene scritto in un'area di storage temporanea su disco, dopodiché un processo in background lo invia al dispositivo non appena questo si libera. Nel classico caso delle stampanti, questo permette a molteplici utenti di inviare i propri lavori di stampa simultaneamente senza che le applicazioni debbano bloccarsi in attesa che il dispositivo sia effettivamente libero."
+    },
+    {
+      "id": 37,
+      "type": "multiple",
+      "question": "(INTERNALS) Quale dei seguenti è uno dei motivi principali per cui il sistema operativo utilizza il buffering durante il trasferimento dei dati tra dispositivi?",
+      "options": [
+        "Per tradurre i dati da blocchi a stream di caratteri per le interfacce di rete.",
+        "Per gestire la differenza di velocità e di dimensione di trasferimento tra due dispositivi in comunicazione.",
+        "Per mantenere una copia permanente dei dati nel caso in cui il disco rigido si guasti improvvisamente.",
+        "Per crittografare i dati in transito tra i dispositivi e la CPU, garantendo la sicurezza informatica."
+      ],
+      "answer": 1,
+      "explanation": "Il buffering viene utilizzato dal sistema operativo principalmente per gestire le discrepanze di velocità (così un dispositivo veloce non deve aspettare uno lento), per riadattare la dimensione dei trasferimenti in pacchetti diversi, e per mantenere inalterati i dati processati garantendo la cosiddetta copy semantics."
+    },
+    {
+      "id": 38,
+      "type": "boolean",
+      "question": "(INTERNALS) Una cache mantiene sempre solo una copia dei dati che risiedono su un dispositivo di archiviazione più lento, e non costituisce l'unica versione originale di tali dati.",
+      "answer": 1,
+      "explanation": "Vero. La proprietà chiave e fondamentale della cache è che rappresenta sempre e solo una copia veloce dei dati, mentre la versione originale e permanente dei dati stessi rimane sempre archiviata nel dispositivo più lento sottostante."
+    },
+    {
+      "id": 39,
+      "type": "open",
+      "question": "(INTERNALS) In che modo la tecnica del Vectored I/O migliora le prestazioni del kernel e del sistema operativo durante le operazioni di lettura e scrittura?",
+      "explanation": "Il Vectored I/O permette a una singola chiamata di sistema (come readve) di eseguire molteplici e separate operazioni di I/O simultaneamente utilizzando un vettore di buffer diversi, seguendo un approccio noto come scatter-gather. Questo migliora sensibilmente le prestazioni diminuendo in modo massiccio l'overhead dovuto ai continui context switch e alle chiamate di sistema che altrimenti sarebbero ripetute. In alcune implementazioni, garantisce anche l'atomicità per evitare corruzioni durante accessi simultanei."
+    },
+    {
+      "id": 40,
+      "type": "multiple",
+      "question": "(INTERNALS) Quale tipologia di dispositivi gestisce nativamente i dati come un flusso sequenziale utilizzando semplici comandi come get() e put(), e include interfacce di input come tastiere e mouse?",
+      "options": [
+        "Dispositivi a blocchi (Block devices)",
+        "Dispositivi di rete (Network devices)",
+        "Dispositivi a caratteri (Character devices)",
+        "Dispositivi di archiviazione di massa ad accesso causale"
+      ],
+      "answer": 2,
+      "explanation": "I dispositivi a caratteri sono progettati per gestire flussi e stream continui di dati per interfacce umane come tastiere, mouse e porte seriali. Questa precisa categoria di dispositivi gestisce e processa l'input utilizzando operazioni a carattere singolo tramite i comandi get() e put()."
+    },
+    {
+      "id": 41,
+      "type": "multiple",
+      "question": "(INTERNALS) Quale dei seguenti attributi dei file è l'unico ad essere conservato in un formato leggibile dall'uomo?",
+      "options": [
+        "L'identificatore numerico univoco del file.",
+        "Il nome del file.",
+        "Il puntatore alla locazione fisica sul disco.",
+        "I flag di protezione binari e le permission mask estese."
+      ],
+      "answer": 1,
+      "explanation": "Come indicato nel testo, il nome è l'unica informazione riguardante il file ad essere mantenuta in un formato leggibile dall'uomo (human-readable), mentre l'identificatore, ad esempio, è solo un tag numerico univoco."
+    },
+    {
+      "id": 42,
+      "type": "boolean",
+      "question": "(INTERNALS) Un file lock di tipo \"advisory\" significa che l'accesso è rigorosamente negato dal sistema operativo in base ai lock attualmente attivi sul file.",
+      "answer": 0,
+      "explanation": "Falso. Nel lock \"advisory\" i processi verificano lo stato del lock in modo indipendente e decidono in autonomia come procedere. È il lock \"mandatory\" che impone al sistema operativo di negare rigorosamente l'accesso in base ai lock correnti."
+    },
+    {
+      "id": 43,
+      "type": "open",
+      "question": "(INTERNALS) Quali sono le informazioni critiche che il sistema operativo deve mantenere in memoria per gestire in modo efficiente l'accesso ai file aperti?",
+      "explanation": "Per gestire i file aperti, il sistema mantiene diverse strutture chiave: una \"Open-file table\" per tracciare tutti i file attualmente aperti nel sistema; un \"File pointer\" per ogni processo che tiene traccia dell'ultima posizione di lettura o scrittura; un \"File-open count\" per contare quante volte il file è attualmente aperto, permettendone la rimozione sicura dalla tabella quando l'ultimo processo lo chiude; la \"Disk location\", ovvero una cache con le informazioni per l'accesso fisico ai dati sul disco; e infine gli \"Access rights\", ovvero le modalità di accesso consentite per il singolo processo."
+    },
+    {
+      "id": 44,
+      "type": "multiple",
+      "question": "(INTERNALS) Quale metodo di accesso tratta il file come una collezione di record logici di lunghezza fissa a cui è possibile accedere in qualsiasi ordine utilizzando un numero di blocco relativo?",
+      "options": [
+        "Accesso Sequenziale",
+        "Accesso Diretto",
+        "Accesso Indiciato",
+        "Accesso Pseudo-casuale tramite Hash"
+      ],
+      "answer": 1,
+      "explanation": "L'accesso diretto (Direct Access) permette di trattare il file come una serie di record logici di lunghezza fissa e consente operazioni libere di posizionamento come \"read n\" o \"write n\" utilizzando numeri di blocco relativi, permettendo al sistema operativo di decidere la posizione su disco."
+    },
+    {
+      "id": 45,
+      "type": "boolean",
+      "question": "(INTERNALS) Il metodo di accesso sequenziale non può in alcun modo essere simulato su un file che utilizza il metodo di accesso diretto.",
+      "answer": 0,
+      "explanation": "Falso. L'accesso sequenziale può essere tranquillamente simulato su un file ad accesso diretto mantenendo un puntatore di posizione corrente (cp). Questo puntatore viene matematicamente incrementato in automatico (cp = cp + 1) dopo ogni operazione di lettura o scrittura, simulando la sequenzialità."
+    },
+    {
+      "id": 46,
+      "type": "open",
+      "question": "(INTERNALS) Quali sono le problematiche introdotte dall'organizzazione delle directory a Grafo Aciclico (Acyclic-Graph) e come possono essere gestite dal sistema?",
+      "explanation": "L'organizzazione a grafo aciclico è utile perché permette a directory e file di essere condivisi (aliasing), consentendo ad esempio che lo stesso file abbia due nomi diversi o appaia in directory differenti. Tuttavia, questo introduce il rischio di \"dangling pointers\" (puntatori pendenti) qualora il file condiviso venga eliminato mentre altri riferimenti puntano ad esso. Per risolvere questo problema, si possono utilizzare tecniche come i \"backpointers\", mantenere un conteggio dei riferimenti (\"entry-hold-count\"), o utilizzare un tipo speciale di entry chiamato \"link\", che funge da puntatore che deve essere risolto dinamicamente dal sistema."
+    },
+    {
+      "id": 47,
+      "type": "multiple",
+      "question": "(INTERNALS) In ambienti Unix/Linux, quale combinazione di permessi di accesso è rappresentata matematicamente dal valore numerico 6?",
+      "options": [
+        "Lettura, Scrittura ed Esecuzione",
+        "Solo Lettura ed Esecuzione",
+        "Lettura e Scrittura, ma non Esecuzione",
+        "Solo Scrittura ed Esecuzione, ma non Lettura"
+      ],
+      "answer": 2,
+      "explanation": "Nel sistema a 3 bit booleani (Read, Write, Execute), il valore 6 corrisponde al formato binario 110. Questo significa che il primo bit (Read) e il secondo bit (Write) sono attivi a 1, mentre il terzo bit (Execute) è a 0. Pertanto rappresenta i permessi di lettura e scrittura, ma senza l'esecuzione."
+    },
+    {
+      "id": 48,
+      "type": "boolean",
+      "question": "(INTERNALS) Il protocollo NFS (Network File System) nella versione 3 utilizza un approccio \"stateless\", includendo tutte le informazioni di stato in ogni singola richiesta remota inviata al server.",
+      "answer": 1,
+      "explanation": "Vero. Per gestire le possibili modalità di guasto nei file system remoti, come la latenza di rete o i crash del server, protocolli \"stateless\" come NFS v3 includono tutte le informazioni di stato direttamente in ogni singola richiesta. Questo design facilita il ripristino in caso di fallimenti, sebbene possa ridurre la sicurezza complessiva."
+    },
+    {
+      "id": 49,
+      "type": "open",
+      "question": "(INTERNALS) Qual è la differenza tra una partizione utilizzata in modalità \"raw\" e un volume logico nel contesto dell'archiviazione?",
+      "explanation": "Un disco fisico può essere suddiviso in varie partizioni. Una partizione viene considerata in modalità \"raw\" (grezza) quando viene utilizzata direttamente per immagazzinare dati senza alcuna struttura di file system al suo interno. Al contrario, quando una partizione viene formattata applicando un file system, essa diventa a tutti gli effetti un volume logico. Ogni volume contenente un file system deve anche mantenere le informazioni su se stesso, immagazzinandole in strutture come una directory del dispositivo (device directory) o in una tabella dei contenuti del volume (volume table of contents)."
+    },
+    {
+      "id": 50,
+      "type": "multiple",
+      "question": "(INTERNALS) Chi o cosa si occupa generalmente di interpretare e gestire la struttura interna complessa di un file nei sistemi moderni?",
+      "options": [
+        "Esclusivamente il sistema operativo che impone strutture rigide.",
+        "Il sistema operativo, l'applicazione o una combinazione di entrambi.",
+        "Sempre l'utente attraverso interfacce grafiche dedicate.",
+        "Esclusivamente il firmware del disco rigido che adatta la struttura ai blocchi fisici."
+      ],
+      "answer": 1,
+      "explanation": "L'interpretazione e la gestione di come i dati sono strutturati all'interno di un file possono essere prese in carico dal sistema operativo, dal programma applicativo specifico, oppure da una combinazione tra i due. In molti sistemi operativi moderni, viene fornita solo una struttura minima di base (come un semplice byte stream), lasciando all'applicazione il compito di interpretare il file."
+    },
+    {
+      "id": 51,
+      "type": "multiple",
+      "question": "(INTERNALS) Quale livello del file system si occupa di gestire le informazioni sui metadati e la struttura delle directory?",
+      "options": [
+        "Basic File System",
+        "File Organization Module",
+        "Logical File System",
+        "I/O Control Layer"
+      ],
+      "answer": 2,
+      "explanation": "Il Logical File System è il livello che gestisce le informazioni sui metadati, mantiene i File Control Block (chiamati inode in UNIX), traduce i nomi dei file in handle e gestisce la struttura gerarchica delle directory e i permessi di protezione."
+    },
+    {
+      "id": 52,
+      "type": "boolean",
+      "question": "(INTERNALS) L'allocazione contigua dei file su disco elimina completamente il problema della frammentazione esterna.",
+      "answer": 0,
+      "explanation": "Falso. L'allocazione contigua soffre pesantemente di frammentazione esterna. Man mano che i file vengono creati e cancellati, lo spazio libero si frammenta, rendendo difficile trovare blocchi contigui abbastanza grandi per i nuovi file e richiedendo l'uso di costose operazioni di compattazione."
+    },
+    {
+      "id": 53,
+      "type": "open",
+      "question": "(INTERNALS) Spiega come funziona un Log-Structured File System (con journaling) e in che modo garantisce un ripristino rapido in caso di crash del sistema.",
+      "explanation": "Un file system con journaling registra ogni aggiornamento ai metadati come una transazione sequenziale all'interno di un log dedicato. Una transazione è considerata completata non appena viene scritta nel log, anche se i dati effettivi non sono ancora stati scritti nelle strutture primarie del file system. In caso di arresto anomalo, il sistema operativo al riavvio riproduce semplicemente le transazioni rimaste nel log. Questo elimina la necessità di eseguire lenti e complessi controlli di coerenza sull'intero disco, garantendo un ripristino estremamente veloce e scongiurando l'incoerenza dei metadati."
+    },
+    {
+      "id": 54,
+      "type": "multiple",
+      "question": "(INTERNALS) Cosa contiene la System-Wide Open-File Table mantenuta in memoria dal sistema operativo?",
+      "options": [
+        "Solo il file descriptor specifico del processo utente che ha aperto il file.",
+        "Una copia del File Control Block del file, il conteggio dei processi che lo stanno usando e la posizione corrente di lettura e scrittura.",
+        "La lista di tutti i file system montati e i relativi punti di mount.",
+        "Esclusivamente l'elenco dei settori danneggiati del disco rigido in cui il file è frammentato."
+      ],
+      "answer": 1,
+      "explanation": "La System-Wide Open-File Table è una struttura condivisa tra tutti i processi che contiene una copia del File Control Block per ogni file aperto, il numero totale di processi che attualmente utilizzano quel file e il puntatore condiviso alla posizione corrente. I dettagli specifici del singolo processo, come il file descriptor locale, sono invece mantenuti nella Per-Process Open-File Table."
+    },
+    {
+      "id": 55,
+      "type": "boolean",
+      "question": "(INTERNALS) Un unified buffer cache permette alle operazioni di I/O standard e alle pagine virtuali mappate in memoria di utilizzare la medesima cache, evitando inefficienze e ridondanze.",
+      "answer": 1,
+      "explanation": "Vero. Le architetture moderne uniscono il sistema di caching delle pagine (usato per il memory-mapped I/O) e il buffer cache (usato per l'I/O convenzionale come read e write) in un unico unified buffer cache. Questo fa sì che le operazioni peschino dalla stessa identica memoria, evitando che gli stessi dati vengano archiviati doppiamente sprecando risorse preziose."
+    },
+    {
+      "id": 56,
+      "type": "open",
+      "question": "(INTERNALS) Qual è lo scopo del comando TRIM nei dispositivi di archiviazione Non-Volatile Memory (NVM) e perché è necessario rispetto ai tradizionali dischi rigidi?",
+      "explanation": "A differenza dei tradizionali dischi rigidi in cui i settori possono essere sovrascritti direttamente sul posto, i dispositivi di archiviazione NVM (come gli SSD) non supportano la sovrascrittura diretta e richiedono che i blocchi vengano cancellati fisicamente in grandi porzioni lente prima di accogliere nuovi dati. Il comando TRIM permette al file system di notificare esplicitamente al dispositivo di archiviazione quali pagine logiche sono ormai libere e inutilizzate. In questo modo il disco può attivare proattivamente la garbage collection, cancellando i blocchi in anticipo per mantenere invariate ed elevate le prestazioni di scrittura future."
+    },
+    {
+      "id": 57,
+      "type": "multiple",
+      "question": "(INTERNALS) La File Allocation Table (FAT) rappresenta un'ottimizzazione e una variante di quale metodo di allocazione dei file su disco?",
+      "options": [
+        "Allocazione Contigua",
+        "Allocazione Indicizzata",
+        "Allocazione Concatenata",
+        "Allocazione tramite Inode"
+      ],
+      "answer": 2,
+      "explanation": "La File Allocation Table è una variante dell'allocazione concatenata (Linked Allocation) in cui i puntatori ai blocchi successivi non sono sparpagliati in coda a ciascun blocco di dati lungo tutto il disco, ma sono radunati in un'unica grande tabella all'inizio del volume. Questo approccio risolve le inefficienze dell'allocazione concatenata originale, permettendo di memorizzare in cache la tabella e garantendo accessi casuali ai blocchi molto più veloci."
+    },
+    {
+      "id": 58,
+      "type": "boolean",
+      "question": "(INTERNALS) Durante la lettura di un file, copiare i dati letti dal buffer del kernel direttamente nello spazio di indirizzamento della memoria del processo utente aggiunge overhead ma è essenziale per la sicurezza.",
+      "answer": 1,
+      "explanation": "Vero. Questo passaggio di copia extra dei dati introduce un overhead in termini di tempo di esecuzione e di calcolo, ma è fondamentale per garantire la protezione del sistema operativo. Impedendo ai programmi applicativi di accedere direttamente alla memoria del kernel dove risiedono i buffer originali, si evita che i processi utente possano compromettere o leggere dati sensibili del sistema."
+    },
+    {
+      "id": 59,
+      "type": "open",
+      "question": "(INTERNALS) Quali sono i vantaggi e gli svantaggi dell'implementazione di una directory tramite una Hash Table rispetto a una semplice lista lineare?",
+      "explanation": "Una lista lineare è una struttura molto semplice da programmare ma richiede lunghi tempi di esecuzione per trovare i file, poiché obbliga a una ricerca sequenziale riga per riga. Una Hash Table unisce la lista lineare a una struttura dati basata su funzioni hash, il che permette di calcolare direttamente la posizione dell'elemento diminuendo drasticamente il tempo di ricerca della directory. Lo svantaggio principale della Hash Table è la maggiore complessità gestionale, in particolar modo la necessità di dover gestire correttamente le collisioni, ovvero i rari casi in cui due nomi di file differenti generano matematicamente lo stesso medesimo valore di hash, richiedendo tecniche aggiuntive di risoluzione."
+    },
+    {
+      "id": 60,
+      "type": "multiple",
+      "question": "(INTERNALS) Quale metodo di gestione dello spazio libero sul disco utilizza una struttura in cui ogni blocco fisico viene rappresentato singolarmente da un 1 se è disponibile o da uno 0 se è occupato?",
+      "options": [
+        "Bit vector o bit map",
+        "Spazio concatenato",
+        "Grouping",
+        "Tabella di allocazione dei file (FAT)"
+      ],
+      "answer": 0,
+      "explanation": "Il metodo del bit vector (o mappa di bit) rappresenta ogni blocco del disco con un singolo bit all'interno di un lungo array. Un valore di 1 indica un blocco libero, mentre 0 indica un blocco allocato. Questo approccio è estremamente efficiente per permettere al sistema operativo di individuare rapidamente blocchi liberi contigui grazie all'aritmetica dei bit, anche se lo svantaggio principale è la quantità di memoria principale aggiuntiva richiesta per mantenere caricata l'intera mappa nel caso di dischi molto capienti."
+    },
+    {
+      "id": 61,
+      "type": "multiple",
+      "question": "(INTERNALS) Quale strumento del framework OS161 agisce come simulatore hardware per eseguire il kernel?",
+      "options": [
+        "bmake",
+        "sys161",
+        "gdb",
+        "gcc"
+      ],
+      "answer": 1,
+      "explanation": "Il comando sys161 funge da simulatore di macchina virtuale per un processore MIPS e per il suo hardware associato, permettendo al kernel OS161 di girare come se fosse su una macchina reale."
+    },
+    {
+      "id": 62,
+      "type": "boolean",
+      "question": "(INTERNALS) Il sistema operativo OS161 richiede hardware MIPS fisico per poter essere eseguito e testato.",
+      "answer": 0,
+      "explanation": "Falso. OS161 non viene eseguito direttamente su hardware reale, ma su un simulatore chiamato sys161 che emula un processore MIPS. Questo permette di eseguire e fare il debug del sistema operativo sul proprio computer ospite senza dover configurare hardware dedicato."
+    },
+    {
+      "id": 63,
+      "type": "open",
+      "question": "(INTERNALS) Quali sono i tre passaggi fondamentali descritti per compilare un kernel personalizzato in OS161 dopo aver eseguito il comando config per una nuova configurazione?",
+      "explanation": "I tre passaggi sono: la generazione delle dipendenze (bmake depend), che scansiona i file C e genera le regole per indicare al sistema quali file ricompilare se un header cambia; la compilazione vera e propria (bmake), che legge il Makefile e crea l'eseguibile del kernel solo per i file modificati; e infine l'installazione (bmake install), che copia l'eseguibile compilato nella cartella di esecuzione (root) e genera un link simbolico per far sì che il simulatore carichi sempre l'ultima versione."
+    },
+    {
+      "id": 64,
+      "type": "multiple",
+      "question": "(INTERNALS) Quale delle seguenti limitazioni è una caratteristica del sistema di memoria virtuale di base fornito dal codice originario, noto come dumbvm?",
+      "options": [
+        "Non permette la creazione o l'utilizzo di thread in-kernel.",
+        "Non ricicla e non libera mai la memoria fisica una volta che questa è stata allocata.",
+        "Può eseguire soltanto file eseguibili non standard, rigettando il formato ELF.",
+        "Richiede l'utilizzo di una Translation Lookaside Buffer infinita per poter avviare i programmi."
+      ],
+      "answer": 1,
+      "explanation": "Il sistema dumbvm è molto limitato per scopi avanzati perché, tra le altre cose, non riutilizza mai la memoria dopo l'allocazione, non supporta processi di grandi dimensioni e non funziona in modo appropriato con l'allocazione dinamica della memoria tramite la funzione malloc."
+    },
+    {
+      "id": 65,
+      "type": "boolean",
+      "question": "(INTERNALS) Nel sistema di base fornito da OS161, le system call fondamentali richieste dai programmi utente, come read, write e fork, sono già completamente implementate.",
+      "answer": 0,
+      "explanation": "Falso. Sebbene esista un meccanismo di base per intercettare le eccezioni hardware (trap) e indirizzare le chiamate, la maggior parte delle system call presenti nel codice base sono dei semplici stub che non eseguono nessuna operazione o restituiscono errori. E' compito di chi sviluppa implementare la reale funzionalità."
+    },
+    {
+      "id": 66,
+      "type": "open",
+      "question": "(INTERNALS) Spiega cosa fa l'esecuzione del simulatore con il comando sys161 -w kernel e descrivi in quale scenario di sviluppo risulta particolarmente utile.",
+      "explanation": "Il flag -w indica al simulatore sys161 di mettersi in stato di attesa subito dopo aver caricato il kernel in memoria, ancor prima di avviare l'esecuzione del codice. Il simulatore apre un socket di rete in ascolto e aspetta che vi si connetta un debugger esterno (gdb). Questo approccio è utile ed essenziale per effettuare sessioni di debug su problemi complessi, in quanto permette allo sviluppatore di impostare breakpoint iniziali per intercettare immediatamente crash al boot, blocchi imprevisti o delicati errori di sincronizzazione."
+    },
+    {
+      "id": 67,
+      "type": "multiple",
+      "question": "(INTERNALS) A cosa serve principalmente il file di configurazione sys161.conf presente nella cartella di esecuzione root?",
+      "options": [
+        "Istruisce l'utility bmake su quali file sorgente in C debbano essere inclusi durante la build del kernel.",
+        "Indica al simulatore le specifiche tecniche dell'hardware virtuale da emulare, come la dimensione della RAM e il numero di processori.",
+        "Contiene le istruzioni precompilate dei device driver e del gestore degli interrupt.",
+        "Definisce le password di root e le configurazioni di rete per il sistema operativo emulato."
+      ],
+      "answer": 1,
+      "explanation": "Il file sys161.conf è indispensabile in fase di runtime per configurare l'hardware della macchina virtuale, permettendo di specificare, ad esempio, la quantità di memoria da allocare per l'ambiente OS161 tramite la voce ramsize e la presenza di uno o più processori simulati."
+    },
+    {
+      "id": 68,
+      "type": "boolean",
+      "question": "(INTERNALS) La funzione kmain, che rappresenta il punto di ingresso del codice C nel kernel OS161, esegue inizialmente la funzione boot per inizializzare l'hardware e successivamente invoca la funzione menu.",
+      "answer": 1,
+      "explanation": "Vero. La primissima operazione effettuata all'interno di kmain è chiamare la routine boot, che si occupa dell'inizializzazione a basso livello di memoria, driver, thread e gestione degli interrupt. Solo quando il kernel si trova in uno stato coerente e operativo viene passata l'esecuzione a menu, che apre il prompt interattivo da cui l'utente può lanciare script e programmi utente."
+    },
+    {
+      "id": 69,
+      "type": "open",
+      "question": "(INTERNALS) Perché l'ambiente di sviluppo per OS161 richiede l'utilizzo di un cross-compiler specifico e qual è l'esito del suo lavoro?",
+      "explanation": "Un cross-compiler risulta indispensabile poiché la macchina su cui viene sviluppato e scritto il codice del kernel utilizza solitamente un'architettura diversa rispetto all'ambiente target (ad esempio, un normale PC con architettura x86). Siccome il sistema operativo verrà eseguito all'interno del simulatore sys161, progettato per emulare rigorosamente l'ambiente di un processore MIPS, il compilatore standard non sarebbe adeguato. Il cross-compiler traduce quindi il codice sorgente scritto in C in codice macchina nativo specifico per MIPS, producendo un kernel compatibile con l'hardware emulato."
+    },
+    {
+      "id": 70,
+      "type": "multiple",
+      "question": "(INTERNALS) Quale tipo di architettura di progettazione descrive il modo in cui i servizi del sistema operativo OS161 sono organizzati al suo interno?",
+      "options": [
+        "Un design a macrokernel convenzionale, in cui la gran parte dei servizi risiede all'interno del kernel nel medesimo spazio di indirizzamento.",
+        "Un design a microkernel distribuito, in cui le diverse componenti di base girano unicamente nello spazio utente.",
+        "Un design ibrido cloud-based delegato totalmente all'esecuzione in background da parte del simulatore host.",
+        "Un design a nanokernel, dove solo la gestione degli interrupt è nel kernel e tutto il resto è delegato all'hardware."
+      ],
+      "answer": 0,
+      "explanation": "OS161 utilizza un design noto come macrokernel o kernel monolitico convenzionale. In questa organizzazione architetturale, i servizi vitali del sistema operativo, come la gestione della memoria, il file system primario e le politiche di scheduling, si trovano tutti all'interno del codice del kernel stesso e operano in un unico ambiente protetto e condiviso."
+    },
+    {
+      "id": 71,
+      "type": "multiple",
+      "question": "(INTERNALS) Cosa succede quando l'immagine di un segmento descritta nel file ELF risulta essere di dimensioni inferiori rispetto alla dimensione del segmento in memoria virtuale?",
+      "options": [
+        "Il processo di caricamento viene interrotto e il kernel genera un errore fatale.",
+        "La porzione rimanente del segmento viene automaticamente riempita di zeri dal kernel.",
+        "La dimensione del segmento virtuale viene matematicamente ridimensionata per combaciare con l'immagine.",
+        "Il kernel clona i dati del segmento ripetendoli ciclicamente fino a riempire lo spazio virtuale."
+      ],
+      "answer": 1,
+      "explanation": "Se l'immagine del segmento nel file eseguibile è più piccola del segmento stesso in memoria, il kernel prevede che lo spazio rimanente venga inizializzato a zero. Questa è una tecnica di ottimizzazione comune, utilizzata ad esempio per non salvare fisicamente nel file ELF le variabili globali non inizializzate."
+    },
+    {
+      "id": 72,
+      "type": "boolean",
+      "question": "(INTERNALS) Il processore MIPS R3000 impiega un meccanismo hardware automatico per risolvere i page fault gestendo autonomamente le mancanze nella Translation Lookaside Buffer.",
+      "answer": 0,
+      "explanation": "Falso. A differenza di altre architetture, il processore MIPS utilizza una TLB gestita esclusivamente via software. Quando si verifica un TLB miss, l'hardware solleva semplicemente un'eccezione che deve essere intercettata e gestita dal sistema operativo ricaricando manualmente la mappatura corretta."
+    },
+    {
+      "id": 73,
+      "type": "open",
+      "question": "(INTERNALS) Qual è la differenza principale tra lo stack utente e lo stack del kernel in OS161 e perché ogni thread necessita di entrambi?",
+      "explanation": "Ogni thread in OS161 possiede due stack separati per garantire la protezione del sistema. Lo stack utente risiede nello spazio degli indirizzi dell'applicazione e serve per le chiamate a funzione, le variabili locali e gli indirizzi di ritorno durante l'esecuzione del codice non privilegiato. Lo stack del kernel, invece, si trova nello spazio di memoria protetto del kernel e viene utilizzato unicamente quando il thread entra in modalità privilegiata, ad esempio per eseguire una system call o gestire un interrupt. Questa rigida separazione impedisce che un'applicazione utente possa alterare o corrompere le informazioni vitali e di controllo appartenenti al kernel."
+    },
+    {
+      "id": 74,
+      "type": "multiple",
+      "question": "(INTERNALS) Come fa la funzione enter_new_process di OS161 a trasferire il controllo al nuovo programma in modalità utente?",
+      "options": [
+        "Costruisce un finto trapframe sullo stack del kernel ed esegue un finto ritorno da eccezione tramite l'istruzione rfe.",
+        "Copia lo spazio di indirizzamento del kernel in quello utente e forza un jump incondizionato all'entrypoint.",
+        "Esegue una chiamata di sistema asincrona che trasferisce i permessi e distrugge il kernel stack temporaneo.",
+        "Invia un segnale di interruzione non mascherabile (NMI) al coprocessore per forzare il cambio di contesto."
+      ],
+      "answer": 0,
+      "explanation": "La funzione enter_new_process crea un trapframe forgiato sul kernel stack che imita accuratamente lo stato salvato da una vera eccezione hardware. Invocando poi la routine standard di ritorno da eccezione che usa l'istruzione assembly rfe, inganna la CPU facendola passare in modalità utente e avviando in modo trasparente l'esecuzione del nuovo programma dall'inizio."
+    },
+    {
+      "id": 75,
+      "type": "boolean",
+      "question": "(INTERNALS) Nelle implementazioni di base come dumbvm in OS161, la struttura e le dimensioni dello stack per il programma utente sono definite esplicitamente e dettagliatamente all'interno dell'eseguibile ELF.",
+      "answer": 0,
+      "explanation": "Falso. Il formato ELF, per precisa scelta di design, non descrive il segmento di stack, in quanto le sue dimensioni e la sua allocazione dipendono esclusivamente dalle scelte a tempo di esecuzione del sistema operativo. Per questo motivo, dumbvm provvede a creare e allocare dinamicamente un segmento di stack in modo del tutto indipendente per ogni nuovo processo creato."
+    },
+    {
+      "id": 76,
+      "type": "multiple",
+      "question": "(INTERNALS) Nell'architettura MIPS utilizzata da OS161, in quale segmento di memoria risiede solitamente il kernel e come viene tradotto il suo indirizzamento fisico?",
+      "options": [
+        "Nel segmento kuseg, dove viene regolarmente mappato assieme ai processi utente per facilitare l'accesso condiviso via TLB.",
+        "Nel segmento kseg1, non mappato e non inserito in cache, appositamente ottimizzato per l'accesso diretto ai dispositivi I/O.",
+        "Nel segmento kseg0, che non è mappato tramite TLB ma tradotto direttamente sottraendo un offset fisso e conservato in cache.",
+        "Nel segmento kseg2, che è completamente protetto in scrittura ed accessibile solo in modalità debug."
+      ],
+      "answer": 2,
+      "explanation": "In OS161, il codice del kernel e le sue strutture dati si trovano costantemente nel segmento kseg0. Questo approccio massimizza le prestazioni permettendo la conservazione in cache delle istruzioni e, contemporaneamente, evita la necessità di traduzioni hardware costose tramite TLB, in quanto gli indirizzi fisici si ricavano facilmente sottraendo il valore fisso 0x80000000 dall'indirizzo logico."
+    },
+    {
+      "id": 77,
+      "type": "open",
+      "question": "(INTERNALS) Spiega il funzionamento del passaggio di parametri alle chiamate di sistema basato su tabella o blocco, e illustra il ruolo fondamentale che gioca il kernel in questo specifico scenario gestionale.",
+      "explanation": "Quando i parametri necessari per invocare una system call sono troppi o di dimensioni troppo estese per poter essere ospitati fisicamente dai limitati registri della CPU, il programma utente posiziona tutti questi argomenti all'interno di un blocco strutturato o di una tabella direttamente nella propria porzione di memoria utente. L'applicazione carica quindi l'indirizzo di riferimento di questa tabella in uno specifico registro prima di innescare la chiamata di sistema. Il kernel avvia l'elaborazione leggendo l'indirizzo dal registro e deve, in primo luogo, accedere in lettura a quella specifica locazione nella memoria utente. A questo punto, il kernel deve svolgere un ruolo critico copiando con la massima cautela i parametri dallo spazio utente verso uno spazio sicuro all'interno della memoria kernel, in modo da prevenire successive alterazioni in tempo reale da parte dell'utente e tutelare scrupolosamente l'integrità logica del sistema operativo."
+    },
+    {
+      "id": 78,
+      "type": "multiple",
+      "question": "(INTERNALS) Nella procedura in linguaggio assembly switchframe_switch utilizzata per il context switch in OS161, per quale motivo il Program Counter non viene salvato in maniera esplicita tra i vari registri?",
+      "options": [
+        "Perché viene implicitamente tracciato e gestito dal registro ra Return Address salvato e ripristinato durante la procedura.",
+        "Perché l'informazione viene dedotta automaticamente sottraendo l'offset costante dal nuovo stack pointer del thread successivo.",
+        "Perché essendo un registro in sola lettura del processore MIPS la sua manipolazione causerebbe un'eccezione hardware fatale.",
+        "Perché il Program Counter viene spinto automaticamente e forzatamente nello stack utente dall'hardware MIPS."
+      ],
+      "answer": 0,
+      "explanation": "Durante lo svolgimento di un context switch a basso livello, il Program Counter non necessita in alcun modo di un salvataggio esplicito, poiché l'indirizzo dell'istruzione successiva da eseguire è già intrinsecamente conservato nel registro ra. L'intera routine assembly salva il registro ra nel vecchio contesto e lo ripristina fedelmente dal nuovo. Conseguentemente, l'istruzione finale della routine, ovvero un salto incondizionato al contenuto di ra, provvede in maniera automatica ad assegnare al Program Counter il valore corretto per riprendere l'esecuzione esattamente da dove il processo era stato messo in pausa."
+    },
+    {
+      "id": 79,
+      "type": "boolean",
+      "question": "(INTERNALS) Durante la gestione tecnica di una system call in OS161, il trap frame incaricato di mantenere al sicuro e invariato l'intero contesto di esecuzione della CPU è allocato nello stack utente dell'applicazione chiamante.",
+      "answer": 0,
+      "explanation": "Falso. Per fondamentali motivi architetturali e operativi volti alla totale sicurezza, tutti i registri e l'intero stato del processore utente interrotto vengono salvati sistematicamente in un trap frame collocato esclusivamente e rigorosamente all'interno del kernel stack privato del thread. In questo modo si garantisce che lo spazio utente rimanga estromesso, permettendo al kernel di usare liberamente la medesima CPU per eseguire le direttive privilegiate in un ambiente completamente protetto da manipolazioni esterne."
+    },
+    {
+      "id": 80,
+      "type": "open",
+      "question": "(INTERNALS) Qual è la meccanica basilare del modello di mappatura Molti a Uno Many-to-One tra thread utente e thread kernel, e qual è il suo svantaggio più critico in uno scenario di utilizzo reale su sistemi moderni?",
+      "explanation": "Nel modello architetturale Molti a Uno, una libreria in esecuzione unicamente nello spazio utente possiede e gestisce un vasto pool di molteplici user thread, orchestrandoli in modo che vengano mappati logicamente e di fatto eseguiti tutti su un singolo e isolato kernel thread sottostante messo a disposizione dal sistema operativo. Questo paradigma è in grado di fornire grandissima flessibilità implementativa poiché tutto lo scheduling avviene interamente in spazio utente. Tuttavia ha un difetto critico ed enorme dal punto di vista dell'efficienza: considerando che il sistema operativo sottostante rileva unicamente la presenza di quel singolo thread di riferimento a livello kernel, qualora uno qualsiasi dei molteplici thread utente dovesse bloccarsi effettuando ad esempio un'operazione di I/O bloccante o una lunga system call, il kernel procederà fatalmente a fermare il suo unico thread. Questa azione blocca irrimediabilmente e immediatamente l'esecuzione dell'intero gruppo di thread utente, rendendo impossibile ottenere un vero parallelismo o una vera concorrenza, precludendo totalmente lo sfruttamento dei processori dotati di molteplici core elaborativi."
+    },
+    {
+      "id": 81,
+      "type": "multiple",
+      "question": "(INTERNALS) In quale segmento di memoria virtuale del processore MIPS vengono eseguiti esclusivamente i programmi utente in OS161?",
+      "options": [
+        "kseg0",
+        "kuseg",
+        "kseg1",
+        "kseg2"
+      ],
+      "answer": 1,
+      "explanation": "I programmi utente in OS161 girano esclusivamente nel segmento kuseg, che è mappato tramite TLB, garantendo a ogni processo uno spazio di memoria isolato."
+    },
+    {
+      "id": 82,
+      "type": "boolean",
+      "question": "(INTERNALS) La funzione ram_stealmem, presente nell'implementazione originale di base, supporta sia l'allocazione che la deallocazione della memoria fisica tramite una lista concatenata.",
+      "answer": 0,
+      "explanation": "Falso. La funzione ram_stealmem implementa un semplice bump allocator che si limita ad avanzare un puntatore temporale (firstpaddr) per allocare nuova memoria e non supporta in alcun modo la deallocazione, causando memory leak nei processi terminati."
+    },
+    {
+      "id": 83,
+      "type": "open",
+      "question": "(INTERNALS) Qual è la differenza principale tra la soluzione A1 e la soluzione A2 per l'implementazione della deallocazione della memoria in OS161?",
+      "explanation": "La soluzione A1 prevede di implementare la logica di deallocazione e le relative strutture dati (come una bitmap o free-list) direttamente all'interno di ram.c. La soluzione A2, che è quella scelta e illustrata nel documento, mantiene invariato e semplice ram.c usandolo solo per i prelievi iniziali, e sposta l'intera gestione della bitmap (freeRamFrames) e la logica di allocazione, deallocazione e riutilizzo dei frame all'interno di dumbvm.c."
+    },
+    {
+      "id": 84,
+      "type": "multiple",
+      "question": "(INTERNALS) A cosa serve l'array allocSize introdotto nella Soluzione A2 del sistema DUMBVM?",
+      "options": [
+        "A calcolare la frammentazione interna ed esterna totale generata dopo l'allocazione dei segmenti utente.",
+        "A memorizzare la dimensione della memoria RAM fisica totale per limitare l'allocazione massima a 512 MB.",
+        "A ricordare il numero di pagine allocate consecutivamente a partire da un determinato indice di frame.",
+        "A tracciare i processi che tentano di allocare più memoria del limite consentito di 512 MB."
+      ],
+      "answer": 2,
+      "explanation": "L'array allocSize è fondamentale per registrare quante pagine sono state allocate in blocco a partire da una specifica pagina iniziale. Questo serve alla funzione free_kpages, che riceve solo un indirizzo virtuale e ha bisogno di sapere esattamente quanti frame consecutivi deve liberare."
+    },
+    {
+      "id": 85,
+      "type": "boolean",
+      "question": "(INTERNALS) Il segmento di memoria kseg0 utilizzato dal kernel richiede costantemente l'uso della Translation Lookaside Buffer (TLB) per tradurre gli indirizzi virtuali in indirizzi fisici.",
+      "answer": 0,
+      "explanation": "Falso. Il segmento kseg0 non è mappato tramite TLB. La traduzione degli indirizzi virtuali in indirizzi fisici all'interno di kseg0 avviene molto più velocemente e in modo diretto sottraendo semplicemente l'offset costante 0x80000000 dall'indirizzo virtuale logico."
+    },
+    {
+      "id": 86,
+      "type": "open",
+      "question": "(INTERNALS) Per quale motivo la funzione as_destroy, a differenza di free_kpages, non ha bisogno di consultare la tabella allocSize per deallocare correttamente la memoria?",
+      "explanation": "La funzione free_kpages riceve come unico parametro un indirizzo virtuale, ed è quindi costretta a leggere dalla tabella allocSize la quantità di pagine da deallocare. Al contrario, as_destroy si occupa di distruggere un intero spazio di indirizzamento utente e accede direttamente alla struttura dati address space del processo, la quale contiene già in modo esplicito le dimensioni esatte di ogni segmento (codice, dati e stack), rendendo inutile la consultazione della tabella allocSize."
+    },
+    {
+      "id": 87,
+      "type": "multiple",
+      "question": "(INTERNALS) Come vengono rappresentati gli stati di allocazione all'interno dell'array freeRamFrames nella Soluzione A2?",
+      "options": [
+        "Il valore 1 indica un frame libero, mentre il valore 0 indica un frame allocato.",
+        "Il valore 0 indica un frame libero, mentre il valore 1 indica un frame allocato.",
+        "Il valore -1 indica un frame riservato al kernel, mentre i numeri positivi indicano il PID del processo.",
+        "Il valore 0 indica un frame riservato al sistema di I/O, mentre i numeri negativi indicano frame danneggiati."
+      ],
+      "answer": 0,
+      "explanation": "Nell'array freeRamFrames, che agisce da bitmap per la memoria fisica, l'implementazione prevede che il valore 1 indichi che la pagina (frame) è libera e pronta per essere riutilizzata, mentre il valore 0 significa che la pagina è attualmente allocata."
+    },
+    {
+      "id": 88,
+      "type": "boolean",
+      "question": "(INTERNALS) Le allocazioni di memoria per il kernel e lo stack di boot effettuate prima dell'inizializzazione della bitmap (vm_bootstrap) vengono regolarmente tracciate e possono essere deallocate in seguito.",
+      "answer": 0,
+      "explanation": "Falso. Tutte le allocazioni fisiche che avvengono prima che la funzione vm_bootstrap configuri la bitmap e imposti la flag allocTableActive a 1 non vengono in alcun modo tracciate. Di conseguenza, queste memorie (che includono il codice stesso del kernel e i dati di primissima inizializzazione) rimangono residenti per l'intero ciclo di vita del sistema e non potranno mai essere liberate."
+    },
+    {
+      "id": 89,
+      "type": "open",
+      "question": "(INTERNALS) Quale algoritmo di ricerca utilizza la funzione getfreeppages per trovare memoria libera all'interno della bitmap, e in che modo si relaziona con ram_stealmem?",
+      "explanation": "La funzione getfreeppages utilizza un semplice algoritmo di scansione lineare di tipo first-fit, che scorre l'array freeRamFrames dall'inizio alla ricerca della prima sequenza contigua di frame liberi di lunghezza sufficiente a soddisfare la richiesta. Se trova questo intervallo, alloca i frame e ne restituisce l'indirizzo fisico. Solo nel caso in cui questa scansione fallisca, e non ci sia un intervallo libero sufficiente, il sistema ricorre come ultima istanza alla chiamata ram_stealmem per prelevare memoria nuova e mai utilizzata dal bump allocator originale."
+    },
+    {
+      "id": 90,
+      "type": "multiple",
+      "question": "(INTERNALS) Durante l'inizializzazione della memoria tramite ram_bootstrap, qual è la dimensione massima a cui viene limitata la RAM del sistema simulato?",
+      "options": [
+        "512 MB",
+        "1 GB",
+        "4 GB",
+        "8 GB"
+      ],
+      "answer": 0,
+      "explanation": "La funzione ram_bootstrap verifica la dimensione totale della RAM fornita dal sistema e la limita intenzionalmente a un massimo di 512 MB, al fine di prevenire possibili integer overflow o l'uso di dimensioni non supportate in un ambiente di simulazione orientato a sistemi compatti ed embedded come OS161."
+    },
+    {
+      "id": 91,
+      "type": "multiple",
+      "question": "(INTERNALS) Quali sono i tre requisiti fondamentali che una soluzione al problema della sezione critica deve soddisfare?",
+      "options": [
+        "Mutua esclusione, preemption e caching.",
+        "Mutua esclusione, progresso e attesa limitata (bounded waiting).",
+        "Esecuzione atomica, disabilitazione degli interrupt e progresso.",
+        "Disabilitazione degli interrupt, esecuzione in kernel mode e assenza di context switch."
+      ],
+      "answer": 1,
+      "explanation": "Una soluzione corretta deve garantire la mutua esclusione per evitare sovrapposizioni, il progresso per evitare stalli nella scelta di chi entra, e l'attesa limitata per prevenire la starvation dei processi."
+    },
+    {
+      "id": 92,
+      "type": "boolean",
+      "question": "(INTERNALS) La Soluzione di Peterson e un algoritmo software che garantisce sempre il corretto funzionamento anche sulle architetture hardware moderne dotate di compilatori ottimizzati.",
+      "answer": 0,
+      "explanation": "Falso. I processori moderni e i compilatori riordinano spesso le istruzioni per migliorare le prestazioni. Questo reordering rompe algoritmi basati sul rigoroso ordine delle operazioni in memoria come la Soluzione di Peterson, rendendo essenziale l'utilizzo di memory barrier o istruzioni atomiche."
+    },
+    {
+      "id": 93,
+      "type": "open",
+      "question": "(INTERNALS) Spiega la differenza tra l'utilizzo di uno spinlock (busy-wait) e il cedere volontariamente il processore quando un processo cerca di acquisire un lock gia occupato, indicando quando e preferibile l'uno o l'altro metodo.",
+      "explanation": "Con lo spinlock, il processo continua a ciclare verificando ripetutamente il lock, consumando attivamente cicli di CPU. E la scelta ottimale in sistemi multiprocessore quando si prevede che l'attesa per il rilascio del lock sia molto breve, poiche evita il costo aggiuntivo computazionale di un context switch. Cedere il processore, invece, sospende il thread e permette ad altri processi di usare la CPU. Questo approccio e preferibile quando le attese previste sono lunghe, ed e assolutamente l'unico approccio corretto e funzionante su sistemi monoprocessore, poiche il processo che detiene il lock non potrebbe altrimenti mai avanzare se la singola CPU fosse costantemente occupata dal ciclo dello spinner."
+    },
+    {
+      "id": 94,
+      "type": "multiple",
+      "question": "(INTERNALS) Qual e la caratteristica distintiva dell'istruzione hardware Compare-and-Swap rispetto alla semplice Test-and-Set?",
+      "options": [
+        "Aggiorna il valore in memoria solo se il valore attuale corrisponde a un valore atteso specifico passato come parametro.",
+        "Legge un valore e lo imposta sempre incondizionatamente a true indipendentemente dal suo stato precedente.",
+        "Disabilita automaticamente tutti gli interrupt del sistema durante l'esecuzione dello scambio di valori.",
+        "Consente di invertire l'ordine di esecuzione di due processi bloccati in un deadlock senza causare starvation."
+      ],
+      "answer": 0,
+      "explanation": "La forza della Compare-and-Swap risiede nell'aggiornamento condizionale. Scambia il valore solo se la locazione di memoria contiene ancora il valore atteso fornito dal processo. Questo permette di rilevare con certezza se qualche altro thread ha modificato la memoria nel frattempo."
+    },
+    {
+      "id": 95,
+      "type": "boolean",
+      "question": "(INTERNALS) Nelle architetture hardware con modello di memoria debolmente ordinato (weakly ordered), come ARM o x86-64, una modifica effettuata da un processore e sempre immediatamente visibile in modo rigoroso a tutti gli altri processori senza bisogno di istruzioni speciali.",
+      "answer": 0,
+      "explanation": "Falso. Nelle architetture weakly ordered l'hardware puo riordinare o ritardare le operazioni in memoria per questioni puramente prestazionali. Per imporre che le operazioni precedenti siano completate e rese visibili agli altri processori prima di procedere, e necessario usare esplicitamente istruzioni speciali chiamate memory barrier."
+    },
+    {
+      "id": 96,
+      "type": "open",
+      "question": "(INTERNALS) In che modo l'implementazione del Test-and-Test-and-Set (TTAS) migliora nettamente le prestazioni rispetto al semplice Test-and-Set (TAS) per gli spinlock?",
+      "explanation": "Nell'implementazione TAS originale, ogni singolo tentativo ciclico di acquisire il lock comporta l'esecuzione di un'operazione atomica che richiede in ogni caso accesso esclusivo al bus di memoria, generando traffico intenso e rallentando pesantemente le operazioni su tutti i core, fenomeno noto come bus contention. Il TTAS ottimizza questo processo dividendo l'attesa in due fasi ben distinte: prima esegue un semplice ciclo di lettura locale dalla memoria cache, che risulta economico e non genera alcun traffico sul bus di sistema. Solo ed esclusivamente quando questa lettura locale rileva che il lock sembra essersi liberato, il thread tenta l'operazione atomica vera e propria sul bus. Questo abbatte drasticamente la contesa hardware sotto alto carico di lavoro concorrente."
+    },
+    {
+      "id": 97,
+      "type": "multiple",
+      "question": "(INTERNALS) Quando un thread utilizza una condition variable (cv_wait) all'interno di un monitor, per quale motivo la condizione logica deve essere sempre verificata all'interno di un ciclo while piuttosto che con una semplice istruzione if?",
+      "options": [
+        "Perche il compilatore non supporta l'istruzione if all'interno delle primitive del kernel.",
+        "Per evitare deadlock se il segnale viene inviato usando la funzione cv_broadcast invece di cv_signal.",
+        "Perche tra il risveglio del thread e l'acquisizione del lock, lo stato del sistema potrebbe essere gia stato modificato da altri.",
+        "Per forzare il sistema operativo a eseguire un context switch immediato bypassando lo scheduler."
+      ],
+      "answer": 2,
+      "explanation": "E vitale usare sempre un ciclo while perche, nelle diffuse implementazioni signal-and-continue, esiste una delicata finestra temporale tra il risveglio del thread in attesa e la sua effettiva e successiva acquisizione del lock di protezione. In questo ristretto lasso di tempo, altri thread potrebbero intervenire e alterare le variabili condivise rendendo la condizione nuovamente non verificata. Il while forza correttamente il thread a riverificare in modo obbligatorio la condizione logica di partenza prima di procedere."
+    },
+    {
+      "id": 98,
+      "type": "boolean",
+      "question": "(INTERNALS) I wait channel in OS/161 utilizzano un normale mutex lock per garantire la mutua esclusione durante la sospensione del thread, permettendo l'annidamento di lock multipli.",
+      "answer": 0,
+      "explanation": "Falso. I wait channel in OS/161 utilizzano specificamente uno spinlock per garantire la mutua esclusione, non un normale mutex. Poiche i thread in attesa su uno spinlock consumano in modo attivo risorse della CPU, gli spinlock in OS/161 devono essere tenuti solo per brevissimi periodi di tempo e non e assolutamente consentito possedere spinlock multipli o annidati."
+    },
+    {
+      "id": 99,
+      "type": "open",
+      "question": "(INTERNALS) Quali sono i limiti strutturali e i problemi logici piu comuni legati all'utilizzo nativo dei semafori quando si gestiscono logiche di sincronizzazione complesse, rispetto alla sicurezza offerta da monitor e condition variables?",
+      "explanation": "I semafori sono notevolmente soggetti a gravi errori di programmazione, come chiamare signal() prima di wait(), omettere una delle due primitive o chiamare wait() due volte di seguito causando inavvertitamente un deadlock. Inoltre, presentano un limite strutturale intrinseco profondissimo: il controllo della condizione di attesa e relegato a un semplice e cieco test su un contatore numerico integrato nell'operazione P(). Se si hanno condizioni logiche decisionali piu complesse che dipendono da altre variabili di stato, queste devono essere controllate esternamente prima della P(). Cio obbligherebbe a proteggere la lettura con un lock per la mutua esclusione, costringendo poi il thread a bloccarsi nella P() mentre detiene inesorabilmente e indebitamente ancora quel lock. Questo porta invariabilmente a deadlock di sistema. I monitor e le condition variables prevengono radicalmente questi problemi gestendo le operazioni atomiche di blocco e rilascio interno del lock in totale sicurezza (release lock, sleep, re-acquire lock)."
+    },
+    {
+      "id": 100,
+      "type": "multiple",
+      "question": "(INTERNALS) In OS/161, come viene garantita la mutua esclusione durante le operazioni base P() e V() di un semaforo se in esecuzione su un sistema monoprocessore?",
+      "options": [
+        "Utilizzando l'istruzione hardware Compare-and-Swap in un ciclo while.",
+        "Disabilitando gli interrupt hardware prima di modificare il contatore e riabilitandoli successivamente.",
+        "Invocando in modo ricorsivo la system call cv_wait passando il semaforo come parametro.",
+        "Utilizzando un algoritmo a ticket distribuito gestito direttamente dalla MMU."
+      ],
+      "answer": 1,
+      "explanation": "In OS/161 per i sistemi dotati di singolo processore, i semafori evitano del tutto l'uso degli spinlock e implementano la mutua esclusione semplicemente disabilitando gli interrupt. Siccome la preemption e causata dagli interrupt scatenati dal timer, spegnerli impedisce fisicamente alla radice che qualsiasi altro thread possa subentrare o interrompere l'esecuzione durante l'aggiornamento critico del contatore del semaforo."
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Qual è il principio fondamentale di Rust riguardo alla memoria?",
+      "explanation": "Questo è il principio fondamentale che guida la gestione della memoria in Rust.",
+      "options": [
+        "Garbage collection automatico come Java",
+        "Ownership: una risorsa ha un solo proprietario alla volta",
+        "Reference counting obbligatorio per tutto",
+        "Memory management manuale come C"
+      ],
+      "answer": 1,
+      "id": 101
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Cosa impedisce il borrow checker di Rust?",
+      "explanation": "Il borrow checker impedisce sia data race (due mutable reference) che dangling reference.",
+      "options": [
+        "Mutevoli reference concurrent e data race",
+        "Tutti i borrow, sia mutabili che immutabili",
+        "Solo reference immutabili",
+        "Non impedisce nulla, è solo un suggerimento"
+      ],
+      "answer": 0,
+      "id": 102
+    },
+    {
+      "type": "open",
+      "question": "(API) Spiega brevemente cosa rappresenta un lifetime in Rust e perché è necessario.",
+      "explanation": "Un lifetime rappresenta la durata di validità di una reference, essenziale per il borrow checker.",
+      "id": 103
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Per leggere un file grande righe riga in Rust, quale approccio è preferibile?",
+      "explanation": "BufReader fornisce buffering che riduce syscall e migliora performance su file grandi.",
+      "options": [
+        "BufReader per buffering efficiente",
+        "File::read_to_string() per semplicità",
+        "Leggere direttamente da File senza buffer",
+        "Memory-mapped file sempre"
+      ],
+      "answer": 0,
+      "id": 104
+    },
+    {
+      "type": "match",
+      "question": "(API) Collega ogni metodo iterator alla categoria corretta.",
+      "explanation": "",
+      "id": 105,
+      "options": [
+        {
+          "value": "adapter",
+          "text": "Adapter (trasforma elementi)"
+        },
+        {
+          "value": "consumer",
+          "text": "Consumer (consuma iterator)"
+        },
+        {
+          "value": "collector",
+          "text": "Collector (raccoglie risultati)"
+        }
+      ],
+      "pairs": [
+        {
+          "left": "map()",
+          "answer": "adapter"
+        },
+        {
+          "left": "collect()",
+          "answer": "collector"
+        },
+        {
+          "left": "filter()",
+          "answer": "adapter"
+        }
+      ]
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Qual è il principale uso di Box<T> in Rust?",
+      "explanation": "Box permette di allocare valori nello heap garantendo tipo statico al compile time.",
+      "options": [
+        "Allocare dati nello heap con tipo statico",
+        "Condividere ownership fra thread",
+        "Ottenere interior mutability",
+        "Contare reference come Rc"
+      ],
+      "answer": 0,
+      "id": 106
+    },
+    {
+      "type": "open",
+      "question": "(API) Questo codice compila correttamente? Spiega.\n```rust\nlet mut x = 5;\nlet r1 = &mut x;\nlet r2 = &mut x;\nprintln!(\"{}\", r1);\n```",
+      "explanation": "No, viola il borrow checker (due mut borrow simultanee)\n\n - Nota:Non puoi avere due mutable reference allo stesso dato simultaneamente.",
+      "id": 107
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Quando usare Arc<T> al posto di Rc<T>?",
+      "explanation": "Arc è thread-safe (Atomic Reference Counting), Rc non è.",
+      "options": [
+        "Quando dati sono condivisi fra thread",
+        "Arc è sempre meglio di Rc",
+        "Arc ha migliore performance",
+        "Arc va nello heap, Rc non va"
+      ],
+      "answer": 0,
+      "id": 108
+    },
+    {
+      "type": "open",
+      "question": "(API) Descrivi le differenze principali tra std::sync::mpsc e crossbeam_channel.",
+      "explanation": "mpsc è multiple producer single consumer, crossbeam offre MPMC con più funzionalità.",
+      "id": 109
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Cosa succede se il receiver di un mpsc::channel è droppato mentre ci sono message in coda?",
+      "explanation": "Se il receiver è droppato, il sender riceve SendError al prossimo send.",
+      "options": [
+        "Il sender va in panic se tenta di send",
+        "I messaggi sono scartati",
+        "Il sender blocca indefinitamente",
+        "La coda persiste in memoria"
+      ],
+      "answer": 0,
+      "id": 110
+    },
+    {
+      "type": "multiselect",
+      "question": "(API) Quale delle seguenti affermazioni su Send e Sync è vera?",
+      "explanation": "Send e Sync sono marker trait auto-implementati per tipi safe.",
+      "options": [
+        "Send significa che il tipo può essere trasferito fra thread",
+        "Sync significa che le reference possono essere condivise fra thread",
+        "Entrambi i trait sono implementati automaticamente per tipi safe",
+        "I puntatori raw (&raw) non implementano né Send né Sync"
+      ],
+      "answer": [
+        0
+      ],
+      "id": 111
+    },
+    {
+      "type": "open",
+      "question": "(API) Cosa stampa questo codice?\n```rust\nlet counter = std::sync::Mutex::new(0);\nlet mut guard = counter.lock().unwrap();\n*guard += 1;\ndrop(guard);\nmatch counter.lock() {\n    Ok(g) => println!(\"Value: {}\", *g),\n    Err(_) => println!(\"Poisoned\"),\n}\n```",
+      "explanation": "Value: 1\n\n - Nota:Il valore è incrementato a 1 prima del drop del guard.",
+      "id": 112
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Qual è la differenza fra Cell e RefCell in Rust?",
+      "explanation": "Cell richiede Copy per il borrow check a compile-time, RefCell lo fa a runtime.",
+      "options": [
+        "RefCell fa borrow check a runtime, Cell a compile-time",
+        "Cell richiede Copy, RefCell no",
+        "Non c'è differenza significativa",
+        "Cell è sempre migliore di RefCell"
+      ],
+      "answer": 1,
+      "id": 113
+    },
+    {
+      "type": "open",
+      "question": "(API) Quando e perché usare trait object (dyn Trait) al posto di generics?",
+      "explanation": "Trait object quando si vuole polimorfismo runtime su tipi sconosciuti a compile time.",
+      "id": 114
+    },
+    {
+      "type": "open",
+      "question": "(API) Quale sarà l'output di questo codice?\n```rust\nlet x = Some(5);\nmatch x {\n    Some(n) if n > 3 => println!(\"Greater\"),\n    Some(_) => println!(\"Some\"),\n    None => println!(\"None\"),\n}\n```",
+      "explanation": "Greater\n\n - Nota:Il guard pattern if n > 3 cattura valori > 3.",
+      "id": 115
+    },
+    {
+      "type": "open",
+      "question": "(API) Cosa stampa questo codice?\n```rust\nlet v = vec![1, 2, 3, 4, 5];\nlet result: Vec<_> = v.iter()\n    .filter(|x| *x % 2 == 0)\n    .map(|x| x * 2)\n    .collect();\nprintln!(\"{:?}\", result);\n```",
+      "explanation": "[4, 8]\n\n - Nota: filter raccoglie i numeri pari (2 e 4), map li moltiplica per 2 (4 e 8).",
+      "id": 116
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Come cattura una closure le variabili dell'ambiente circostante?",
+      "explanation": "Rust inferisce il metodo di cattura più efficiente.",
+      "options": [
+        "Sempre per copia (Copy)",
+        "Per riferimento o per move, a seconda dell'uso",
+        "Sempre per riferimento",
+        "Sempre per move"
+      ],
+      "answer": 1,
+      "id": 117
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Qual è la differenza fra panic! e Result?",
+      "explanation": "panic! termina il programma o il thread, Result permette di gestire l'errore.",
+      "options": [
+        "panic! è irrecuperabile, Result recuperabile",
+        "panic! è un tipo, Result è una funzione",
+        "Sono la stessa cosa con nomi diversi",
+        "panic! è sempre migliore"
+      ],
+      "answer": 0,
+      "id": 118
+    },
+    {
+      "type": "multiselect",
+      "question": "(API) Quali costrutti si possono usare in pattern matching in Rust?",
+      "explanation": "Pattern matching supporta literal, range, or, binding, destructuring. Non regex (quelle sono per stringe esterne).",
+      "options": [
+        "Literal (es. 5, \"hello\")",
+        "Range patterns (es. 1..=5)",
+        "Or pattern (es. A | B)",
+        "Regex patterns"
+      ],
+      "answer": [
+        0
+      ],
+      "id": 119
+    },
+    {
+      "type": "multiple",
+      "question": "(API) A cosa serve un trait bound in una funzione generica?",
+      "explanation": "Un trait bound limita i tipi generici ai soli tipi che implementano il trait richiesto.",
+      "options": [
+        "Restringere i tipi generici a quelli che implementano il trait",
+        "Migliorare le performance automaticamente",
+        "Permettere override dei metodi del trait",
+        "Non ha alcun scopo, è facoltativo"
+      ],
+      "answer": 0,
+      "id": 120
+    },
+    {
+      "type": "open",
+      "question": "(API) Come Rust rappresenta i dati in memoria per struct? Descrivi stack vs heap.",
+      "explanation": "Struct in stack contengono dati, reference e owned type nello heap vanno tramite Box/Vec.",
+      "id": 121
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Cosa significa \"zero-cost abstraction\" in Rust?",
+      "explanation": "Zero-cost abstraction significa che l'astrazione viene compilata via con inlining.",
+      "options": [
+        "L'astrazione non aggiunge overhead in runtime",
+        "Il codice astratto è gratis da scrivere",
+        "Non consuma memoria aggiuntiva",
+        "Tutto viene sempre inlined"
+      ],
+      "answer": 0,
+      "id": 122
+    },
+    {
+      "type": "open",
+      "question": "(API) Cosa stampa questo codice?\n```rust\nlet s1 = String::from(\"hello\");\nlet s2 = s1.clone();\nprintln!(\"{}, {}\", s1, s2);\n```",
+      "explanation": "hello, hello\n\n - Nota: clone() crea una copia indipendente, quindi s1 è ancora valido.",
+      "id": 123
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Cos'è il \"deref coercion\" in Rust?",
+      "explanation": "Deref coercion permette conversioni automatiche da &Box<T> a &T, ecc.",
+      "options": [
+        "Conversione automatica di tipi tramite Deref trait",
+        "Forzare il dereference con * operator",
+        "Coercizione di tipo fra reference",
+        "Rust non ha deref coercion"
+      ],
+      "answer": 0,
+      "id": 124
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Quando preferire associated type al posto di un generic type in un trait?",
+      "explanation": "Associated type quando c'è un solo output per implementazione, generic quando multipli sono possibili.",
+      "options": [
+        "Quando implementazione ha un solo tipo output possibile",
+        "Associated type è sempre migliore",
+        "Generic è sempre migliore",
+        "Non c'è differenza"
+      ],
+      "answer": 0,
+      "id": 125
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Qual è la differenza principale fra String e &str?",
+      "explanation": "String possiede dati e li gestisce, &str è un reference immutabile a una stringa.",
+      "options": [
+        "String è owned, &str è borrowed slice",
+        "String è nello heap, &str nello stack",
+        "String è più veloce",
+        "Diverso encoding di caratteri"
+      ],
+      "answer": 0,
+      "id": 126
+    },
+    {
+      "type": "open",
+      "question": "(API) Cosa stampa questo codice?\n```rust\nlet mut v = vec![1, 2, 3];\nv.push(4);\nprintln!(\"{}\", v.len());\n```",
+      "explanation": "4\n\n - Nota: push aggiunge un elemento alla fine, lunghezza passa a 4.",
+      "id": 127
+    },
+    {
+      "type": "open",
+      "question": "(API) Spiega i vantaggi di usare map() su Option rispetto a match.",
+      "explanation": "map() è più composable, permette chaining, codice più leggibile rispetto a match annidati.",
+      "id": 128
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Un trait può avere implementazione di default per i suoi metodi?",
+      "explanation": "Un trait può fornire implementazione di default per alcuni metodi.",
+      "options": [
+        "Sì, se desiderato",
+        "No, solo dichiarazioni",
+        "Solo per alcuni metodi",
+        "Dipende dalla visibilità"
+      ],
+      "answer": 0,
+      "id": 129
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Cosa significa \"move\" in Rust quando si passa un valore a una funzione?",
+      "explanation": "Move significa che il callee diventa il proprietario e il caller non può più usare il valore.",
+      "options": [
+        "Trasferire la ownership dal caller al callee",
+        "Copiare fisicamente i dati",
+        "Prestare il valore temporaneamente",
+        "Fare un clone automatico"
+      ],
+      "answer": 0,
+      "id": 130
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Qual è il vantaggio di usare impl Trait come return type?",
+      "explanation": "impl Trait nasconde il tipo concreto ma mantiene monomorphization a compile-time.",
+      "options": [
+        "Nascondere il tipo concreto al caller",
+        "Permettere dispatch dinamico",
+        "Rende il codice più veloce",
+        "Non ha vantaggi reali"
+      ],
+      "answer": 0,
+      "id": 131
+    },
+    {
+      "type": "open",
+      "question": "(API) Cos'è il pattern RAII (Resource Acquisition Is Initialization) e come Rust lo applica?",
+      "explanation": "RAII: acquistare risorsa nel constructor, rilasciarla nel destructor (Drop). Rust lo applica con ownership e Drop trait.",
+      "id": 132
+    },
+    {
+      "type": "open",
+      "question": "(API) Cosa stampa questo codice?\n```rust\nstruct Point { x: i32, y: i32 }\nlet p = Point { x: 5, y: 10 };\nmatch p {\n    Point { x: 0, y } => println!(\"y: {}\", y),\n    Point { x, y } => println!(\"x: {}, y: {}\", x, y),\n}\n```",
+      "explanation": "x: 5, y: 10\n\n - Nota: Il secondo pattern cattura qualsiasi valore di x e y.",
+      "id": 133
+    },
+    {
+      "type": "open",
+      "question": "(API) Cosa stampa questo codice?\n```rust\nlet s = String::from(\"hello world\");\nlet slice = &s[0..5];\nprintln!(\"{}\", slice);\n```",
+      "explanation": "hello\n\n - Nota: slice &s[0..5] cattura i primi 5 caratteri (indici 0-4 inclusive).",
+      "id": 134
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Per parsificare una stringa a un numero in Rust, quale trait usare?",
+      "explanation": "parse() usa FromStr per convertire &str a un tipo target.",
+      "options": [
+        "FromStr trait con parse() method",
+        "Chiamare direttamente parse() su String",
+        "Usare to_number() built-in",
+        "Fare parse manuale con loop"
+      ],
+      "answer": 0,
+      "id": 135
+    },
+    {
+      "type": "open",
+      "question": "(API) Completa il codice: leggi il contenuto di un file in una stringa. Usa std::fs::",
+      "explanation": "std::fs::read_to_string(path) oppure File::open(path) + Read::read_to_string()",
+      "id": 136
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Cosa significa const fn in Rust?",
+      "explanation": "const fn deve usare solo operazioni che il compilatore può valutare a compile-time.",
+      "options": [
+        "Funzione valutabile a compile-time",
+        "Funzione che ritorna costante",
+        "Funzione che non alloca memoria",
+        "Funzione sempre inlined"
+      ],
+      "answer": 0,
+      "id": 137
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Quando è appropriato usare unsafe block in Rust?",
+      "explanation": "unsafe è appropriato per FFI, operazioni di basso livello, e quando il compilatore non può verificare safety.",
+      "options": [
+        "Per FFI (Foreign Function Interface) con C",
+        "Per migliore performance",
+        "Per massima flessibilità",
+        "Per bypassare il borrow checker a piacere"
+      ],
+      "answer": 0,
+      "id": 138
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Qual è la differenza tra macro a due punti (rule macros) e procedural macros?",
+      "explanation": "Rule macro: pattern matching, Procedural: codice Rust che genera codice.",
+      "options": [
+        "Pattern matching vs codice Rust generico",
+        "Sono la stessa cosa",
+        "Procedural è più veloce",
+        "Rule macros sono sempre migliori"
+      ],
+      "answer": 0,
+      "id": 139
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Qual è la differenza principale tra static e const in Rust?",
+      "explanation": "static allocates memoria, const viene substituted dove usato.",
+      "options": [
+        "static ha indirizzo fisso, const viene inlinnato",
+        "Non c'è differenza significativa",
+        "static può essere mut, const no",
+        "const è sempre migliore"
+      ],
+      "answer": 0,
+      "id": 140
+    },
+    {
+      "type": "open",
+      "question": "(API) Spiega come i lazy iterator di Rust differiscono dagli eager collector.",
+      "explanation": "Lazy: iterator non eseguono finché non consumati (collect, for_each, ecc). Eager: execute subito.",
+      "id": 141
+    },
+    {
+      "type": "open",
+      "question": "(API) Cosa stampa?\n```rust\nlet x = 5;\n{\n    let x = 10;\n    println!(\"{}\", x);\n}\nprintln!(\"{}\", x);\n```",
+      "explanation": "10 (newline) 5\n\n - Nota: Shadowing: la x interna (10) è usata nel blocco, quella esterna (5) dopo.",
+      "id": 142
+    },
+    {
+      "type": "multiple",
+      "question": "(API) A cosa servono gli Ordering enum in atomic operations?",
+      "explanation": "Ordering (Relaxed, Release, Acquire, SeqCst) controlla memory ordering per atomic ops.",
+      "options": [
+        "Controllare semantica di memoria tra thread",
+        "Ordinare gli atomic operations",
+        "Migliorare performance",
+        "Non servono a niente"
+      ],
+      "answer": 0,
+      "id": 143
+    },
+    {
+      "type": "open",
+      "question": "(API) Descrivi il pattern \"wait/notify\" con Condvar in concorrenza.",
+      "explanation": "wait() blocca il thread finché notify_one()/notify_all() non lo svegliano. Pattern sincronizza thread.",
+      "id": 144
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Qual è il principale caso d'uso per Weak<T>?",
+      "explanation": "Weak rompe cicli di reference contando come borrow ma non mantenendo il valore in memoria.",
+      "options": [
+        "Rompere riferimenti ciclici in strutture dati",
+        "Migliorare performance",
+        "Condividere fra thread",
+        "Weak non ha caso d'uso reale"
+      ],
+      "answer": 0,
+      "id": 145
+    },
+    {
+      "type": "open",
+      "question": "(API) Scrivi codice che legge linea per linea da un file usando BufReader.",
+      "explanation": "use std::fs::File; use std::io::{BufRead, BufReader}; let file = BufReader::new(File::open(path)?); for line in file.lines() { ... }",
+      "id": 146
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Qual è la differenza tra iter(), iter_mut(), e into_iter()?",
+      "explanation": "iter() -> &T, iter_mut() -> &mut T, into_iter() -> T (ownership).",
+      "options": [
+        "Livelli diversi di borrow: immutable, mutable, ownership",
+        "Sono sinonimi",
+        "into_iter è sempre più veloce",
+        "Solo uno è corretto"
+      ],
+      "answer": 0,
+      "id": 147
+    },
+    {
+      "type": "open",
+      "question": "(API) Cosa stampa questo codice?\n```rust\nfn print_type(x: T) {\n    println!(\"{:?}\", x);\n}\nprint_type(5);\nprint_type(\"hello\");\n```",
+      "explanation": "5 (newline) \\\n\n - Nota: Debug impl mostra entrambi i valori con il formato debug.",
+      "id": 148
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Cosa fa l'operatore ? quando applicato a Result/Option?",
+      "explanation": "L'operatore ? unwrap se Ok/Some, altrimenti fa un return con l'errore.",
+      "options": [
+        "Unwrap il valore o ritorna l'errore dalla funzione",
+        "Causa panic",
+        "Ignora l'errore silenziosamente",
+        "Stampa l'errore"
+      ],
+      "answer": 0,
+      "id": 149
+    },
+    {
+      "type": "multiple",
+      "question": "(API) A cosa serve \"type\" per alias in Rust?",
+      "explanation": "type alias rende codice più leggibile senza creare nuovo tipo nominale.",
+      "options": [
+        "Migliorare leggibilità di tipi complessi",
+        "Creare un nuovo tipo",
+        "Aggiungere type checking",
+        "Non ha veri vantaggi"
+      ],
+      "answer": 0,
+      "id": 150
+    },
+    {
+      "type": "open",
+      "question": "(API) Spiega il newtype pattern in Rust e il suo valore.",
+      "explanation": "Newtype: wrappare un tipo in una struct a un campo per ottenere type safety e zero-cost abstraction.",
+      "id": 151
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Quando implementare From<T> per un tipo, cosa si ottiene gratuitamente?",
+      "explanation": "From<T> impl automaticamente Into<Self> per il tipo.",
+      "options": [
+        "Implementazione automatica di Into",
+        "Implementazione automatica di Clone",
+        "Implementazione automatica di Default",
+        "Niente viene gratis"
+      ],
+      "answer": 0,
+      "id": 152
+    },
+    {
+      "type": "open",
+      "question": "(API) Cosa stampa questo codice?\n```rust\n#[derive(Default)]\nstruct Config {\n    name: String,\n    value: i32,\n}\nlet c = Config::default();\nprintln!(\"{}, {}\", c.name, c.value);\n```",
+      "explanation": "(empty), 0\n\n - Nota: Default impl su String ritorna String vuoto, i32 ritorna 0.",
+      "id": 153
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Quali trait si possono derivare automaticamente con #[derive]?",
+      "explanation": "#[derive] supporta diversi trait standard che il compilatore sa derivare.",
+      "options": [
+        "Debug, PartialEq, Clone, Copy, etc.",
+        "Qualsiasi trait",
+        "Nessuno, tutti devono essere implementati manualmente",
+        "Solo trait std library"
+      ],
+      "answer": 0,
+      "id": 154
+    },
+    {
+      "type": "open",
+      "question": "(API) Cosa stampa questo codice?\n```rust\nlet v = vec![1, 2, 3];\nlet mut iter = v.iter();\nlet first = iter.next();\nprintln!(\"{:?}\", first);\n```",
+      "explanation": "Some(&1)\n\n - Nota: next() ritorna Option con Some(&elemento) oppure None.",
+      "id": 155
+    },
+    {
+      "type": "open",
+      "question": "(API) Quando e perché usare PhantomData in Rust?",
+      "explanation": "PhantomData comunica al compilatore di tipo che struttura 'usa' un tipo senza avere campo.",
+      "id": 156
+    },
+    {
+      "type": "multiple",
+      "question": "(API) A cosa serve implementare il trait Drop?",
+      "explanation": "Drop trait permette di eseguire codice personalizzato al drop (es. chiudere file).",
+      "options": [
+        "Eseguire pulizia personalizzata quando il valore viene droppato",
+        "Eliminare il valore dalla memoria manualmente",
+        "Prevenire il drop del valore",
+        "Drop non ha utilità reale"
+      ],
+      "answer": 0,
+      "id": 157
+    },
+    {
+      "type": "open",
+      "question": "(API) Spiega il concetto di exhaustiveness checking nel pattern matching di Rust.",
+      "explanation": "Exhaustiveness: compilatore richiede tutti i pattern di match compresi. Match deve coprire tutti i casi o essere fallibile.",
+      "id": 158
+    },
+    {
+      "type": "open",
+      "question": "(API) Cosa stampa?\n```rust\nlet x = 5;\nlet adder = |y| x + y;\nprintln!(\"{}\", adder(3));\n```",
+      "explanation": "8\n\n - Nota: La closure cattura x per reference, quindi 5 + 3 = 8.",
+      "id": 159
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Quale tipo non implementa il trait Sized?",
+      "explanation": "Slice è un Unsized type, non implementa Sized.",
+      "options": [
+        "Slice (&[T])",
+        "String",
+        "Integer types",
+        "Tutti implementano Sized"
+      ],
+      "answer": 0,
+      "id": 160
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Qual è la differenza tra channel() e sync_channel() in std::sync::mpsc?",
+      "explanation": "channel() crea coda illimitata, sync_channel(n) coda di n elementi.",
+      "options": [
+        "channel unbounded, sync_channel bounded con capacità",
+        "sync_channel è sempre più veloce",
+        "Sono identici",
+        "channel è sempre migliore"
+      ],
+      "answer": 0,
+      "id": 161
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Quando preferire RwLock a Mutex?",
+      "explanation": "RwLock permette lettori concorrenti, Mutex serializza tutto.",
+      "options": [
+        "Quando ci sono molti lettori e pochi scrittori",
+        "RwLock è sempre migliore",
+        "RwLock non è mai utile",
+        "RwLock solo per multi-thread"
+      ],
+      "answer": 0,
+      "id": 162
+    },
+    {
+      "type": "open",
+      "question": "(API) Scrivi codice che usa AtomicBool per un semplice flag di shutdown tra thread.",
+      "explanation": "use std::sync::atomic::{AtomicBool, Ordering}; let flag = Arc::new(AtomicBool::new(false)); spawn thread che legge flag con load(Ordering::Relaxed).",
+      "id": 163
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Quale lifetime ha un trait object (dyn Trait)?",
+      "explanation": "dyn Trait ha di default lifetime 'static a meno di specifiche diverse.",
+      "options": [
+        "Lifetime 'static di default",
+        "Lifetime generico parametrizzabile",
+        "Trait object non hanno lifetime",
+        "Lifetime della funzione contenitore"
+      ],
+      "answer": 0,
+      "id": 164
+    },
+    {
+      "type": "open",
+      "question": "(API) Completa il codice: usa match su un Result per gestire sia Ok che Err.",
+      "explanation": "match result { Ok(val) => {...}, Err(err) => {...} }",
+      "id": 165
+    },
+    {
+      "type": "multiple",
+      "question": "(API) Quale struct avrà meno padding in memoria?",
+      "explanation": "Ordinamento dal grande al piccolo riduce padding per alignment.",
+      "options": [
+        "Ordinare campi dal più grande al più piccolo",
+        "Tutti gli ordini hanno stesso padding",
+        "L'ordine non importa",
+        "Usare #[repr(C)]"
+      ],
+      "answer": 0,
+      "id": 166
+    },
+    {
+      "type": "open",
+      "question": "(API) Cosa succede quando chiami unwrap() su None?",
+      "explanation": "Panic con messaggio esplicito\n\n - Nota: unwrap() on None causa panic con messaggio 'called Option::unwrap() on a None value'.",
+      "id": 167
+    },
+    {
+      "type": "open",
+      "question": "(API) Come usare trait per evitare duplicazione di codice (DRY principle)?",
+      "explanation": "Trait permette codice condiviso attraverso default impl, extension trait, e composizione di trait bound.",
+      "id": 168
+    },
+    {
+      "type": "match",
+      "question": "(API) Collega ogni smart pointer al suo caso d'uso principale.",
+      "explanation": "",
+      "id": 169,
+      "options": [
+        {
+          "value": "ref_count",
+          "text": "Reference counting single-threaded"
+        },
+        {
+          "value": "heap_alloc",
+          "text": "Allocazione nello heap"
+        },
+        {
+          "value": "interior_mut",
+          "text": "Interior mutability"
+        }
+      ],
+      "pairs": [
+        {
+          "left": "Box<T>",
+          "answer": "heap_alloc"
+        },
+        {
+          "left": "Rc<T>",
+          "answer": "ref_count"
+        },
+        {
+          "left": "RefCell<T>",
+          "answer": "interior_mut"
+        }
+      ]
+    },
+    {
+      "type": "open",
+      "question": "(API) Sintetizza i tre pilastri della programmazione in Rust: ownership, borrowing, lifetime.",
+      "explanation": "Ownership: una risorsa ha un proprietario, Borrowing: prestare temporaneamente, Lifetime: durata della validità.",
+      "id": 170
+    }
+  ]
+}

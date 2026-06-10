@@ -69,10 +69,23 @@ export const setupKeyboardSupport = (handlers) => {
         } else if (e.key === 'ArrowLeft') {
             e.preventDefault();
             handlers.onPrev();
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (handlers.onJump) handlers.onJump(-10);
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (handlers.onJump) handlers.onJump(10);
         }
 
         if (!e.ctrlKey && !e.altKey && !e.metaKey && e.key >= '1' && e.key <= '9') {
             handlers.onNumber(parseInt(e.key) - 1);
+        }
+
+        if (e.key === 'Enter') {
+            if (handlers.onEnter) {
+                e.preventDefault();
+                handlers.onEnter();
+            }
         }
     });
 };

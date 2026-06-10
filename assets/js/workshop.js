@@ -289,8 +289,8 @@ const WorkshopManager = (() => {
         const HINTS = {
             question: { icon: '💬', label: 'Question text', cls: '' },
             optionFirst: { icon: '🅰️', label: 'Option A  —  or type "b" for boolean / "o" for open', cls: '' },
-            optionNext: { icon: '➕', label: 'Option B / C / D', cls: '' },
-            optionOrAns: { icon: '➕', label: 'Another option (max 4)  or answer index (number)', cls: 'hint-pill-warn' },
+            optionNext: { icon: '➕', label: 'Option B / C / D / E', cls: '' },
+            optionOrAns: { icon: '➕', label: 'Another option (max 5)  or answer index (number)', cls: 'hint-pill-warn' },
             answerIdx: { icon: '✅', label: 'Answer index (0-based number)', cls: 'hint-pill-warn' },
             boolAnswer: { icon: '🔘', label: '0 = False  |  1 = True', cls: 'hint-pill-next' },
             openExpl: { icon: '💡', label: 'Explanation for self-assessment', cls: 'hint-pill-done' },
@@ -331,7 +331,7 @@ const WorkshopManager = (() => {
             const optionsSoFar = blockLines.slice(1, cursorIndexInBlock).filter(l => !/^\d+$/.test(l.trim())).length;
             if (optionsSoFar < 1) return HINTS.optionFirst;
             if (optionsSoFar === 1) return HINTS.optionNext;
-            if (optionsSoFar === 2 || optionsSoFar === 3) return HINTS.optionOrAns;
+            if (optionsSoFar >= 2 && optionsSoFar <= 4) return HINTS.optionOrAns;
             return HINTS.answerIdx;
         };
 
@@ -479,7 +479,7 @@ const WorkshopManager = (() => {
                 }
                 if (foundAnswerLineIndex !== -1) { for (let i = 1; i < foundAnswerLineIndex; i++) optionLines.push(linesDetails[i].text); }
                 if (foundAnswerLineIndex === -1) { mkErr(linesDetails[0].lineNum, qNum, `Could not find numeric answer index.`); return; }
-                if (optionLines.length < 2 || optionLines.length > 4) { mkErr(linesDetails[1].lineNum, qNum, `Invalid number of options (${optionLines.length}). Must be 2-4.`); return; }
+                if (optionLines.length < 2 || optionLines.length > 5) { mkErr(linesDetails[1].lineNum, qNum, `Invalid number of options (${optionLines.length}). Must be 2-5.`); return; }
                 if (answerIndex < 0 || answerIndex >= optionLines.length) { mkErr(answerLineNum, qNum, `Answer index ${answerIndex} out of bounds.`); return; }
                 let questionObj = { id: currentId, type, question: questionText, options: optionLines, answer: answerIndex };
                 if (foundAnswerLineIndex + 1 < linesDetails.length) questionObj.explanation = linesDetails.slice(foundAnswerLineIndex + 1).map(l => l.text).join(' ');

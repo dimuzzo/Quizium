@@ -47,7 +47,7 @@ class QuizApp {
             const hasWorkshopContent = window.WorkshopManager && window.WorkshopManager.hasUnsavedContent();
 
             return (isQuizActive && !this.state.quizCompleted && !this.state.isReviewing) ||
-                   (isWorkshopActive && hasWorkshopContent);
+                (isWorkshopActive && hasWorkshopContent);
         });
     }
 
@@ -84,11 +84,37 @@ class QuizApp {
                 const prevBtn = document.getElementById(CONFIG.SELECTORS.PREV_BTN);
                 if (prevBtn && !prevBtn.disabled) prevBtn.click();
             },
+            onJump: (offset) => {
+                let newIndex = this.state.currentQuestionIndex + offset;
+                if (newIndex < 0) newIndex = 0;
+                if (newIndex >= this.state.totalQuestions) newIndex = this.state.totalQuestions - 1;
+                if (newIndex !== this.state.currentQuestionIndex) {
+                    this.jumpToQuestion(newIndex);
+                }
+            },
             onNumber: (index) => {
                 const container = document.getElementById(CONFIG.SELECTORS.OPTIONS_CONTAINER);
                 const options = container ? container.querySelectorAll('.answer-option') : [];
                 if (options[index] && !options[index].disabled) {
                     options[index].click();
+                }
+            },
+            onEnter: () => {
+                const confirmMulti = document.getElementById('btnConfirmMulti');
+                const confirmMatch = document.getElementById('btnConfirmMatch');
+                const confirmOpen = document.getElementById('btnConfirmOpen');
+
+                if (confirmMulti && !confirmMulti.classList.contains('hidden') && !confirmMulti.disabled) {
+                    confirmMulti.click();
+                } else if (confirmMatch && !confirmMatch.classList.contains('hidden') && !confirmMatch.disabled) {
+                    confirmMatch.click();
+                } else if (confirmOpen && !confirmOpen.classList.contains('hidden') && !confirmOpen.disabled) {
+                    confirmOpen.click();
+                } else {
+                    const nextBtn = document.getElementById(CONFIG.SELECTORS.NEXT_BTN);
+                    if (nextBtn && !nextBtn.disabled) {
+                        nextBtn.click();
+                    }
                 }
             }
         });
@@ -192,14 +218,14 @@ class QuizApp {
             const data = await fetchQuiz(fileId);
             if (data) {
                 const { metadata, questions } = parseQuizData(data, fileId);
-                
+
                 // Add to state if not already there
                 if (!this.state.subjects.find(s => s.id === metadata.id)) {
                     this.state.subjects.push(metadata);
                 }
-                
+
                 this.state.subjectQuestionsCount[metadata.id] = questions.length;
-                subjectCardsCache.push({subject: metadata, count: questions.length});
+                subjectCardsCache.push({ subject: metadata, count: questions.length });
             }
         }
 
@@ -366,7 +392,7 @@ class QuizApp {
         slider.max = total;
         input.max = total;
 
-        const defaultVal = Math.min(10, total);
+        const defaultVal = total;
         slider.value = defaultVal;
         input.value = defaultVal;
         maxLabel.textContent = total;
@@ -600,7 +626,37 @@ class QuizApp {
         document.getElementById(CONFIG.SELECTORS.QUESTION_ID).innerHTML = `ID <span class="id-val">${question.id}</span>`;
 
         this.updateProgressBar();
-        document.getElementById(CONFIG.SELECTORS.QUESTION_TEXT).textContent = question.question;
+
+        let qText = question.question || '';
+        qText = qText.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        qText = qText.replace(/```[a-z]*\n([\s\S]*?)```/g, (match, p1) => {
+            return `<div class="code-block">${p1}</div>`;
+        });
+
+        const isItalian = (this.state.currentSubject && this.state.currentSubject.lang === 'IT');
+        let hintText = '';
+        switch (question.type) {
+            case 'multiple':
+                hintText = isItalian ? 'Seleziona una risposta:' : 'Select one answer:';
+                break;
+            case 'multiselect':
+                hintText = isItalian ? 'Seleziona una o più risposte:' : 'Select one or more answers:';
+                break;
+            case 'boolean':
+                hintText = isItalian ? 'Seleziona Vero o Falso:' : 'Select True or False:';
+                break;
+            case 'match':
+                hintText = isItalian ? 'Collega le coppie:' : 'Match the pairs:';
+                break;
+            case 'open':
+                hintText = isItalian ? 'Scrivi la tua risposta:' : 'Type your answer and then click on "Confirm Answer":';
+                break;
+        }
+        if (hintText) {
+            qText += `<div class="question-instruction" style="font-size: 0.85rem; color: var(--text-muted, #64748b); margin-top: 8px; font-weight: normal;">${hintText}</div>`;
+        }
+
+        document.getElementById(CONFIG.SELECTORS.QUESTION_TEXT).innerHTML = qText;
 
         this.renderOptions(question);
 
@@ -675,11 +731,71 @@ class QuizApp {
                 confirmBtn.id = 'btnConfirmOpen';
                 confirmBtn.textContent = 'Confirm Answer';
                 confirmBtn.onclick = () => this.confirmOpenAnswer(question);
-                
+
                 if (savedAnswer && savedAnswer.confirmed) {
                     confirmBtn.classList.add('hidden');
                 }
-                
+
+                container.appendChild(confirmBtn);
+            }
+            return;
+        }
+
+        if (question.type === 'match') {
+            const grid = document.createElement('div');
+            grid.className = 'match-grid';
+
+            question.pairs.forEach((pair, idx) => {
+                const row = document.createElement('div');
+                row.className = 'match-row';
+
+                const leftDiv = document.createElement('div');
+                leftDiv.className = 'match-left';
+                leftDiv.textContent = pair.left;
+
+                const select = document.createElement('select');
+                select.className = 'match-select';
+                select.dataset.pairIdx = idx;
+
+                const defaultOpt = document.createElement('option');
+                defaultOpt.value = "";
+                defaultOpt.textContent = "Select...";
+                select.appendChild(defaultOpt);
+
+                question.options.forEach(opt => {
+                    const optionEl = document.createElement('option');
+                    optionEl.value = opt.value;
+                    optionEl.textContent = opt.text;
+                    select.appendChild(optionEl);
+                });
+
+                const savedAnswer = this.state.allAnswers[this.state.currentQuestionIndex];
+                if (savedAnswer && savedAnswer.selectedValue && savedAnswer.selectedValue[idx]) {
+                    select.value = savedAnswer.selectedValue[idx];
+                }
+
+                select.onchange = (e) => this.handleMatchOptionSelect(idx, e.target.value, question);
+
+                row.appendChild(leftDiv);
+                row.appendChild(select);
+                grid.appendChild(row);
+            });
+
+            container.appendChild(grid);
+
+            if (this.state.correctionMode === 'instant' && !this.state.isReviewing && !this.state.quizCompleted) {
+                const confirmBtn = document.createElement('button');
+                confirmBtn.className = 'btn btn-primary full-width';
+                confirmBtn.style.marginTop = '16px';
+                confirmBtn.id = 'btnConfirmMatch';
+                confirmBtn.textContent = 'Confirm Answer';
+                confirmBtn.onclick = () => this.confirmMatchAnswer(question);
+
+                const savedAnswer = this.state.allAnswers[this.state.currentQuestionIndex];
+                if (savedAnswer && savedAnswer.confirmed) {
+                    confirmBtn.classList.add('hidden');
+                }
+
                 container.appendChild(confirmBtn);
             }
             return;
@@ -688,7 +804,7 @@ class QuizApp {
         let options = [];
         this.currentOptions = [];
 
-        if (question.type === 'multiple') {
+        if (question.type === 'multiple' || question.type === 'multiselect') {
             if (!question._shuffledOptions) {
                 question._shuffledOptions = shuffleArray([...question.options]);
             }
@@ -709,20 +825,41 @@ class QuizApp {
             const btn = document.createElement('button');
             btn.className = 'answer-option';
 
-            let displayText = (question.type === 'multiple') ? opt : opt.text;
-            let value = (question.type === 'multiple') ? question.options.indexOf(opt) : opt.value;
+            let displayText = (question.type === 'multiple' || question.type === 'multiselect') ? opt : opt.text;
+            let value = (question.type === 'multiple' || question.type === 'multiselect') ? question.options.indexOf(opt) : opt.value;
 
             btn.innerHTML = `<span>${displayText}</span>`;
-            btn.onclick = () => this.handleOptionSelect(value, question);
+
+            if (question.type === 'multiselect') {
+                btn.onclick = () => this.handleMultiOptionSelect(value, question);
+            } else {
+                btn.onclick = () => this.handleOptionSelect(value, question);
+            }
             container.appendChild(btn);
         });
+
+        if (question.type === 'multiselect' && this.state.correctionMode === 'instant' && !this.state.isReviewing && !this.state.quizCompleted) {
+            const savedAnswer = this.state.allAnswers[this.state.currentQuestionIndex];
+            const confirmBtn = document.createElement('button');
+            confirmBtn.className = 'btn btn-primary full-width';
+            confirmBtn.style.marginTop = '16px';
+            confirmBtn.id = 'btnConfirmMulti';
+            confirmBtn.textContent = 'Confirm Answer';
+            confirmBtn.onclick = () => this.confirmMultiAnswer(question);
+
+            if (savedAnswer && savedAnswer.confirmed) {
+                confirmBtn.classList.add('hidden');
+            }
+
+            container.appendChild(confirmBtn);
+        }
     }
 
     handleOpenAnswer(value, question) {
         if (this.state.isReviewing) return;
         const currentAnswer = this.state.allAnswers[this.state.currentQuestionIndex] || {};
-        this.state.allAnswers[this.state.currentQuestionIndex] = { 
-            selectedValue: value, 
+        this.state.allAnswers[this.state.currentQuestionIndex] = {
+            selectedValue: value,
             isCorrect: true,
             confirmed: currentAnswer.confirmed || false
         };
@@ -737,11 +874,123 @@ class QuizApp {
     confirmOpenAnswer(question) {
         const index = this.state.currentQuestionIndex;
         const answer = this.state.allAnswers[index];
-        if (!answer || (!answer.selectedValue || !answer.selectedValue.trim())) return;
+        if (!answer || (!answer.selectedValue || !answer.selectedValue.trim())) {
+            const isItalian = (this.state.currentSubject && this.state.currentSubject.lang === 'IT');
+            const alertMsg = isItalian
+                ? "Per favore, inserisci almeno una lettera prima di confermare."
+                : "Please type at least one letter before confirming.";
+            alert(alertMsg);
+            return;
+        }
         answer.confirmed = true;
         this.showAnswerState(answer, question, false);
         document.getElementById(CONFIG.SELECTORS.NEXT_BTN).disabled = false;
         this.updateNavigator();
+    }
+
+    arraysEqualAsSets(a, b) {
+        if (!a || !b) return false;
+        if (a.length !== b.length) return false;
+        const setA = new Set(a);
+        return b.every(item => setA.has(item));
+    }
+
+    handleMultiOptionSelect(value, question) {
+        if (this.state.isReviewing || (this.state.correctionMode === 'instant' && this.state.allAnswers[this.state.currentQuestionIndex] && this.state.allAnswers[this.state.currentQuestionIndex].confirmed)) return;
+
+        let currentAnswer = this.state.allAnswers[this.state.currentQuestionIndex];
+        if (!currentAnswer) {
+            currentAnswer = { selectedValue: [], isCorrect: false, confirmed: false };
+            this.state.allAnswers[this.state.currentQuestionIndex] = currentAnswer;
+        }
+
+        const idx = currentAnswer.selectedValue.indexOf(value);
+        if (idx > -1) {
+            currentAnswer.selectedValue.splice(idx, 1);
+        } else {
+            currentAnswer.selectedValue.push(value);
+        }
+
+        if (this.state.correctionMode === 'final') {
+            currentAnswer.isCorrect = this.arraysEqualAsSets(currentAnswer.selectedValue, question.answer);
+            this.showAnswerState(currentAnswer, question, false);
+            document.getElementById(CONFIG.SELECTORS.NEXT_BTN).disabled = currentAnswer.selectedValue.length === 0;
+            this.updateNavigator();
+            this.updateProgressBar();
+        } else {
+            this.showAnswerState(currentAnswer, question, false);
+            document.getElementById(CONFIG.SELECTORS.NEXT_BTN).disabled = false;
+        }
+    }
+
+    confirmMultiAnswer(question) {
+        const index = this.state.currentQuestionIndex;
+        const answer = this.state.allAnswers[index];
+        if (!answer || !answer.selectedValue || answer.selectedValue.length === 0) return;
+
+        answer.isCorrect = this.arraysEqualAsSets(answer.selectedValue, question.answer);
+        answer.confirmed = true;
+
+        if (answer.isCorrect) {
+            this.state.correctAnswers++;
+            document.getElementById(CONFIG.SELECTORS.CORRECT_COUNT).textContent = this.state.correctAnswers;
+        } else {
+            this.state.wrongAnswers++;
+            document.getElementById(CONFIG.SELECTORS.WRONG_COUNT).textContent = this.state.wrongAnswers;
+        }
+
+        this.showAnswerState(answer, question, false);
+        document.getElementById(CONFIG.SELECTORS.NEXT_BTN).disabled = false;
+        this.updateNavigator();
+        this.updateProgressBar();
+    }
+
+    handleMatchOptionSelect(pairIdx, value, question) {
+        if (this.state.isReviewing || (this.state.correctionMode === 'instant' && this.state.allAnswers[this.state.currentQuestionIndex] && this.state.allAnswers[this.state.currentQuestionIndex].confirmed)) return;
+
+        let currentAnswer = this.state.allAnswers[this.state.currentQuestionIndex];
+        if (!currentAnswer) {
+            currentAnswer = { selectedValue: {}, isCorrect: false, confirmed: false };
+            this.state.allAnswers[this.state.currentQuestionIndex] = currentAnswer;
+        }
+
+        currentAnswer.selectedValue[pairIdx] = value;
+        const allSelected = question.pairs.every((_, idx) => currentAnswer.selectedValue[idx]);
+
+        if (this.state.correctionMode === 'final') {
+            currentAnswer.isCorrect = question.pairs.every((pair, idx) => currentAnswer.selectedValue[idx] === pair.answer);
+            this.showAnswerState(currentAnswer, question, false);
+            document.getElementById(CONFIG.SELECTORS.NEXT_BTN).disabled = !allSelected;
+            this.updateNavigator();
+            this.updateProgressBar();
+        } else {
+            this.showAnswerState(currentAnswer, question, false);
+        }
+    }
+
+    confirmMatchAnswer(question) {
+        const index = this.state.currentQuestionIndex;
+        const answer = this.state.allAnswers[index];
+        if (!answer || !answer.selectedValue) return;
+
+        const allSelected = question.pairs.every((_, idx) => answer.selectedValue[idx]);
+        if (!allSelected) return;
+
+        answer.isCorrect = question.pairs.every((pair, idx) => answer.selectedValue[idx] === pair.answer);
+        answer.confirmed = true;
+
+        if (answer.isCorrect) {
+            this.state.correctAnswers++;
+            document.getElementById(CONFIG.SELECTORS.CORRECT_COUNT).textContent = this.state.correctAnswers;
+        } else {
+            this.state.wrongAnswers++;
+            document.getElementById(CONFIG.SELECTORS.WRONG_COUNT).textContent = this.state.wrongAnswers;
+        }
+
+        this.showAnswerState(answer, question, false);
+        document.getElementById(CONFIG.SELECTORS.NEXT_BTN).disabled = false;
+        this.updateNavigator();
+        this.updateProgressBar();
     }
 
     handleOptionSelect(selectedValue, question) {
@@ -782,12 +1031,12 @@ class QuizApp {
     showAnswerState(answerData, question, forceShowFeedback = false) {
         const container = document.getElementById(CONFIG.SELECTORS.OPTIONS_CONTAINER);
         let showFeedback = forceShowFeedback || this.state.quizCompleted;
-        
+
         if (this.state.correctionMode === 'instant') {
-            if (question.type === 'open') {
-                showFeedback = showFeedback || (answerData && answerData.confirmed);
-            } else {
+            if (question.type === 'multiple' || question.type === 'boolean') {
                 showFeedback = true;
+            } else {
+                showFeedback = showFeedback || (answerData && answerData.confirmed);
             }
         }
 
@@ -801,18 +1050,62 @@ class QuizApp {
                 }
             }
             if (confirmBtn && answerData && answerData.confirmed) confirmBtn.classList.add('hidden');
+        } else if (question.type === 'match') {
+            const selects = container.querySelectorAll('.match-select');
+            const confirmBtn = container.querySelector('#btnConfirmMatch');
+            if (confirmBtn && answerData && answerData.confirmed) confirmBtn.classList.add('hidden');
+
+            selects.forEach((select) => {
+                let pairIdx = select.dataset.pairIdx;
+                let pair = question.pairs[pairIdx];
+                let isSelected = answerData && answerData.selectedValue && answerData.selectedValue[pairIdx];
+                let isCorrectChoice = isSelected && answerData.selectedValue[pairIdx] === pair.answer;
+
+                select.disabled = this.state.isReviewing || this.state.quizCompleted || (this.state.correctionMode === 'instant' && answerData && answerData.confirmed);
+
+                select.classList.remove('correct', 'wrong');
+                if (showFeedback) {
+                    if (isCorrectChoice) {
+                        select.classList.add('correct');
+                    } else if (isSelected) {
+                        select.classList.add('wrong');
+                    }
+
+                    if (!isCorrectChoice) {
+                        const correctOpt = question.options.find(o => o.value === pair.answer);
+                        if (correctOpt && !select.parentNode.querySelector('.match-hint')) {
+                            const hint = document.createElement('div');
+                            hint.className = 'match-hint';
+                            hint.innerHTML = `<strong>Correct:</strong> ${correctOpt.text}`;
+                            select.parentNode.appendChild(hint);
+                        }
+                    }
+                }
+            });
         } else {
+            const confirmMultiBtn = container.querySelector('#btnConfirmMulti');
+            if (confirmMultiBtn && answerData && answerData.confirmed) confirmMultiBtn.classList.add('hidden');
+
             const buttons = container ? container.querySelectorAll('.answer-option') : [];
             buttons.forEach((btn, idx) => {
-                if (showFeedback || this.state.correctionMode === 'instant') {
-                    btn.disabled = true;
-                } else {
-                    btn.disabled = false;
+                let isDisabled = false;
+                if (showFeedback) {
+                    isDisabled = true;
+                } else if (this.state.correctionMode === 'instant') {
+                    if (question.type === 'multiselect') {
+                        isDisabled = answerData && answerData.confirmed;
+                    } else {
+                        isDisabled = answerData && answerData.selectedValue !== undefined && answerData.selectedValue !== null;
+                    }
+                }
+
+                btn.disabled = isDisabled;
+                if (!isDisabled) {
                     btn.className = 'answer-option';
                 }
 
                 let btnValue;
-                if (question.type === 'multiple') {
+                if (question.type === 'multiple' || question.type === 'multiselect') {
                     const displayedOpt = this.currentOptions[idx];
                     btnValue = question.options.indexOf(displayedOpt);
                 } else {
@@ -821,12 +1114,25 @@ class QuizApp {
 
                 btn.classList.remove('correct', 'wrong', 'selected');
 
-                if (showFeedback) {
-                    if (btnValue === question.answer) btn.classList.add('correct');
-                    else if (btnValue === answerData.selectedValue && !answerData.isCorrect) btn.classList.add('wrong');
-                    else if (btnValue === answerData.selectedValue && answerData.isCorrect) btn.classList.add('correct');
+                let isSelected = false;
+                if (question.type === 'multiselect') {
+                    isSelected = answerData && answerData.selectedValue && answerData.selectedValue.includes(btnValue);
                 } else {
-                    if (btnValue === answerData.selectedValue) btn.classList.add('selected');
+                    isSelected = answerData && answerData.selectedValue === btnValue;
+                }
+
+                if (showFeedback) {
+                    if (question.type === 'multiselect') {
+                        let isCorrectOption = question.answer.includes(btnValue);
+                        if (isCorrectOption) btn.classList.add('correct');
+                        else if (isSelected && !isCorrectOption) btn.classList.add('wrong');
+                    } else {
+                        if (btnValue === question.answer) btn.classList.add('correct');
+                        else if (isSelected && !answerData.isCorrect) btn.classList.add('wrong');
+                        else if (isSelected && answerData.isCorrect) btn.classList.add('correct');
+                    }
+                } else {
+                    if (isSelected) btn.classList.add('selected');
                 }
             });
         }
@@ -944,7 +1250,7 @@ class QuizApp {
         this.updateGrill();
     }
 
-    isDesktop() { return window.matchMedia('(min-width: 768px)').matches; }
+    isDesktop() { return window.matchMedia('(min-width: 1100px)').matches; }
 
     initGrill() {
         this.grillVisible = true;
@@ -1106,7 +1412,10 @@ class QuizApp {
         this.state.currentQuestionIndex = 0;
         if (filter === 'wrong') {
             this.state.reviewIndices = this.state.allAnswers
-                .map((ans, idx) => ((!ans || !ans.isCorrect) ? idx : -1))
+                .map((ans, idx) => {
+                    const isOpen = this.state.questions[idx].type === 'open';
+                    return ((!ans || !ans.isCorrect || isOpen) ? idx : -1);
+                })
                 .filter(idx => idx !== -1);
         } else {
             this.state.reviewIndices = this.state.questions.map((_, idx) => idx);

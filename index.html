@@ -24,19 +24,19 @@
             <!-- Navbar -->
             <nav class="home-navbar">
                 <div class="home-navbar-brand">
-                    <div class="logo-circle">🎯</div>
+                    <div class="logo-circle">
+                        <img src="assets/img/favicon.svg" alt="Quizium Logo">
+                    </div>
                     <h1 class="app-name">Quizium</h1>
                 </div>
                 <div class="home-navbar-actions">
                     <button class="btn btn-secondary navbar-action-btn" onclick="quizApp.handlePersistentUpload()"
                         id="btn-load-quiz">
-                        <span class="navbar-btn-icon">📁</span>
                         <span class="navbar-btn-label">Load Quiz</span>
                     </button>
                     <input type="file" id="local-file-input" accept=".json" class="hidden"
                         onchange="handleLocalQuizUpload(event)" style="display: none;">
                     <button class="btn btn-primary navbar-action-btn" onclick="openWorkshop()" id="btn-workshop">
-                        <span class="navbar-btn-icon">🛠️</span>
                         <span class="navbar-btn-label">Quiz Workshop</span>
                     </button>
                 </div>
@@ -63,13 +63,11 @@
                 </div>
                 <div class="inner-navbar-actions">
                     <button class="btn btn-secondary navbar-action-btn" onclick="quizApp.editWorkshop()">
-                        <span class="navbar-btn-icon">✏️</span>
                         <span class="navbar-btn-label">Edit</span>
                     </button>
                     <button class="btn btn-primary navbar-action-btn" onclick="startQuizFromSlider()"
                         id="btn-start-quiz">
                         <span class="navbar-btn-label">Start Quiz</span>
-                        <span class="navbar-btn-icon" style="font-style:normal;">→</span>
                     </button>
                 </div>
             </nav>
@@ -156,7 +154,7 @@
                 <!-- Mobile-only actions (hidden on desktop) -->
                 <div class="setup-mobile-actions">
                     <button class="btn btn-secondary full-width" onclick="quizApp.editWorkshop()">
-                        <span class="text-lg mr-8">✏️</span> Edit Questions
+                        Edit Questions
                     </button>
                     <button class="btn btn-primary full-width" onclick="startQuizFromSlider()">Start Quiz</button>
                 </div>
@@ -269,7 +267,6 @@
                 </div>
                 <div class="inner-navbar-actions">
                     <button class="btn btn-ghost navbar-action-btn" onclick="goHome()">
-                        <span class="navbar-btn-icon">🏠</span>
                         <span class="navbar-btn-label">Home</span>
                     </button>
                 </div>
@@ -358,7 +355,6 @@
                         placeholder="untitled_quiz" spellcheck="false" autocomplete="off">
                     <button class="btn-tool btn-tool-outline workshop-close-btn" onclick="WorkshopManager.closeFile()"
                         title="Close File">
-                        <span class="tool-icon">❌</span>
                         <span class="tool-label">Close</span>
                     </button>
                 </div>

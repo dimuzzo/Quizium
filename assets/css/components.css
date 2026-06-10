@@ -55,8 +55,24 @@
 
 .btn-primary:hover {
     background: var(--primary-dark);
-    transform: translateY(-2px);
+    filter: brightness(1.1);
     box-shadow: none;
+}
+
+/* Special hover effect for key action buttons (Start Quiz & Quiz Workshop) */
+#btn-start-quiz,
+#btn-workshop {
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, text-shadow 0.2s ease;
+}
+
+#btn-start-quiz:hover,
+#btn-workshop:hover {
+    background: var(--primary-dark) !important;
+    filter: brightness(1.2) contrast(1.05);
+    /* Vibrant, theme-aware outer glow and a subtle inset highlight for a premium, non-moving hover feedback */
+    box-shadow: 0 0 20px 2px rgba(99, 102, 241, 0.65), 
+                0 0 0 1.5px rgba(255, 255, 255, 0.25) inset !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary:disabled {
@@ -78,7 +94,7 @@
     border-color: var(--primary);
     color: var(--primary);
     background: var(--bg-body);
-    transform: translateY(-1px);
+    filter: brightness(1.05);
 }
 
 .btn-ghost {
@@ -357,7 +373,7 @@
     background: var(--bg-card);
     color: var(--primary);
     border-color: var(--primary);
-    transform: translateY(-2px);
+    filter: brightness(1.05);
     box-shadow: var(--shadow-card);
 }
 
@@ -920,4 +936,122 @@ input:focus+.toggle-slider {
     clip: rect(0, 0, 0, 0) !important;
     white-space: nowrap !important;
     border: 0 !important;
+}
+
+/* --- Code Block --- */
+.code-block {
+    background: #000000;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    padding: 16px;
+    margin: 16px 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.95rem;
+    color: #4ade80; /* Retro terminal green */
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: normal;
+    text-align: left;
+    box-shadow: inset 0 0 15px rgba(74, 222, 128, 0.15); /* Subtle green CRT glow */
+}
+
+/* --- Match Question Elements --- */
+.match-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.match-row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 16px;
+    align-items: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    padding: 16px;
+    transition: all 0.2s ease;
+}
+
+@media (max-width: 600px) {
+    .match-row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 16px 12px;
+    }
+    .match-left {
+        width: 100%;
+        text-align: left;
+    }
+}
+
+.match-left {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.match-select {
+    width: 100%;
+    min-height: 48px; /* Better touch target for smartphones */
+    appearance: none;
+    background: var(--bg-body);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-m);
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+.match-select:hover:not(:disabled) {
+    border-color: var(--primary);
+}
+
+.match-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-light);
+}
+
+.match-select:disabled {
+    opacity: 0.7;
+    cursor: default;
+}
+
+.match-select.correct {
+    border-color: var(--success);
+    background-color: var(--success-bg);
+    color: var(--success-text);
+}
+
+.match-select.wrong {
+    border-color: var(--error);
+    background-color: var(--error-bg);
+    color: var(--error-text);
+}
+
+.match-hint {
+    grid-column: 1 / -1;
+    margin-top: 8px;
+    padding: 12px;
+    border-radius: var(--radius-m);
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    color: var(--text-main);
+    font-size: 0.9rem;
+    animation: fadeIn 0.3s ease;
+}
+.match-hint strong {
+    color: var(--success);
 }

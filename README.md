@@ -8,7 +8,7 @@ The application loads subject data dynamically from JSON files located in the `d
 1.  **Discovery**: The app reads a manifest file `data/quizzes.json` to discover available quiz IDs.
 2.  **Dynamic Metadata**: For each quiz, the app fetches the JSON file and extracts metadata (name, category, icon, color) directly from the file's content.
 3.  **Home Screen**: Quizzes are automatically grouped by the `category` field defined in their metadata.
-4.  **Configuration & Mode**: Users can select question count, time modes, and correction modes before starting.
+4.  **Configuration & Mode**: Users can select question count (which defaults automatically to the total maximum available), time modes, and correction modes before starting.
 
 ## Time Modes
 
@@ -44,6 +44,8 @@ Improve your workflow with these keyboard shortcuts (Desktop):
 | :--- | :--- |
 | **Right Arrow** | Go to the Next Question |
 | **Left Arrow** | Go to the Previous Question |
+| **Up Arrow** | Jump -10 Questions Backward |
+| **Down Arrow** | Jump +10 Questions Forward |
 | **Numbers 1-9** | Select Answer Option (1 for 1st, 2 for 2nd, etc.) |
 | **Enter** | Confirm/Finish Quiz (when Modal is open) |
 | **Backspace** | Cancel/Close Modal (when Modal is open) |
@@ -117,7 +119,7 @@ Quiz files are stored as objects containing both `metadata` and a `questions` ar
       "id": 1,
       "type": "multiple",
       "question": "Your question text here?",
-      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "options": ["Option A", "Option B", "Option C", "Option D", "Option E"],
       "answer": 2,
       "explanation": "Brief explanation of why this answer is correct."
     },
@@ -131,8 +133,29 @@ Quiz files are stored as objects containing both `metadata` and a `questions` ar
     {
       "id": 3,
       "type": "open",
-      "question": "Open-ended question?",
+      "question": "Open-ended question with some code:\n```rust\nlet x = 5;\n```",
       "explanation": "Self-assessment explanation."
+    },
+    {
+      "id": 4,
+      "type": "multiselect",
+      "question": "Select all that apply:",
+      "options": ["Valid", "Invalid", "Also Valid", "Maybe Valid", "Definitely Invalid"],
+      "answer": [0, 2, 3],
+      "explanation": "0, 2, and 3 are correct."
+    },
+    {
+      "id": 5,
+      "type": "match",
+      "question": "Match the items to their category:",
+      "options": [
+        {"value": "cat_a", "text": "Category A"},
+        {"value": "cat_b", "text": "Category B"}
+      ],
+      "pairs": [
+        {"left": "First Item", "answer": "cat_a"},
+        {"left": "Second Item", "answer": "cat_b"}
+      ]
     }
   ]
 }
@@ -148,11 +171,14 @@ Quiz files are stored as objects containing both `metadata` and a `questions` ar
   - `category`: Used to group quizzes on the home screen.
 
 *   **id**: Unique integer identifier for the question.
-*   **type**: `"multiple"` for multiple choice, `"boolean"` for True/False, or `"open"` for open-ended questions.
-*   **options**: Array of strings (Required only for `"multiple"` type).
+*   **type**: `"multiple"` (single choice), `"multiselect"` (multiple checkboxes), `"boolean"` (True/False), `"match"` (dropdown pairs), or `"open"` (open-ended).
+*   **question**: The text of the question. You can use markdown code blocks (e.g., ` ```rust\ncode\n``` `) and they will be rendered with a beautiful retro green-on-black terminal aesthetic!
+*   **options**: Array of strings (up to 5 options!) for `"multiple"` and `"multiselect"`. For `"match"`, it must be an array of `{value, text}` objects for the dropdowns.
 *   **answer**: 
     *   For `multiple`: Integer index (0-based) of the correct option.
+    *   For `multiselect`: Array of integer indices (e.g., `[0, 2]`).
     *   For `boolean`: Integer `0` (False) or `1` (True).
+*   **pairs**: Array of `{left, answer}` objects (Required only for `"match"` type).
 
 
 Adding a and subject is now entirely data-driven:
@@ -201,7 +227,7 @@ To use the generator, paste your questions using the following structure (separa
 Question Text
 Option 1
 Option 2
-Option 3
+... (Up to 5 options)
 0 (Correct Index: 0 for first, 1 for second, etc.)
 Expanation (Optional)
 ```

@@ -486,6 +486,11 @@ input[type=range]::-moz-range-track {
     color: var(--success-text);
 }
 
+.stat-pill.partial {
+    background: var(--partial-bg);
+    color: var(--partial-text);
+}
+
 .stat-pill.wrong {
     background: var(--error-bg);
     color: var(--error-text);
@@ -533,6 +538,14 @@ input[type=range]::-moz-range-track {
 
 .stat-box.correct {
     border-bottom: 4px solid var(--success);
+}
+
+.stat-box.partial .stat-val {
+    color: var(--partial-text);
+}
+
+.stat-box.partial {
+    border-bottom: 4px solid var(--partial);
 }
 
 .stat-box.wrong .stat-val {
@@ -678,6 +691,12 @@ input[type=range]::-moz-range-track {
     border-color: var(--error);
 }
 
+.nav-dot.answered-partial {
+    background: var(--partial-bg);
+    color: var(--partial-text);
+    border-color: var(--partial);
+}
+
 .nav-dot.current.answered-correct {
     background: var(--bg-card);
     color: var(--success);
@@ -688,6 +707,12 @@ input[type=range]::-moz-range-track {
     background: var(--bg-card);
     color: var(--error);
     border-color: var(--error);
+}
+
+.nav-dot.current.answered-partial {
+    background: var(--bg-card);
+    color: var(--partial);
+    border-color: var(--partial);
 }
 
 .nav-dot.answered-skipped {
@@ -797,6 +822,86 @@ input[type=range]::-moz-range-track {
     color: var(--primary);
     transform: scale(1.1);
 }
+
+/* --- Self-Evaluation UI --- */
+.self-eval-container {
+    margin-top: 16px;
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    box-shadow: var(--shadow-sm);
+    animation: fadeIn 0.4s;
+}
+
+.self-eval-prompt {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.self-eval-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-eval {
+    flex: 1;
+    min-width: 120px;
+    padding: 12px 16px;
+    border-radius: var(--radius-s);
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-eval:active {
+    transform: scale(0.98);
+}
+
+.btn-eval-correct {
+    background: var(--success-bg);
+    color: var(--success-text);
+    border-color: var(--success-bg);
+}
+.btn-eval-correct:hover {
+    border-color: var(--success);
+    background: var(--success);
+    color: white;
+}
+
+.btn-eval-partial {
+    background: var(--partial-bg);
+    color: var(--partial-text);
+    border-color: var(--partial-bg);
+}
+.btn-eval-partial:hover {
+    border-color: var(--partial);
+    background: var(--partial);
+    color: white;
+}
+
+.btn-eval-incorrect {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border-color: var(--error-bg);
+}
+.btn-eval-incorrect:hover {
+    border-color: var(--error);
+    background: var(--error);
+    color: white;
+}
+
 
 .btn-flag.active {
     color: #f59e0b;

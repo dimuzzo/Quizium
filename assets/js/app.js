@@ -140,6 +140,7 @@ class QuizApp {
         window.showFinishConfirmation = () => this.showFinishConfirmation();
         window.hideFinishConfirmation = () => this.hideFinishConfirmation();
         window.confirmFinish = () => this.confirmFinish();
+        window.evaluateOpenAnswer = (points) => this.evaluateOpenAnswer(points);
         window.toggleFlag = () => this.toggleFlag();
         window.toggleShuffle = (checked) => this.toggleShuffle(checked);
         window.toggleGrill = () => this.toggleGrill();
@@ -724,7 +725,7 @@ class QuizApp {
             textarea.oninput = (e) => this.handleOpenAnswer(e.target.value, question);
             container.appendChild(textarea);
 
-            if (this.state.correctionMode === 'instant' && !this.state.isReviewing && !this.state.quizCompleted) {
+            if (!this.state.isReviewing && !this.state.quizCompleted) {
                 const confirmBtn = document.createElement('button');
                 confirmBtn.className = 'btn btn-primary full-width';
                 confirmBtn.style.marginTop = '16px';
@@ -860,8 +861,10 @@ class QuizApp {
         const currentAnswer = this.state.allAnswers[this.state.currentQuestionIndex] || {};
         this.state.allAnswers[this.state.currentQuestionIndex] = {
             selectedValue: value,
-            isCorrect: true,
-            confirmed: currentAnswer.confirmed || false
+            isCorrect: currentAnswer.isCorrect || false,
+            isPartiallyCorrect: currentAnswer.isPartiallyCorrect || false,
+            confirmed: currentAnswer.confirmed || false,
+            evaluating: currentAnswer.evaluating || false
         };
         this.updateNavigator();
         this.updateProgressBar();
@@ -869,6 +872,31 @@ class QuizApp {
         if (this.state.correctionMode === 'instant' && this.state.allAnswers[this.state.currentQuestionIndex].confirmed) {
             this.showAnswerState(this.state.allAnswers[this.state.currentQuestionIndex], question, false);
         }
+    }
+
+    evaluateOpenAnswer(points) {
+        const index = this.state.currentQuestionIndex;
+        const answer = this.state.allAnswers[index];
+        const question = this.state.questions[this.getRealQuestionIndex()];
+        if (!answer || !answer.evaluating) return;
+
+        answer.evaluating = false;
+        answer.confirmed = true;
+        answer.points = points;
+        answer.isCorrect = (points === 1);
+        
+        if (points === 1) {
+            this.state.correctAnswers++;
+            document.getElementById(CONFIG.SELECTORS.CORRECT_COUNT).textContent = this.state.correctAnswers;
+        } else {
+            this.state.wrongAnswers++;
+            document.getElementById(CONFIG.SELECTORS.WRONG_COUNT).textContent = this.state.wrongAnswers;
+        }
+
+        this.showAnswerState(answer, question, false);
+        document.getElementById(CONFIG.SELECTORS.NEXT_BTN).disabled = false;
+        this.updateNavigator();
+        this.updateProgressBar();
     }
 
     confirmOpenAnswer(question) {
@@ -882,9 +910,9 @@ class QuizApp {
             alert(alertMsg);
             return;
         }
-        answer.confirmed = true;
+        answer.evaluating = true;
+        answer.confirmed = false;
         this.showAnswerState(answer, question, false);
-        document.getElementById(CONFIG.SELECTORS.NEXT_BTN).disabled = false;
         this.updateNavigator();
     }
 
@@ -1044,16 +1072,16 @@ class QuizApp {
             const textarea = container.querySelector('.open-answer-input');
             const confirmBtn = container.querySelector('#btnConfirmOpen');
             if (textarea) {
-                textarea.disabled = this.state.isReviewing || this.state.quizCompleted || (this.state.correctionMode === 'instant' && answerData && answerData.confirmed);
+                textarea.disabled = this.state.isReviewing || this.state.quizCompleted || (answerData && (answerData.confirmed || answerData.evaluating));
                 if (answerData && answerData.selectedValue !== null && textarea.value !== answerData.selectedValue) {
                     textarea.value = answerData.selectedValue;
                 }
             }
-            if (confirmBtn && answerData && answerData.confirmed) confirmBtn.classList.add('hidden');
+            if (confirmBtn && answerData && (answerData.confirmed || answerData.evaluating)) confirmBtn.classList.add('hidden');
         } else if (question.type === 'match') {
             const selects = container.querySelectorAll('.match-select');
             const confirmBtn = container.querySelector('#btnConfirmMatch');
-            if (confirmBtn && answerData && answerData.confirmed) confirmBtn.classList.add('hidden');
+            if (confirmBtn && answerData && (answerData.confirmed || answerData.evaluating)) confirmBtn.classList.add('hidden');
 
             selects.forEach((select) => {
                 let pairIdx = select.dataset.pairIdx;
@@ -1137,11 +1165,51 @@ class QuizApp {
             });
         }
 
-        if (showFeedback && question.explanation) {
-            const exp = document.getElementById(CONFIG.SELECTORS.EXPLANATION);
-            exp.className = 'callout';
-            exp.innerHTML = `<strong>Explanation:</strong> ${question.explanation}`;
-            exp.classList.remove('hidden');
+        const badge = document.getElementById('qStatusBadge');
+        if (badge) {
+            let hasAnswered = answerData && answerData.selectedValue !== undefined && answerData.selectedValue !== null;
+            if (showFeedback && hasAnswered) {
+                badge.classList.remove('hidden', 'correct', 'wrong', 'partial');
+                if (answerData.isCorrect) {
+                    badge.classList.add('correct');
+                    badge.textContent = 'Correct';
+                } else if (answerData.isPartiallyCorrect) {
+                    badge.classList.add('partial');
+                    badge.textContent = 'Partial';
+                } else {
+                    badge.classList.add('wrong');
+                    badge.textContent = 'Incorrect';
+                }
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+        let isEvaluating = answerData && answerData.evaluating;
+        if (showFeedback || isEvaluating) {
+            if (question.explanation || isEvaluating) {
+                const exp = document.getElementById(CONFIG.SELECTORS.EXPLANATION);
+                exp.className = 'callout';
+                let expText = question.explanation ? `<strong>Explanation:</strong> ${question.explanation}` : `<strong>Ideal Answer:</strong> (No explanation provided)`;
+                exp.innerHTML = expText;
+                
+                if (isEvaluating) {
+                    const evalUI = document.createElement('div');
+                    evalUI.className = 'self-eval-container';
+                    evalUI.innerHTML = `
+                        <div class="self-eval-prompt">Based on the explanation above, how did you do?</div>
+                        <div class="self-eval-buttons">
+                            <button class="btn-eval btn-eval-correct" onclick="evaluateOpenAnswer(1)">
+                                <span class="icon">✓</span> Correct
+                            </button>
+                            <button class="btn-eval btn-eval-incorrect" onclick="evaluateOpenAnswer(0)">
+                                <span class="icon">✗</span> Incorrect
+                            </button>
+                        </div>
+                    `;
+                    exp.appendChild(evalUI);
+                }
+                exp.classList.remove('hidden');
+            }
         } else {
             document.getElementById(CONFIG.SELECTORS.EXPLANATION).classList.add('hidden');
         }
@@ -1240,8 +1308,9 @@ class QuizApp {
             const ans = this.state.allAnswers[realIndex];
             if (ans) {
                 if (this.state.correctionMode === 'final' && !this.state.quizCompleted && !this.state.isReviewing) dot.classList.add('answered-neutral');
-                else if (this.state.questions[realIndex].type === 'open') dot.classList.add('answered-neutral');
-                else dot.classList.add(ans.isCorrect ? 'answered-correct' : 'answered-wrong');
+                else if (this.state.questions[realIndex].type === 'open' && ans.evaluating) dot.classList.add('answered-neutral');
+                else if (this.state.questions[realIndex].type === 'open' && !ans.confirmed) dot.classList.add('answered-neutral');
+                else { if (ans.isCorrect) dot.classList.add('answered-correct'); else if (ans.isPartiallyCorrect) dot.classList.add('answered-partial'); else dot.classList.add('answered-wrong'); }
             } else if (this.state.quizCompleted) dot.classList.add('answered-skipped');
             if (this.state.flaggedQuestions.has(realIndex)) dot.classList.add('flagged');
         }
@@ -1297,8 +1366,8 @@ class QuizApp {
             if (ans) {
                 answeredCount++;
                 if (this.state.correctionMode === 'final' && !this.state.quizCompleted && !this.state.isReviewing) dot.classList.add('grill-dot-answered');
-                else if (this.state.questions[realIndex].type === 'open') dot.classList.add('grill-dot-answered');
-                else dot.classList.add(ans.isCorrect ? 'grill-dot-correct' : 'grill-dot-wrong');
+                else if (this.state.questions[realIndex].type === 'open' && (ans.evaluating || !ans.confirmed)) dot.classList.add('grill-dot-answered');
+                else { if (ans.isCorrect) dot.classList.add('grill-dot-correct'); else if (ans.isPartiallyCorrect) dot.classList.add('grill-dot-partial'); else dot.classList.add('grill-dot-wrong'); }
             }
             if (this.state.flaggedQuestions.has(realIndex)) dot.classList.add('flagged');
         }
@@ -1328,8 +1397,8 @@ class QuizApp {
     showResults(isTimeOut = false) {
         this.stopTimer();
         this.state.correctAnswers = this.state.allAnswers.filter(a => a && a.isCorrect).length;
-        this.state.wrongAnswers = this.state.allAnswers.filter(a => a && !a.isCorrect).length;
-        this.state.skippedAnswers = this.state.allAnswers.filter(a => a === null).length;
+        this.state.wrongAnswers = this.state.allAnswers.filter(a => a && a.confirmed && !a.isCorrect).length;
+        this.state.skippedAnswers = this.state.allAnswers.filter(a => !a || !a.confirmed).length;
 
         const percent = Math.round((this.state.correctAnswers / this.state.totalQuestions) * 100);
         document.getElementById('scorePercentage').textContent = `${percent}%`;

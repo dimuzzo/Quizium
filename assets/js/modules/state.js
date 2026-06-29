@@ -10,6 +10,7 @@ export const getInitialAppState = () => ({
     allAnswers: [],
     currentQuestionIndex: 0,
     correctAnswers: 0,
+    partialAnswers: 0,
     wrongAnswers: 0,
     skippedAnswers: 0,
     totalQuestions: 0,

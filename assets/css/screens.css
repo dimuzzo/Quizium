@@ -1424,6 +1424,12 @@
         border-color: var(--success);
     }
 
+    .grill-dot.grill-dot-partial {
+        background: var(--partial-bg);
+        color: var(--partial-text);
+        border-color: var(--partial);
+    }
+
     .grill-dot.grill-dot-wrong {
         background: var(--error-bg);
         color: var(--error-text);
@@ -1441,6 +1447,12 @@
         background: var(--bg-card);
         color: var(--success);
         border-color: var(--success);
+    }
+
+    .grill-dot.grill-dot-current.grill-dot-partial {
+        background: var(--bg-card);
+        color: var(--partial);
+        border-color: var(--partial);
     }
 
     .grill-dot.grill-dot-current.grill-dot-wrong {

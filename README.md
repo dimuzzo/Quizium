@@ -36,6 +36,11 @@ Choose when to receive feedback on your answers (located in the Setup screen):
     -   Selected answers are marked with a neutral blue outline.
     -   Scores and incorrect answers are revealed only at the end.
 
+-   **Open-Ended Self-Evaluation**:
+    -   When answering an open-ended question, your text area locks upon confirmation.
+    -   A "System Explanation" or ideal answer is immediately revealed.
+    -   You must self-evaluate your answer as **Correct** or **Incorrect** to record your score and proceed to the next question.
+
 ## Keyboard Shortcuts
 
 Improve your workflow with these keyboard shortcuts (Desktop):
@@ -245,6 +250,29 @@ Explanation (Optional)
 Question Text
 o (identifies the block as open-ended)
 Self-assessment Explanation
+```
+
+*Multiselect:*
+```text
+Question Text
+m (identifies the block as multiselect)
+Option 1
+Option 2
+Option 3
+0,2 (Comma-separated correct indices)
+Explanation (Optional)
+```
+
+*Match:*
+```text
+Question Text
+match (identifies the block as match)
+[val1] First Option Text
+[val2] Second Option Text
+-- (Separator for pairs)
+Left Side 1 = val1
+Left Side 2 = val2
+Explanation (Optional)
 ```
 
 2.  **Reorder IDs Tab**:

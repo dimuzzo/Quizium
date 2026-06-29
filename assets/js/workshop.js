@@ -296,6 +296,10 @@ const WorkshopManager = (() => {
             openExpl: { icon: '💡', label: 'Explanation for self-assessment', cls: 'hint-pill-done' },
             explanation: { icon: '💡', label: 'Explanation (optional)  —  or blank line for next question', cls: 'hint-pill-done' },
             nextQ: { icon: '↵', label: 'Blank line to start next question', cls: 'hint-pill-done' },
+            matchOption: { icon: '🧩', label: 'Match option: [value] text', cls: '' },
+            matchSeparator: { icon: '➖', label: 'Type -- to start pairs', cls: 'hint-pill-warn' },
+            matchPair: { icon: '🔗', label: 'Pair: left = value', cls: 'hint-pill-warn' },
+            multiAnswer: { icon: '☑️', label: 'Answer indices (e.g. 0,2)', cls: 'hint-pill-warn' },
         };
 
         const parseBlock = (value, cursorPos) => {
@@ -312,6 +316,8 @@ const WorkshopManager = (() => {
             const trimmed = (i) => (blockLines[i] !== undefined ? blockLines[i].trim() : '');
             const isBoolean = trimmed(1).toLowerCase() === 'b';
             const isOpen = trimmed(1).toLowerCase() === 'o';
+            const isMultiselect = trimmed(1).toLowerCase() === 'm';
+            const isMatch = trimmed(1).toLowerCase() === 'match';
             if (isBoolean) {
                 if (cursorIndexInBlock === 0) return HINTS.question;
                 if (cursorIndexInBlock === 1 || cursorIndexInBlock === 2) return HINTS.boolAnswer;
@@ -320,6 +326,36 @@ const WorkshopManager = (() => {
             if (isOpen) {
                 if (cursorIndexInBlock === 0) return HINTS.question;
                 return HINTS.openExpl;
+            }
+            if (isMultiselect) {
+                if (cursorIndexInBlock === 0) return HINTS.question;
+                if (cursorIndexInBlock === 1) return HINTS.optionFirst;
+                let answerLineIdx = -1;
+                for (let i = blockLines.length - 1; i >= 1; i--) {
+                    if (/^[\d,\s]+$/.test(trimmed(i))) { answerLineIdx = i; break; }
+                }
+                if (answerLineIdx !== -1 && cursorIndexInBlock >= answerLineIdx) return HINTS.explanation;
+                
+                const optionsSoFar = blockLines.slice(2, cursorIndexInBlock).filter(l => !/^[\d,\s]+$/.test(l.trim())).length;
+                if (optionsSoFar < 1) return HINTS.optionFirst;
+                if (optionsSoFar === 1) return HINTS.optionNext;
+                return HINTS.multiAnswer;
+            }
+            if (isMatch) {
+                if (cursorIndexInBlock === 0) return HINTS.question;
+                let sepIdx = blockLines.findIndex(l => l.trim() === '--');
+                if (sepIdx !== -1 && cursorIndexInBlock >= sepIdx) {
+                    if (cursorIndexInBlock === sepIdx) return HINTS.matchPair;
+                    let foundExp = false;
+                    for (let i = sepIdx + 1; i < cursorIndexInBlock; i++) {
+                        if (!blockLines[i].includes('=') && !blockLines[i].includes('->')) foundExp = true;
+                    }
+                    if (foundExp || (!trimmed(cursorIndexInBlock).includes('=') && !trimmed(cursorIndexInBlock).includes('->') && cursorIndexInBlock > sepIdx + 1)) return HINTS.explanation;
+                    return HINTS.matchPair;
+                } else {
+                    if (cursorIndexInBlock === 1) return HINTS.matchOption;
+                    return HINTS.matchSeparator;
+                }
             }
             if (cursorIndexInBlock === 0) return HINTS.question;
             if (cursorIndexInBlock === 1) return HINTS.optionFirst;
@@ -471,6 +507,8 @@ const WorkshopManager = (() => {
             let type = 'multiple';
             if (line2Str === 'b') type = 'boolean';
             else if (line2Str === 'o') type = 'open';
+            else if (line2Str === 'm') type = 'multiselect';
+            else if (line2Str === 'match') type = 'match';
             if (type === 'multiple') {
                 if (linesDetails.length < 3) { mkErr(linesDetails[0].lineNum, qNum, `Insufficient content for multiple choice.`); return; }
                 let answerIndex = -1, optionLines = [], foundAnswerLineIndex = -1, answerLineNum = -1;
@@ -490,6 +528,61 @@ const WorkshopManager = (() => {
                     questionObj.explanation = linesDetails.slice(1).map(l => l.text).join(' ');
                     if (linesDetails[1].text.toLowerCase() === 'o') questionObj.explanation = linesDetails.slice(2).map(l => l.text).join(' ');
                 }
+                jsonOutput.push(questionObj); currentId++;
+            } else if (type === 'multiselect') {
+                if (linesDetails.length < 4) { mkErr(linesDetails[0].lineNum, qNum, `Insufficient content for multiselect.`); return; }
+                let answerIndices = [], optionLines = [], foundAnswerLineIndex = -1, answerLineNum = -1;
+                for (let i = linesDetails.length - 1; i >= 1; i--) {
+                    if (/^[\d,\s]+$/.test(linesDetails[i].text)) { 
+                        foundAnswerLineIndex = i; 
+                        answerIndices = linesDetails[i].text.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n)); 
+                        answerLineNum = linesDetails[i].lineNum; 
+                        break; 
+                    }
+                }
+                if (foundAnswerLineIndex !== -1) { for (let i = 2; i < foundAnswerLineIndex; i++) optionLines.push(linesDetails[i].text); }
+                if (foundAnswerLineIndex === -1) { mkErr(linesDetails[0].lineNum, qNum, `Could not find numeric answer indices.`); return; }
+                if (optionLines.length < 2 || optionLines.length > 5) { mkErr(linesDetails[1].lineNum, qNum, `Invalid number of options (${optionLines.length}). Must be 2-5.`); return; }
+                
+                for (let ansIdx of answerIndices) {
+                    if (ansIdx < 0 || ansIdx >= optionLines.length) { mkErr(answerLineNum, qNum, `Answer index ${ansIdx} out of bounds.`); return; }
+                }
+
+                let questionObj = { id: currentId, type, question: questionText, options: optionLines, answer: answerIndices };
+                if (foundAnswerLineIndex + 1 < linesDetails.length) questionObj.explanation = linesDetails.slice(foundAnswerLineIndex + 1).map(l => l.text).join(' ');
+                jsonOutput.push(questionObj); currentId++;
+            } else if (type === 'match') {
+                let sepIndex = linesDetails.findIndex(l => l.text === '--');
+                if (sepIndex === -1) { mkErr(linesDetails[1].lineNum, qNum, `Missing '--' separator for match options/pairs.`); return; }
+                
+                let optionsLines = linesDetails.slice(2, sepIndex);
+                let options = [];
+                for (let l of optionsLines) {
+                    let match = l.text.match(/^\[(.*?)\]\s*(.*)$/);
+                    if (!match) { mkErr(l.lineNum, qNum, `Invalid option format. Use [value] text`); return; }
+                    options.push({ value: match[1], text: match[2] });
+                }
+
+                let pairs = [];
+                let expLines = [];
+                let parsingPairs = true;
+                for (let i = sepIndex + 1; i < linesDetails.length; i++) {
+                    let l = linesDetails[i];
+                    if (parsingPairs && (l.text.includes('=') || l.text.includes('->'))) {
+                        let delim = l.text.includes('=') ? '=' : '->';
+                        let parts = l.text.split(delim);
+                        pairs.push({ left: parts[0].trim(), answer: parts[1].trim() });
+                    } else {
+                        parsingPairs = false; 
+                        expLines.push(l.text);
+                    }
+                }
+                
+                if (options.length === 0) { mkErr(linesDetails[1].lineNum, qNum, `Match question needs at least one option.`); return; }
+                if (pairs.length === 0) { mkErr(linesDetails[sepIndex].lineNum, qNum, `Match question needs at least one pair.`); return; }
+                
+                let questionObj = { id: currentId, type, question: questionText, options, pairs };
+                if (expLines.length > 0) questionObj.explanation = expLines.join(' ');
                 jsonOutput.push(questionObj); currentId++;
             } else {
                 const contentLines = linesDetails.slice(2);
@@ -554,7 +647,23 @@ const WorkshopManager = (() => {
                     optionsHtml += `<button class="${bClass}" disabled><span>${opt}</span></button>`;
                 });
             } else if (q.type === 'open') optionsHtml += `<textarea class="open-answer-input" placeholder="User will insert answer here..." disabled style="margin-top: 4px;"></textarea>`;
-            else {
+            else if (q.type === 'multiselect') {
+                q.options.forEach((opt, i) => {
+                    const isCorrect = q.answer.includes(i);
+                    const bClass = isCorrect ? 'answer-option correct' : 'answer-option';
+                    optionsHtml += `<button class="${bClass}" disabled><span class="icon" style="margin-right: 8px;">☑️</span> <span>${opt}</span></button>`;
+                });
+            } else if (q.type === 'match') {
+                optionsHtml += `<div style="display: flex; gap: 8px; flex-direction: column; width: 100%;">`;
+                q.pairs.forEach((pair) => {
+                    const ansText = q.options.find(o => o.value === pair.answer)?.text || pair.answer;
+                    optionsHtml += `<div style="display: flex; gap: 8px; justify-content: space-between; background: var(--bg-body); padding: 8px 12px; border-radius: 6px; font-size: 0.9rem; align-items: center; border: 1px solid var(--border);">
+                        <div style="font-weight: 500;">${pair.left}</div>
+                        <div style="color: var(--success); font-weight: 600;">${ansText}</div>
+                    </div>`;
+                });
+                optionsHtml += `</div>`;
+            } else {
                 const isTrueCorrect = q.answer === 1;
                 const isFalseCorrect = q.answer === 0;
                 optionsHtml += `<button class="answer-option ${isTrueCorrect ? 'correct' : ''}" disabled><span>True</span></button>`;

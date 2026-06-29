@@ -34,6 +34,17 @@ export const reverseGenerate = (questions) => {
             block += `b\n${q.answer}`;
         } else if (q.type === 'open') {
             block += `o\n${q.explanation || ''}`;
+        } else if (q.type === 'multiselect') {
+            block += `m\n`;
+            q.options.forEach(opt => block += `${opt}\n`);
+            block += `${q.answer.join(',')}`;
+        } else if (q.type === 'match') {
+            block += `match\n`;
+            q.options.forEach(opt => block += `[${opt.value}] ${opt.text}\n`);
+            block += `--\n`;
+            q.pairs.forEach(pair => block += `${pair.left} = ${pair.answer}\n`);
+            // Remove trailing newline if it exists before explanation
+            if (q.explanation) block = block.trimEnd();
         } else {
             q.options.forEach(opt => block += `${opt}\n`);
             block += `${q.answer}`;
@@ -41,7 +52,7 @@ export const reverseGenerate = (questions) => {
         if (q.explanation && q.type !== 'open') {
             block += `\n${q.explanation}`;
         }
-        return block;
+        return block.trimEnd();
     }).join('\n\n');
 };
 

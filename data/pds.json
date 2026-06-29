@@ -1657,6 +1657,2015 @@
       "question": "(API) Sintetizza i tre pilastri della programmazione in Rust: ownership, borrowing, lifetime.",
       "explanation": "Ownership: una risorsa ha un proprietario, Borrowing: prestare temporaneamente, Lifetime: durata della validità.",
       "id": 170
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Aumentare la dimensione del blocco su disco (mantenendo fissa la dimensione del puntatore) aumenta la dimensione massima del file?",
+      "answer": 1,
+      "explanation": "Blocchi più grandi contengono più puntatori e puntano a blocchi dati di capacità superiore.",
+      "id": 171
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Con questo schema di allocazione (domanda 171), l'accesso casuale a un blocco può essere effettuato con un numero O(1) di letture di blocchi indice?",
+      "answer": 1,
+      "explanation": "L'albero ha profondità fissa, quindi serve un numero costante di letture.",
+      "id": 172
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il numero di blocchi indice di secondo livello utilizzati da un file cresce in modo lineare con la dimensione del file?",
+      "answer": 1,
+      "explanation": "Più blocchi dati servono, più blocchi di secondo livello vengono allocati proporzionalmente.",
+      "id": 173
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) I blocchi indice soffrono necessariamente di frammentazione interna anche quando il file è un multiplo esatto della dimensione del blocco?",
+      "answer": 1,
+      "explanation": "Anche se i dati sono \"perfetti\" , il blocco indice potrebbe avere slot di puntamento inutilizzati.",
+      "id": 174
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Usando file mappati in memoria, l'accesso a un byte può causare un page fault senza alcuna system call esplicita?",
+      "answer": 1,
+      "explanation": "L'hardware intercetta l'accesso a memoria non residente in RAM e avvia l'I/O.",
+      "id": 175
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Durante un trasferimento DMA, le pagine virtuali devono rimanere in memoria fisica?",
+      "answer": 1,
+      "explanation": "Il DMA accede alla RAM bypassando la CPU; le pagine vanno bloccate (pinning).",
+      "id": 176
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Se una pagina usata dal DMA subisse uno swap-out, potrebbe verificarsi corruzione dati?",
+      "answer": 1,
+      "explanation": "Il DMA scriverebbe sull'indirizzo fisico in cui si trovava la pagina, corrompendo altri dati.",
+      "id": 177
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La TLB rende inutili gli accessi in memoria per tradurre indirizzi durante operazioni di I/O a blocchi?",
+      "answer": 0,
+      "explanation": "I buffer utente per l'I/O vanno tradotti; la TLB riduce, ma non annulla, i lookup in RAM.",
+      "id": 178
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Aumentare la dimensione della pagina riduce i page fault sequenziali, ma aumenta il costo per gli accessi casuali?",
+      "answer": 1,
+      "explanation": "Più contiguità avvantaggia la sequenzialità, ma spreca banda in letture mirate/sparse.",
+      "id": 179
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) L'uso di read() favorisce l'overlap I/O-calcolo più del memory mapping?",
+      "answer": 0,
+      "explanation": "L'overlap dipende dal DMA e dall'I/O a blocchi sottostante, non dall'interfaccia usata.",
+      "id": 180
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un page fault per un file mappato in memoria blocca il processo anche se l'I/O avviene via DMA?",
+      "answer": 1,
+      "explanation": "L'eccezione si risolve bloccando il thread finché il DMA non completa il trasferimento in RAM. Inverted Page Table (IPT)",
+      "id": 181
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La IPT riduce lo spazio di indirizzamento dei processi?",
+      "answer": 0,
+      "explanation": "Lo spazio di indirizzamento virtuale è indipendente dalla struttura della tabella delle pagine.",
+      "id": 182
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Se lo spazio di indirizzamento di un processo è uguale alla metà della RAM, la sua Page Table (PT) standard è generalmente più piccola della IPT globale?",
+      "answer": 1,
+      "explanation": "La IPT mappa ogni singolo frame della RAM. Se lo spazio virtuale è solo metà della RAM, la PT standard avrà meno entry della IPT, e solitamente una entry standard è più piccola di una entry IPT.",
+      "id": 183
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Se lo spazio di un processo eguaglia la RAM disponibile, la PT del processo e la IPT possono avere lo stesso numero di entry?",
+      "answer": 1,
+      "explanation": "Il numero di entry virtuali combacerebbe con quello dei frame fisici (presumendo che le entry abbiano la stessa dimensione in byte, anche se non è sempre vero).",
+      "id": 184
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Con più processi attivi, una IPT è sempre migliore perché lo spazio di indirizzamento di un singolo processo è grande almeno quanto la RAM?",
+      "answer": 0,
+      "explanation": "L'assunzione è falsa. Lo spazio di indirizzamento (effettivamente in uso) di un processo può essere infinitamente più piccolo della grandezza della RAM totale.",
+      "id": 185
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Se si combina la IPT con una tabella Hash, la dimensione raddoppia perché le entry vengono replicate?",
+      "answer": 0,
+      "explanation": "Le entry della IPT non vengono copiate interamente nell'Hash. L'Hash table memorizza tipicamente solo i puntatori/indici diretti alla vera IPT.",
+      "id": 186
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La tabella Hash migliora il tempo di ricerca perché il numero di pagina virtuale (VPN) funge da indice diretto nell'array?",
+      "answer": 0,
+      "explanation": "Il VPN non è usato come indice diretto (come in una PT), ma viene usato come chiave (dato in pasto a una funzione matematica di hashing) per trovare l'indice.",
+      "id": 187
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) L'algoritmo C-SCAN ottimizza il tempo di posizionamento per gli HDD minimizzando la latenza rotazionale?",
+      "answer": 0,
+      "explanation": "Gli algoritmi di testina come C-SCAN o SSTF minimizzano il tempo di ricerca (Seek Time) meccanico del braccio, non la latenza di rotazione dei piattelli.",
+      "id": 188
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) A parità di richieste, la distanza percorsa in totale dalla testina in C-SCAN è generalmente superiore a quella in SCAN?",
+      "answer": 1,
+      "explanation": "Nel C-SCAN il braccio serve le richieste solo in un verso, dopodiché torna all'inizio del disco a vuoto, aumentando di fatto la distanza totale fisica percorsa (ma migliorando l'equità d'attesa).",
+      "id": 189
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) I dischi a stato solido NVM (Non-Volatile Memory) non richiedono gli stessi algoritmi di scheduling degli HDD?",
+      "answer": 1,
+      "explanation": "Non avendo testine o parti meccaniche in movimento, negli SSD non esiste alcun overhead di Seek o posizionamento da ottimizzare in questo modo.",
+      "id": 190
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Data una coda con N richieste, non è possibile accettare nuove richieste mentre un algoritmo SSTF sta servendo quelle attuali?",
+      "answer": 0,
+      "explanation": "Lo scheduling è completamente dinamico. Se arriva una nuova richiesta, viene accodata ed entra in competizione immediata con le altre per essere la più vicina alla testina.",
+      "id": 191
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un algoritmo di ricerca binaria su file garantirà sempre un costo logaritmico O(logN) indipendentemente dal File System (FAT, Liste, Inode) perché operano su livelli software differenti?",
+      "answer": 0,
+      "explanation": "L'indipendenza software è vera, ma la ricerca binaria richiede un accesso diretto in O(1) all'elemento desiderato per poter scartare metà dati; requisito non soddisfatto dalle liste concatenate.",
+      "id": 192
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) L'allocazione contigua garantisce un costo logaritmico per la ricerca binaria poiché supporta l'accesso diretto in O(1)?",
+      "answer": 1,
+      "explanation": "Sapendo dove inizia il file su disco, si calcola immediatamente la posizione fisica del blocco centrale.",
+      "id": 193
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) FAT e Liste non supportano l'accesso in O(1), quindi la ricerca binaria collassa a O(N logN), rendendo di fatto la banale ricerca sequenziale un'opzione migliore come complessità?",
+      "answer": 1,
+      "explanation": "Saltare al blocco centrale in una lista o nella FAT richiede di scorrere tutti i puntatori precedenti. La ricerca lineare O(N) diventa paradossalmente più veloce su questi file system rispetto a una binaria penalizzata dai salti continui.",
+      "id": 194
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Gli Inode non supportano l'accesso casuale/diretto, quindi non garantiscono la ricerca binaria in modo logaritmico?",
+      "answer": 0,
+      "explanation": "Falso: le tabelle di Inode supportano l'accesso casuale indicizzato ai blocchi di un file, quindi la ricerca dicotomica può funzionare con alte performance.",
+      "id": 195
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Sebbene la FAT supporti solo l'accesso sequenziale logico, può essere molto più rapida delle normali liste concatenate quando si applica la ricerca binaria?",
+      "answer": 1,
+      "explanation": "La FAT si trova interamente in memoria RAM. L'accesso sequenziale per rintracciare il N-esimo blocco si compie velocemente scansionando un array in RAM, senza i lentissimi accessi al disco richiesti dalle linked list pure.",
+      "id": 196
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In as _ copy, la funzione sta fisicamente allocando la RAM quando invoca as _prepare _ load()?",
+      "answer": 1,
+      "explanation": "In DUMBVM, as _prepare _ load esegue l'effettiva allocazione (e calcolo degli indirizzi fisici base) una volta note le dimensioni dei segmenti.",
+      "id": 197
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La trasformazione da indirizzo fisico a logico tramite PADDR TO _ _ KVADDR(new->as _pbase1) poteva essere evitata usando semplicemente l'indirizzo new->as _ vbase1?",
+      "answer": 0,
+      "explanation": "La macro converte la RAM in un indirizzo logico del Kernel (kseg0), accessibile privilegiatamente per la copia (memmove). Il vbase1 è un indirizzo logico Utente, al quale il kernel non deve appoggiarsi in queste fasi interne.",
+      "id": 198
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Se la system call fork() viene implementata con as _ copy, la tecnica copy-on-write non può essere supportata dal sistema?",
+      "answer": 1,
+      "explanation": "Il Copy-on-Write richiede che padre e figlio condividano gli stessi frame fisici. Questa as _ copy alloca immediatamente RAM vergine e copia brutalmente i byte (memmove), negando la logica del COW.",
+      "id": 199
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Lo spazio di indirizzamento generato (puntato da new) è una struttura dati utente, vista dal processo quando esegue in user mode?",
+      "answer": 0,
+      "explanation": "struct addrspace è esclusivamente una struttura dati del Kernel necessaria per la gestione della memoria, che è un compito puramente privilegiato.",
+      "id": 200
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Dati new->as _pbase1 = 0x200000, il risultato esatto di PADDR TO _ _ >as _pbase1) è 0x80200000?",
+      "answer": 1,
+      "explanation": "KVADDR(new- Nel MIPS, per mappare in kseg0 (usato dal kernel), si somma l'offset base 0x80000000 all'indirizzo fisico: 0x200000 + 0x80000000 = 0x80200000.",
+      "id": 201
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Data la base fisica 0x200000 mappata a quella virtuale 0x400000, l'indirizzo fisico corrispondente per l'indirizzo logico utente 0x4000AB è 0x2000AB?",
+      "answer": 1,
+      "explanation": "L'offset all'interno del segmento si conserva intatto (0x00AB). Si somma l'offset alla base fisica corrispondente: 0x200000 + 0x00AB = 0x2000AB.",
+      "id": 202
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) L'indirizzo logico del Kernel per l'indirizzo fisico 0x303000 è 0x80303000?",
+      "answer": 1,
+      "explanation": "Stessa regola della MIPS Memory Map: si somma il tetto di kseg0 (0x80000000) all'indirizzo fisico: 0x303000 + 0x80000000 = 0x80303000.",
+      "id": 203
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Lo switchframe di un processo si trova nel suo kernel stack ed è allocato dinamicamente usando kmalloc?",
+      "answer": 0,
+      "explanation": "Si trova nel kernel stack, ma non è allocato con kmalloc (che alloca nell'Heap). Lo switchframe è un pacchetto temporaneo spinto (pushed) sullo stack dalla sottrazione dello stack pointer.",
+      "id": 204
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione switchframe _ switch è in assembly: effettua il context switch salvando i registri di un thread e ripristinando quelli del thread entrante?",
+      "answer": 1,
+      "explanation": "È l'unica operazione di così basso livello (accesso diretto ai registri general purpose e pointer) da richiedere l'Assembly (file switch.S).",
+      "id": 205
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Lo stack utente di un processo NON fa parte del suo spazio di indirizzamento, che è limitato ai soli segmenti Text (codice) e Data?",
+      "answer": 0,
+      "explanation": "Lo spazio virtuale di un processo (Addrspace) comprende categoricamente anche la base fisica dello stack utente, essenziale per la sua esecuzione.",
+      "id": 206
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In DUMBVM, lo stack utente di un processo ha una dimensione fissa predefinita di 18 pagine?",
+      "answer": 1,
+      "explanation": "A differenza dei segmenti dati/codice che variano con l'ELF caricato, lo stack ha sempre una grandezza fissa (il numero esatto dipende dalla macro DUMBVM _ STACKPAGES, spesso impostata a 12 o 18 a seconda del build).",
+      "id": 207
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione enter new _ _process si usa per avviare un processo utente creando un trapframe e simulando il ritorno da un'eccezione (RFE)?",
+      "answer": 1,
+      "explanation": "Per declassare i privilegi da Kernel a User Space, il sistema prepara un frame finto e lancia l'RFE (Return From Exception), \"ingannando\" la CPU e facendole avviare il processo.",
+      "id": 208
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La enter new _ _process attende inoltre la terminazione del processo utente e ne restituisce il suo Exit Status?",
+      "answer": 0,
+      "explanation": "Il Ritorno da Eccezione salta direttamente al codice utente abbassando i privilegi. Questa funzione non ritorna mai più indietro (\"Warp to user mode\"). Il ciclo di vita viene poi gestito altrove.",
+      "id": 209
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Quando un programma utente chiama read(fd, buf, nb), buf funge da sorgente e fd da destinazione dei dati?",
+      "answer": 0,
+      "explanation": "È il contrario: leggiamo i dati dal File Descriptor sorgente (fd), e li depositiamo nel buffer destinazione allocato dall'utente (buf).",
+      "id": 210
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Nel caso kernel buffering sia abilitato, il parametro buf passato in read può essere tranquillamente un indirizzo di un buffer del Kernel?",
+      "answer": 0,
+      "explanation": "Poiché la funzione viene chiamata da un programma utente, buf deve risiedere nello User Space. I trasferimenti kernel-user necessitano di routine controllate (es. copyout).",
+      "id": 211
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il gestore System Call in OS161 riceve tutto il necessario all'interno del Trapframe, richiedendo quindi un singolo parametro?",
+      "answer": 1,
+      "explanation": "La funzione kernel syscall(struct trapframe *tf) riceve tutto il contesto salvato (registri, codice operazione, argomenti utente) estraendolo direttamente dal trapframe in ingresso.",
+      "id": 212
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Terminata la syscall, il kernel sveglia il processo in attesa lanciando una Signal/V sul semaforo su cui l'utente stava dormendo?",
+      "answer": 0,
+      "explanation": "La system call è un'eccezione hardware: per restituire il controllo al chiamante si utilizza semplicemente la sequenza in assembly di ripristino registri e Return From Exception (RFE), non esistono semafori coinvolti nel rientro utente.",
+      "id": 213
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Usando file mappati in memoria (memory-mapped files), l'accesso a un byte del file può causare un page fault anche se non viene eseguita alcuna system call di I/O in modo esplicito?",
+      "answer": 1,
+      "explanation": "La mappatura in memoria mappa direttamente il file nello spazio di indirizzamento virtuale del processo. Il caricamento avviene in modalità \"lazy\" (pigra) tramite il meccanismo hardware della MMU: l'accesso diretto a un puntatore C in memoria scatena automaticamente un page fault se la pagina non è ancora presente in RAM fisica, delegando al kernel la lettura trasparente da disco senza invocare ` read()` ` o write()` .",
+      "id": 214
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Durante un trasferimento DMA verso un buffer utente, le corrispondenti pagine virtuali devono rimanere residenti in memoria fisica per tutta la durata del trasferimento?",
+      "answer": 1,
+      "explanation": "Il controller DMA opera in totale autonomia rispetto alla CPU lavorando direttamente sugli indirizzi fisici della RAM. Se le pagine virtuali corrispondenti non venissero bloccate (pinning) in memoria, il sistema operativo potrebbe eseguirne lo swap-out o riallocare quei frame fisici, inducendo il DMA a sovrascrivere o corrompere memoria estranea.",
+      "id": 215
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Se una pagina coinvolta in un trasferimento DMA in corso venisse spostata su disco (swap- out), potrebbe verificarsi corruzione dei dati?",
+      "answer": 1,
+      "explanation": "Se la pagina subisse uno swap-out, il frame fisico verrebbe liberato per altre allocazioni del kernel. Poiché il DMA ignora la tabella delle pagine e prosegue la sua operazione sull'indirizzo fisico inizialmente configurato, finirebbe per scrivere sopra i dati del nuovo blocco allocato in quel frame, corrompendolo.",
+      "id": 216
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La presenza di una TLB garantisce che non siano necessari ulteriori accessi in memoria per tradurre indirizzi virtuali durante operazioni di I/O a blocchi?",
+      "answer": 0,
+      "explanation": "Sebbene la TLB non influisca sulle porte hardware o sugli indirizzi dei dispositivi di I/O (che spesso sono memory- mapped non paginati, come `kseg1 ` su MIPS), gli indirizzi di memoria sorgente o destinazione dell'I/O a blocchi si trovano nello spazio virtuale utente (`kuseg `). Essi sono pertanto soggetti a traduzione logico-fisica: la TLB ne riduce drasticamente gli accessi medi alle tabelle delle pagine in RAM, ma in caso di TLB miss non li annulla.",
+      "id": 217
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Aumentare la dimensione della pagina può ridurre il numero di page fault causati da accessi sequenziali a file, ma può aumentare il costo di accessi casuali (random) al file?",
+      "answer": 1,
+      "explanation": "Pagine più grandi sfruttano appieno il principio della località spaziale: un singolo page fault carica un grosso frammento di file contiguo, azzerando i fault per i byte successivi letti sequenzialmente. Negli accessi casuali sparsi, invece, caricare un'intera pagina enorme per estrarre un singolo byte isolato comporta un enorme spreco di banda del disco e di spazio in RAM fisica.",
+      "id": 218
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Quando un file viene letto sequenzialmente usando read(), il kernel può sovrapporre (overlap) I/O e calcolo più facilmente rispetto al caso in cui il file sia acceduto tramite memory mapping del file?",
+      "answer": 0,
+      "explanation": "Le due modalità operano su piani architetturali differenti. La sovrapposizione di calcolo (CPU) e trasferimento dati (I/O) asincrono è resa possibile a basso livello grazie alla presenza del controller DMA indipendente e all'organizzazione dell'I/O a blocchi del kernel, non dall'interfaccia o dalle funzioni software usate dall'applicazione.",
+      "id": 219
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un page fault causato dall'accesso a un file mappato in memoria può bloccare il processo chiamante anche se l'I/O su disco necessario a soddisfare il fault viene effettuato tramite DMA?",
+      "answer": 1,
+      "explanation": "Il controller DMA gestisce unicamente gli indirizzi fisici una volta avviato il trasferimento. Il Page Fault (un'eccezione hardware della MMU) deve essere intercettato e risolto dal kernel prima di poter istruire il DMA sul frame fisico di destinazione. Durante il tempo in cui il blocco del file viene letto dal disco, il processo che ha scatenato l'eccezione viene sospeso (messo in stato di attesa/sleep) per non sprecare CPU, lasciando spazio ad altri thread.",
+      "id": 220
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) L'esecuzione (in kern/conf) di ./config PROJECT, seguita dal comando bmake depend (eseguito in kern/compile/PROJECT), è sufficiente affinché il file opzionale syscall/project.c sia compilato quando si esegue bmake?",
+      "answer": 1,
+      "explanation": "Il comando ` ./config condizionati, mentre successivo comando ` analizza le opzioni e predispone i file di configurazione con l'albero dei Makefile `bmake depend` `bmake mappa ed elenca le dipendenze degli header. Questa catena garantisce che il ` includa e compili correttamente il sorgente ` syscall/project.c ` .",
+      "id": 221
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il file project.h viene generato automaticamente dal comando ./config PROJECT?",
+      "answer": 0,
+      "explanation": "Il comando ` ./config ` si occupa esclusivamente di generare gli header di configurazione automatica legati alle direttive di compilazione condizionale, i quali assumono obbligatoriamente il prefisso ` opt- ` (es. ` opt-project.h`). Gli header classici di prototipazione (come ` project.h`) devono essere scritti a mano dal programmatore.",
+      "id": 222
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il file opt-project.h viene generato solo se l'istruzione options project compare nel file PROJECT?",
+      "answer": 0,
+      "explanation": "Il file header ` opt-project.h` viene generato sempre e in ogni caso dall'utility di configurazione per evitare errori di compilazione nel codice sorgente. La presenza o l'assenza della direttiva ` options project` nel file di configurazione del kernel serve solo a modificare il valore associato alla macro (impostandolo a ` ` 1 se abilitato o ` ` a 0 se disabilitato).",
+      "id": 223
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il file opt-project.h contiene la definizione #define opt _project?",
+      "answer": 0,
+      "explanation": "Il file generato in automatico contiene la definizione della macro di controllo scritta rigorosamente in lettere maiuscole, legandosi al nome dell'opzione definita. Conterrà quindi una riga del tipo `#define OPT PROJECT 1 _ (o ` 0 `), e non la dicitura in minuscolo.",
+      "id": 224
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Se si desidera inserire in main.c l'istruzione project _ init() (funzione definita in syscall/project.c), l'intestazione del file main.c deve includere \"opt-project.h\"?",
+      "answer": 1,
+      "explanation": "Affinché il preprocessore C possa riconoscere e valutare la macro di controllo condizionale `OPT PROJECT` _ all'interno di ` main.c ` , è indispensabile includere esplicitamente in cima al file l'header di configurazione autogenerato ` opt-project.h` .",
+      "id": 225
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Per fare in modo che project _ init() sia considerata solo se l'opzione project è abilitata, andranno condizionate le istruzioni in main.c tramite le direttive #ifdef OPT PROJECT e _ #endif?",
+      "answer": 0,
+      "explanation": "Non si può usare la direttiva `#ifdef` (if defined) perché la macro `OPT PROJECT` _ viene definita in entrambi i casi all'interno del file generato. Se l'opzione fosse disattivata, il file conterrebbe comunque `#define OPT PROJECT 0 ` _ : l'utilizzo di `#ifdef` risulterebbe vero, includendo erroneamente l'istruzione anche quando l'opzione è spenta.",
+      "id": 226
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Per condizionare correttamente project _ init() in main.c in base alla reale abilitazione dell'opzione, andranno usate le direttive #if OPT PROJECT e #endif?",
+      "answer": 1,
+      "explanation": "_ La direttiva corretta è `#if OPT PROJECT` _ , in quanto valuta il valore logico-numerico associato alla macro. Se l'opzione è abilitata, la macro vale ` 1 ` (condizione vera, il codice viene compilato); se disabilitata vale ` 0 ` (condizione falsa, il blocco viene rimosso dal preprocessore).",
+      "id": 227
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione di kernel sys _getpid() è necessaria per implementare la sys _ waitpid(), in quanto serve conoscere il pid del processo in attesa?",
+      "answer": 0,
+      "explanation": "La chiamata di sistema ` sys _ waitpid()` riceve già l'identificativo del processo bersaglio (il PID da attendere) direttamente come parametro d'ingresso esplicito. Di conseguenza, non ha alcun bisogno di interrogare internamente la ` sys _getpid()` .",
+      "id": 228
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione sys _getpid() è necessaria per implementare la chiamata di sistema getpid e verrà chiamata direttamente da un processo utente?",
+      "answer": 0,
+      "explanation": "La prima parte dell'affermazione è corretta (la funzione implementa la logica della syscall), ma la seconda parte è falsa. Essendo una routine interna del kernel che lavora in modalità privilegiata, non può mai essere invocata direttamente dal codice utente (User Space). L'applicazione deve usare un'istruzione speciale hardware (trap) per fare lo switch di contesto.",
+      "id": 229
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione sys _getpid() è necessaria per implementare la chiamata di sistema getpid, e sarà chiamata dal kernel all'interno della funzione globale syscall()?",
+      "answer": 1,
+      "explanation": "Questo rispecchia l'architettura esatta delle system call: l'applicazione utente solleva un'eccezione software tramite la libreria, il controllo passa alla routine di gestione globale delle trap del kernel (` syscall()`), la quale decodifica il codice numerico della richiesta e invoca la funzione protetta ` sys _getpid()` .",
+      "id": 230
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione sys _getpid() restituisce il pid del processo corrente?",
+      "answer": 1,
+      "explanation": "Lo scopo unico ed esclusivo della chiamata è quello di esaminare il thread attualmente attivo sulla CPU e restituire l'identificativo numerico del processo a cui appartiene (` curthread->t _proc->p_pid`).",
+      "id": 231
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione sys _getpid() viene chiamata per ottenere il pid di un altro processo (quello di cui attendere la terminazione)?",
+      "answer": 0,
+      "explanation": "La funzione restituisce unicamente ed inflessibilmente il PID del chiamante stesso. Non offre alcuna interfaccia per interrogare o scoprire i codici PID di processi terzi o figli all'interno del sistema.",
+      "id": 232
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione sys _getpid() viene chiamata dalla sys __ processo a cui inviare una segnalazione?",
+      "answer": 0,
+      "explanation": "exit, in modo da conoscere il pid del Durante la fase di terminazione forzata o volontaria (` sys __ exit`), il kernel ha già pieno accesso alle strutture dati del thread corrente. Gestisce le notifiche ai processi padri o la rimozione dei descrittori attingendo direttamente al PCB corrente, senza dover richiamare la funzione ` sys _getpid()` .",
+      "id": 233
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) sys _getpid è necessaria per implementare la chiamata di sistema getpid e sarà chiamata dal kernel nella funzione syscall?",
+      "answer": 1,
+      "explanation": "getpid() è una syscall: il processo utente solleva una trap, il kernel riceve il controllo in syscall() e, decodificando il codice operazione, invoca sys _getpid().",
+      "id": 234
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) sys _getpid restituisce il pid del processo corrente (quello che ha invocato la syscall)?",
+      "answer": 1,
+      "explanation": "La funzione legge il pid dal thread corrente: curthread->t _proc->p_pid. Non interroga nessun altro processo.",
+      "id": 235
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) sys _getpid è necessaria per implementare sys _ waitpid perché serve conoscere il pid del processo in attesa?",
+      "answer": 0,
+      "explanation": "sys _ waitpid riceve già il pid del processo da attendere come parametro esplicito. Non ha bisogno di chiamare sys _getpid per ottenerlo.",
+      "id": 236
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) sys _getpid viene chiamata da sys __ exit per conoscere il pid del processo a cui inviare una segnalazione?",
+      "answer": 0,
+      "explanation": "sys __ exit ha già accesso diretto alle strutture del thread/processo corrente. Non ha bisogno di invocare sys _getpid.",
+      "id": 237
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) sys _getpid viene chiamata per ottenere il pid di un altro processo (quello di cui attendere la terminazione)?",
+      "answer": 0,
+      "explanation": "sys _getpid restituisce esclusivamente il pid del processo chiamante. Non può interrogare pid di processi terzi.",
+      "id": 238
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) sys _getpid è necessaria per implementare getpid e verrà chiamata direttamente da un processo utente?",
+      "answer": 0,
+      "explanation": "Un processo utente non può chiamare direttamente funzioni kernel. Deve usare la syscall trap. È il kernel, nella funzione syscall(), a chiamare sys _getpid dopo aver ricevuto la trap.",
+      "id": 239
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Per implementare le funzioni OS161 spinlock data _ _get e spinlock data testandset è _ _ necessario utilizzare dei semafori al fine di risolvere problemi di mutua esclusione?",
+      "answer": 0,
+      "explanation": "Queste funzioni operano al livello più intimo e basso dell'hardware dell'architettura del processore. Gestiscono la mutua esclusione tramite istruzioni atomiche assembly o agendo direttamente sulla maschera degli interrupt della CPU. I semafori, al contrario, sono costrutti ad alto livello implementati dal kernel sfruttando gli spinlock per proteggere le proprie code di attesa.",
+      "id": 240
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Le funzioni spinlock data _ _get e spinlock data _ spinlock _ acquire e spinlock _ release?",
+      "answer": 0,
+      "explanation": "testandset al loro interno chiamano _ La relazione di dipendenza è invertita. Queste funzioni atomiche di basso livello costituiscono i mattoni fondamentali utilizzati internamente per poter realizzare la logica di blocco e di attesa ciclica della funzione ` spinlock _ acquire()` . Se invocassero a loro volta la ` spinlock _ acquire()` , causerebbero una ricorsione infinita immediata.",
+      "id": 241
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Le funzioni spinlock _ l'algoritmo di spinlock _ data _get e spinlock data _ _ testandset sono utilizzate per realizzare acquire?",
+      "answer": 1,
+      "explanation": "Esatto. La funzione ` spinlock _ acquire()` si basa su un ciclo di attesa attiva (busy-wait loop) che interroga continuamente lo stato del bit di lock tramite la primitiva atomica hardware di test-and-set, bloccando l'avanzamento finché la risorsa non viene rilasciata.",
+      "id": 242
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione spinlock _ release non chiama la spinlock data _ _ testandset ma la spinlock _ set (o un'istruzione di assegnamento/clear diretto), perché non deve gestire una mutua esclusione durante il rilascio?",
+      "answer": 1,
+      "explanation": "Poiché la CPU corrente possiede già in modo esclusivo lo spinlock, l'operazione di rilascio non deve competere con nessun altro core del processore. Di conseguenza, non serve eseguire un'operazione condizionale complessa come il test-and-set, ma basta effettuare una scrittura diretta atomica (un'istruzione di azzeramento/clear) per ripristinare lo stato libero del lock.",
+      "id": 243
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Rispetto a una PT standard, una IPT permette di risparmiare memoria sempre, indipendentemente dal numero di processi e dalla loro dimensione?",
+      "answer": 0,
+      "explanation": "Non si risparmia nel caso di pochi processi con spazio di indirizzamento piccolo: la somma delle loro PT potrebbe essere inferiore alla IPT globale.",
+      "id": 244
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il risparmio di memoria di una IPT rispetto a una PT standard dipende dalle dimensioni della RAM, dal numero di processi e dal loro spazio di indirizzamento virtuale?",
+      "answer": 1,
+      "explanation": "Tutti questi fattori influenzano il confronto: la IPT ha dimensione proporzionale alla RAM, mentre la somma delle PT è proporzionale agli spazi virtuali dei processi.",
+      "id": 245
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una IPT garantisce sempre risparmio di memoria quando lo spazio di indirizzamento di ogni processo è maggiore della dimensione della RAM?",
+      "answer": 1,
+      "explanation": "Una PT standard ha dimensione proporzionale all'address space virtuale; se questo supera la RAM, la PT risulta più grande della IPT (assumendo entry di uguale dimensione).",
+      "id": 246
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una IPT può risparmiare memoria anche quando lo spazio di indirizzamento di ogni processo è inferiore alla dimensione della RAM?",
+      "answer": 1,
+      "explanation": "L'IPT è unica per tutti i processi; con molti processi attivi la somma delle PT potrebbe superare la singola IPT, anche se ogni spazio di indirizzamento individuale è inferiore alla RAM.",
+      "id": 247
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Nella IPT, la chiave di ricerca per tradurre un indirizzo è la coppia (pid, numero di frame fisico)?",
+      "answer": 0,
+      "explanation": "Il frame corrisponde all'indice della IPT, non è una chiave di ricerca. La chiave è la coppia (pid, numero di pagina virtuale).",
+      "id": 248
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Nella IPT, la chiave di ricerca per tradurre un indirizzo è la coppia (pid, numero di pagina virtuale)?",
+      "answer": 1,
+      "explanation": "Ogni entry della IPT contiene (pid, pagina virtuale); si ricerca questa coppia per trovare il frame fisico corrispondente (che è l'indice della entry trovata).",
+      "id": 249
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Per migliorare le prestazioni della IPT si sostituisce la IPT stessa con una tabella di HASH?",
+      "answer": 0,
+      "explanation": "Non si sostituisce: la IPT rimane. Si aggiunge una tabella di HASH per accelerare la ricerca; sostituirla sarebbe una struttura completamente diversa.",
+      "id": 250
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Per migliorare le prestazioni della IPT si aggiunge ad essa una tabella di HASH?",
+      "answer": 1,
+      "explanation": "È la soluzione tipica: le entry della IPT vengono inserite direttamente nelle liste di chaining della HASH, senza allocazioni extra, rendendo la ricerca efficiente sia in tempo che in memoria.",
+      "id": 251
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) È possibile caricare dinamicamente un programma (dynamic loading) senza che sia necessario il dynamic linking?",
+      "answer": 1,
+      "explanation": "I due meccanismi sono indipendenti: un programma può essere linkato staticamente e caricato in modo dinamico/incrementale (es. program-based dynamic loading), senza dynamic linking.",
+      "id": 252
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il dynamic linking richiede necessariamente che il programma supporti anche il dynamic loading?",
+      "answer": 0,
+      "explanation": "Un programma può essere linkato dinamicamente (es. a una libreria condivisa già in memoria) senza usare il dynamic loading; i due meccanismi sono ortogonali e indipendenti.",
+      "id": 253
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una IPT richiede un campo pid in ogni entry perché è una struttura globale condivisa da tutti i processi, mentre una PT standard è per-processo e il pid è implicito?",
+      "answer": 1,
+      "explanation": "La IPT mappa ogni frame fisico alla coppia (pid, pagina logica): senza pid non si saprebbe a quale processo appartiene quel frame. Una PT è per-processo, il pid è già noto dal contesto.",
+      "id": 254
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La soluzione IPT+HASH è più efficiente nell'uso della memoria rispetto a una soluzione con sola tabella di HASH separata?",
+      "answer": 1,
+      "explanation": "Con IPT+HASH le entry della IPT vengono inserite direttamente nelle liste di chaining della HASH, evitando allocazioni/deallocazioni extra. Con una HASH separata occorrono allocazioni classiche a ogni inserimento/cancellazione.",
+      "id": 255
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una TLB può contenere entry di più processi contemporaneamente usando un campo aggiuntivo detto ASID (Address Space IDentifier)?",
+      "answer": 1,
+      "explanation": "Esistono TLB con campo ASID che permettono di mantenere entry di processi diversi senza doverle invalidare a ogni context switch.",
+      "id": 256
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una TLB che supporta solo il processo attualmente attivo non richiede alcun meccanismo di reset durante un context switch?",
+      "answer": 0,
+      "explanation": "Queste TLB necessitano di un azzeramento/reset a ogni context switch per eliminare le entry del processo uscente ed evitare traduzioni errate per il processo entrante.",
+      "id": 257
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il 'valid' bit in una entry della TLB ha lo stesso significato del 'valid' bit nella Page Table?",
+      "answer": 0,
+      "explanation": "Nella TLB il valid bit indica che l'entry è occupata/in uso (non libera). Nella PT indica che la pagina logica è associata a un frame fisico. I due significati sono diversi.",
+      "id": 258
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Aggiungere 'defoption project' e 'optfile project syscall/project.c' in conf.kern, copiare DUMBVM come PROJECT ed eseguire ' ./config PROJECT' è sufficiente per far compilare syscall/project.c?",
+      "answer": 0,
+      "explanation": "Manca l'abilitazione esplicita dell'opzione: il file PROJECT deve contenere 'options project' . Senza questa riga project.c non viene compilato né incluso nelle dipendenze.",
+      "id": 259
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il file generato automaticamente da ' ./config PROJECT' (grazie a 'defoption project' in conf.kern) è opt-project.h (e non project.h)?",
+      "answer": 1,
+      "explanation": "Il sistema genera automaticamente opt-project.h. Un eventuale project.h deve essere creato manualmente dal programmatore.",
+      "id": 260
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) opt-project.h viene generato da ' ./config' solo se il file PROJECT contiene l'istruzione 'options project'?",
+      "answer": 0,
+      "explanation": "opt-project.h viene generato sempre, purché conf.kern contenga 'defoption project' . È il contenuto del file (#define OPT _ PROJECT 0 o 1) a dipendere dalla presenza di 'options project' in PROJECT.",
+      "id": 261
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) opt-project.h contiene la macro OPT _ PROJECT con valore 1 se l'opzione è abilitata in PROJECT, e valore 0 altrimenti?",
+      "answer": 1,
+      "explanation": "Oltre alla protezione da inclusione multipla, il file contiene solo '#define OPT _ PROJECT 1' o '#define OPT _ PROJECT 0' in base alla configurazione del kernel.",
+      "id": 262
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Per far compilare project _ init() in main.c solo quando l'opzione project è abilitata, occorre usare la compilazione condizionale con la macro OPT _ PROJECT definita in opt-project.h?",
+      "answer": 1,
+      "explanation": "Si include opt-project.h e si usa: #if OPT _ PROJECT project _ init(); #endif — questo garantisce che l'istruzione venga compilata solo se l'opzione è attiva nel file di configurazione.",
+      "id": 263
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, per gestire una system call viene usato il trapframe (e non lo switchframe)?",
+      "answer": 1,
+      "explanation": "Una system call è gestita come una trap/interrupt software; il trapframe salva e ripristina il contesto del processo utente durante la transizione user→kernel→user.",
+      "id": 264
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il trapframe di un processo OS161 viene allocato nello stack kernel del processo (non nello user stack)?",
+      "answer": 1,
+      "explanation": "Il trapframe è una struttura dati del kernel. Allocarlo nello user stack esporrebbe informazioni privilegiate al programma utente, che potrebbe corrompere lo stato del kernel.",
+      "id": 265
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) I dispositivi I/O in OS161 sono mappati in kseg1 perché kseg1 non è mappato in cache, garantendo accessi diretti al dispositivo?",
+      "answer": 1,
+      "explanation": "Un accesso a un dispositivo I/O deve essere diretto e non cacheato. kseg1 non passa dalla cache, a differenza di kseg0, rendendolo l'unica mappatura corretta per i dispositivi I/O.",
+      "id": 266
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un dispositivo I/O in OS161 potrebbe essere mappato in kseg0 senza causare problemi?",
+      "answer": 0,
+      "explanation": "kseg0 è mappato in cache: accedere a un dispositivo I/O attraverso la cache causerebbe letture/scritture errate, poiché i dati del dispositivo verrebbero incorrettamente cacheati.",
+      "id": 267
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Se buf in read(fd, buf, nb) è un indirizzo in kseg0 (spazio kernel), si tratta di un errore e la system call SYS _ read deve rilevarlo e non eseguire l'operazione?",
+      "answer": 1,
+      "explanation": "È un errore di programmazione: un processo utente non deve passare indirizzi kernel come destinazione. SYS _ read deve validare buf e restituire un errore invece di eseguire la lettura.",
+      "id": 268
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La politica di sostituzione delle pagine working set è una politica a dimensione fissa del resident set?",
+      "answer": 0,
+      "explanation": "La dimensione del resident set cambia dinamicamente, dipendendo dall'insieme di pagine incluse nella finestra temporale Delta. Al variare degli accessi, pagine entrano ed escono dal resident set.",
+      "id": 269
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Nella politica working set, la difficoltà di implementazione è dovuta all'impossibilità di stimare un buon valore di Delta?",
+      "answer": 0,
+      "explanation": "Il valore di Delta influenza solo le prestazioni della politica, non la sua fattibilità. Non è questo il motivo della difficoltà di implementazione.",
+      "id": 270
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Nella politica working set, il resident set deve essere aggiornato anche in assenza di page fault?",
+      "answer": 1,
+      "explanation": "Sì: ogni volta che una pagina acceduta al tempo t-Delta non viene acceduta successivamente deve essere rimossa dal resident set, anche senza che si verifichi un page fault.",
+      "id": 271
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Nella politica working set, è necessario tenere traccia del tempo dell'ultimo accesso per ogni pagina?",
+      "answer": 1,
+      "explanation": "Sì, perché solo le pagine il cui ultimo accesso è avvenuto dopo t-Delta devono essere mantenute nel resident set. È quindi indispensabile registrare il timestamp dell'ultimo accesso per ogni pagina.",
+      "id": 272
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Nella politica working set, è necessario mantenere una lista completa di tutti i tempi di accesso per ogni pagina?",
+      "answer": 0,
+      "explanation": "La lista completa è ridondante: è sufficiente registrare solo il tempo dell'ultimo accesso per decidere se una pagina rientra o meno nella finestra Delta.",
+      "id": 273
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il TLB reach (copertura della TLB) diminuisce quando la dimensione della pagina aumenta?",
+      "answer": 0,
+      "explanation": "Il TLB reach aumenta: il numero di entry nella TLB è costante, quindi con pagine più grandi ogni entry copre più memoria, aumentando la quantità totale di spazio coperto dalla TLB.",
+      "id": 274
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La frammentazione aumenta quando la dimensione della pagina aumenta, perché sono necessarie partizioni contigue più grandi?",
+      "answer": 0,
+      "explanation": "La frammentazione interna aumenta con la dimensione della pagina, ma il motivo indicato è sbagliato: nella paginazione non esiste allocazione contigua. Le pagine possono essere allocate in frame fisici non contigui.",
+      "id": 275
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il prepaging è vantaggioso solo se la probabilità che una pagina pre-caricata venga effettivamente usata è superiore all'80%?",
+      "answer": 0,
+      "explanation": "Il prepaging è vantaggioso con alta probabilità di utilizzo, ma non esiste una soglia prestabilita dell'80%. La convenienza dipende dal rapporto tra costo del page fault e probabilità di utilizzo.",
+      "id": 276
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Tutte le strutture dati del kernel richiedono allocazione contigua in memoria?",
+      "answer": 0,
+      "explanation": "Solo una parte delle strutture dati del kernel necessita di allocazione contigua per ragioni di efficienza, come ad esempio la page table. Molte altre strutture possono essere allocate in modo non contiguo.",
+      "id": 277
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Lo slab allocator utilizza esclusivamente dimensioni potenza di 2?",
+      "answer": 0,
+      "explanation": "È il Buddy allocator a usare dimensioni potenza di 2. Lo slab allocator gestisce cache di oggetti di dimensione fissa arbitraria, non necessariamente potenze di 2.",
+      "id": 278
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una free list di pagine ha una frammentazione interna media pari a mezza pagina?",
+      "answer": 0,
+      "explanation": "Le free list non hanno problemi di frammentazione interna: non contengono dati effettivi, ma rappresentano solo spazio disponibile. La frammentazione interna riguarda le aree allocate, non quelle libere.",
+      "id": 279
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Su un sistema OS161/MIPS con 4MB di RAM, l'indirizzo 0x80803005 può essere un indirizzo logico utente?",
+      "answer": 0,
+      "explanation": "0x80803005 > 0x80000000 (2GB): supera il limite dello spazio indirizzabile utente (kuseg), che in MIPS arriva fino a 0x7FFFFFFF.",
+      "id": 280
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Su un sistema OS161/MIPS con 4MB di RAM, l'indirizzo 0x80803005 può essere un indirizzo fisico?",
+      "answer": 0,
+      "explanation": "L'indirizzo fisico corrispondente sarebbe 0x80803005 - 0x80000000 = 0x803005 ≈ 8MB, che supera la RAM disponibile di 4MB (0x400000).",
+      "id": 281
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Su un sistema OS161/MIPS con 4MB di RAM, l'indirizzo 0x80803005 può essere un indirizzo logico kernel valido?",
+      "answer": 0,
+      "explanation": "Sebbene 0x80803005 rientri nell'intervallo kseg0, non è compatibile con 4MB di RAM: gli indirizzi kernel validi in kseg0 devono essere < 0x80400000 (base kseg0 + 4MB). 0x80803005 è oltre questo limite.",
+      "id": 282
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Su un sistema OS161/MIPS con 4MB di RAM, l'indirizzo 0x312010 può essere un indirizzo logico utente?",
+      "answer": 1,
+      "explanation": "0x312010 ≈ 3.07MB < 0x80000000 (2GB): rientra nello spazio utente (kuseg) di MIPS.",
+      "id": 283
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Su un sistema OS161/MIPS con 4MB di RAM, l'indirizzo 0x312010 può essere un indirizzo fisico?",
+      "answer": 1,
+      "explanation": "0x312010 ≈ 3.07MB < 4MB (0x400000): rientra nell'intervallo degli indirizzi fisici validi per una RAM da 4MB.",
+      "id": 284
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Su un sistema OS161/MIPS con 4MB di RAM, l'indirizzo 0x312010 può essere un indirizzo logico kernel?",
+      "answer": 0,
+      "explanation": "0x312010 si trova nell'intervallo kuseg (spazio utente). Gli indirizzi logici kernel in MIPS si trovano in kseg0 (da 0x80000000) o kseg1 (da 0xA0000000).",
+      "id": 285
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Su un sistema OS161/MIPS con 4MB di RAM, l'indirizzo 0x532100 può essere un indirizzo logico utente?",
+      "answer": 1,
+      "explanation": "0x532100 ≈ 5.19MB < 0x80000000 (2GB): rientra nello spazio utente (kuseg) di MIPS.",
+      "id": 286
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Su un sistema OS161/MIPS con 4MB di RAM, l'indirizzo 0x532100 può essere un indirizzo fisico?",
+      "answer": 0,
+      "explanation": "0x532100 ≈ 5.19MB > 4MB (0x400000): supera la RAM disponibile, quindi non può essere un indirizzo fisico valido.",
+      "id": 287
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Su un sistema OS161/MIPS con 4MB di RAM, l'indirizzo 0x532100 può essere un indirizzo logico kernel?",
+      "answer": 0,
+      "explanation": "0x532100 si trova nell'intervallo kuseg (spazio utente). Non rientra negli intervalli kseg0 o kseg1 riservati al kernel in MIPS.",
+      "id": 288
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In dumbvm, la memoria fisica è allocata a multipli della dimensione di pagina perché ciò riduce la frammentazione interna?",
+      "answer": 0,
+      "explanation": "L'allineamento alla pagina potrebbe addirittura aumentare la frammentazione interna: l'allocazione contigua standard, senza padding alla pagina, non presenta frammentazione interna.",
+      "id": 289
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In dumbvm, la memoria fisica è allocata a multipli della dimensione di pagina perché la MMU MIPS usa una TLB e la traduzione logico-fisica richiede la corrispondenza pagina-frame?",
+      "answer": 1,
+      "explanation": "Poiché la MMU MIPS opera tramite TLB, la traduzione degli indirizzi avviene in unità di pagine. È quindi necessario che le allocazioni fisiche siano allineate e di dimensione multipla di pagina.",
+      "id": 290
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) dumbvm implementa una page table per la traduzione degli indirizzi logico-fisici?",
+      "answer": 0,
+      "explanation": "In dumbvm non esiste una page table: utilizza una mappatura diretta e semplificata, caricando le entry della TLB manualmente senza una struttura a tabella delle pagine sottostante.",
+      "id": 291
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) kmalloc può allocare solo blocchi la cui dimensione è un multiplo della dimensione di pagina?",
+      "answer": 0,
+      "explanation": "kmalloc può allocare blocchi di qualsiasi dimensione, anche ben inferiori a una pagina. Gestisce internamente allocazioni di dimensioni arbitrarie tramite la sua logica di gestione dello heap del kernel.",
+      "id": 292
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione cv _ wait riceve un lock come parametro perché esso è necessario come parametro nella chiamata interna a wchan _ sleep?",
+      "answer": 0,
+      "explanation": "La funzione wchan _ sleep richiede uno spinlock come parametro, non un lock di alto livello. Il motivo per cui cv wait riceve il lock è diverso.",
+      "id": 293
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione cv _ wait riceve un lock come parametro perché il thread chiamante deve essere il proprietario del lock?",
+      "answer": 1,
+      "explanation": "È uno dei requisiti fondamentali di cv _ wait: il thread che la invoca deve possedere il lock. Questo garantisce la correttezza della sincronizzazione al momento della sospensione.",
+      "id": 294
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione cv _ wait riceve un lock come parametro perché il lock deve essere rilasciato e poi riacquisito da cv wait durante l'attesa?",
+      "answer": 1,
+      "explanation": "_ Questo è esattamente il comportamento di cv _ wait: rilascia atomicamente il lock prima di sospendere il thread, e lo riacquisisce al risveglio, garantendo la mutua esclusione al ritorno.",
+      "id": 295
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione cv _ wait riceve un lock come parametro perché il lock deve essere rilasciato e riacquisito internamente da wchan _ sleep?",
+      "answer": 0,
+      "explanation": "wchan _ sleep lavora con uno spinlock, non con un lock di alto livello. È cv _ wait stessa, non wchan _ il rilascio e la riacquisizione del lock.",
+      "id": 296
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un lock in OS161 può essere implementato tramite un semaforo binario, senza alcun elemento o requisito aggiuntivo?",
+      "answer": 0,
+      "explanation": "Il semaforo binario non gestisce il concetto di proprietà (ownership): chiunque può eseguire una V (signal), anche chi non ha eseguito la P (wait). Un lock richiede che solo il proprietario possa rilasciarlo.",
+      "id": 297
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un lock in OS161 può essere implementato tramite un semaforo binario, con un requisito aggiuntivo?",
+      "answer": 1,
+      "explanation": "Sì: il requisito aggiuntivo è la gestione della proprietà (ownership), ovvero garantire che solo il thread che ha acquisito il lock possa rilasciarlo.",
+      "id": 298
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un lock in OS161 può essere implementato tramite una condition variable?",
+      "answer": 0,
+      "explanation": "La condition variable ha bisogno di un lock già esistente per funzionare e non è pensata per la mutua esclusione in sé. Usarla per implementare un lock creerebbe una dipendenza circolare.",
+      "id": 299
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un lock in OS161 può essere implementato tramite un wait channel (wchan), combinato con uno spinlock e una gestione appropriata della proprietà?",
+      "answer": 1,
+      "explanation": "Sì: questa è un'implementazione valida. Il wait channel gestisce l'attesa, lo spinlock protegge le strutture interne, e la gestione della proprietà garantisce la semantica corretta del lock.",
+      "id": 300
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) L'implementazione di lock _ acquire può includere una chiamata alle funzioni spinlock data _ _get e spinlock data _ _ testandset?",
+      "answer": 0,
+      "explanation": "Queste funzioni operano a un livello molto più basso: sono i mattoni fondamentali usati per implementare gli spinlock. lock _ acquire usa gli spinlock come primitive, non le istruzioni hardware sottostanti.",
+      "id": 301
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) L'implementazione di lock _ acquire può includere una chiamata alla funzione P su un semaforo?",
+      "answer": 1,
+      "explanation": "Sì, se il lock è implementato tramite semaforo binario: lock _ acquire corrisponde a una P (wait/decremento), e lock _ release a una V (signal/incremento).",
+      "id": 302
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) L'implementazione di lock _ acquire può includere una chiamata a cv _ wait?",
+      "answer": 0,
+      "explanation": "cv _ wait necessita di un lock esistente per funzionare e non è pensata per la mutua esclusione. Usarla in lock _ acquire creerebbe una dipendenza circolare (cv _ wait richiede un lock, lock _ acquire chiamerebbe cv _ wait).",
+      "id": 303
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) L'implementazione di lock _ acquire può includere una chiamata a wchan _ sleep?",
+      "answer": 1,
+      "explanation": "Sì, nell'implementazione basata su wait channel e spinlock: il thread che non riesce ad acquisire il lock chiama wchan _ sleep per sospendersi, in attesa che il lock venga rilasciato e venga svegliato.",
+      "id": 304
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) RAID è l'acronimo di 'Redundant Array of Independent Disks'?",
+      "answer": 1,
+      "explanation": "RAID è una tecnologia di archiviazione che combina più dischi in un'unica unità logica per migliorare prestazioni, affidabilità e/o tolleranza ai guasti.",
+      "id": 305
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) RAID 1 (mirroring) può migliorare le prestazioni di lettura rispetto a un singolo disco?",
+      "answer": 1,
+      "explanation": "In RAID 1 i dati sono duplicati su più dischi: le letture possono essere servite da qualsiasi disco del mirror, potenzialmente migliorando le prestazioni di lettura.",
+      "id": 306
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il MTTF (Mean Time to Failure) rappresenta il tempo medio tra l'inizio dell'operazione di un sistema e il suo guasto?",
+      "answer": 1,
+      "explanation": "L'MTTF misura la durata media di funzionamento prima del guasto. In RAID riflette il tempo medio prima che un disco si guasti.",
+      "id": 307
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il MTTDL (Mean Time to Data Loss) in RAID 1 si calcola con la formula MTTF² / (2 × MTTR)?",
+      "answer": 1,
+      "explanation": "La formula MTTDL = MTTF² / (2 × MTTR) deriva dalla probabilità che il secondo disco si guasti prima che il primo venga riparato. Rappresenta il tempo medio atteso prima che si verifichi una perdita di dati.",
+      "id": 308
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Aumentare il valore di MTTR (tempo di riparazione) aumenta il MTTDL in una configurazione RAID 1?",
+      "answer": 0,
+      "explanation": "Un MTTR più alto aumenta la finestra di vulnerabilità in cui un secondo guasto causerebbe perdita di dati. Nella formula MTTDL = MTTF² / (2 × MTTR), il MTTDL diminuisce all'aumentare di MTTR.",
+      "id": 309
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In una configurazione RAID 1 con 4 dischi (2 coppie speculari), il MTTDL dipende dalla probabilità che entrambi i dischi di almeno una coppia si guastino?",
+      "answer": 1,
+      "explanation": "La perdita di dati avviene quando entrambi i dischi di una stessa coppia speculare si guastano. Indipendentemente dal numero di coppie, il MTTDL è associato allo scenario in cui entrambi i dischi di una qualsiasi coppia si guastano prima della riparazione.",
+      "id": 310
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un page fault si verifica quando un processo tenta di accedere a una pagina non presente in memoria principale?",
+      "answer": 1,
+      "explanation": "Il page fault avviene quando la pagina richiesta non è in RAM (può essere sul backing store o non ancora caricata). Il SO interviene con il page fault handler per risolvere la situazione.",
+      "id": 311
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Nella gestione di un page fault, il sistema operativo deve caricare la pagina mancante dal backing store prima di riprendere l'esecuzione del processo?",
+      "answer": 1,
+      "explanation": "I passi principali sono: trap al SO, localizzazione della pagina nel backing store, caricamento in un frame libero, aggiornamento della page table, ripresa dell'esecuzione del processo.",
+      "id": 312
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Con 3 page frame, sostituzione LRU, e iterazione per colonne della matrice A[100][100] (ogni pagina contiene 2 righe, 200 interi), il numero di page fault generati è 5000?",
+      "answer": 1,
+      "explanation": "Una pagina contiene 2 righe (200 interi). Iterando per colonne, ogni accesso a una colonna richiede una pagina diversa. Con 50 pagine per la matrice e 100 colonne, ogni colonna genera 50 page fault: 100 × 50 = 5000 totali.",
+      "id": 313
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Le bitmap sono più efficienti delle free list nella ricerca di intervalli contigui di frame/blocchi liberi?",
+      "answer": 1,
+      "explanation": "Le liste sono lineari (O(n)), mentre le bitmap permettono ricerche con performance logaritmica (O(log n)) con algoritmi appropriati, rendendole più adatte alla ricerca di blocchi contigui.",
+      "id": 314
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Le free list sono la soluzione migliore sia per la memoria dei processi che per la memoria del kernel?",
+      "answer": 0,
+      "explanation": "Le free list sono ottime per i processi (che non necessitano di memoria contigua, O(1)). Per il kernel no: richiede memoria contigua (es. per l'allocazione della page table), per cui le bitmap sono più adatte.",
+      "id": 315
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Per un file system basato su i-node, le bitmap gestiscono i blocchi liberi meglio delle free list?",
+      "answer": 0,
+      "explanation": "In un file system basato su i-node non è necessaria allocazione contigua. Le free list sono O(1), mentre le bitmap offrono al massimo performance logaritmica. Quindi le free list sono preferibili.",
+      "id": 316
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In una gestione della memoria con page table a due livelli, la ricerca di un blocco libero in una free list ha costo lineare?",
+      "answer": 0,
+      "explanation": "Con page table a due livelli non è richiesta memoria contigua: la free list è O(1), non O(n). La ricerca lineare sarebbe necessaria solo se si cercasse un blocco con requisiti specifici di contiguità.",
+      "id": 317
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una free list ordinata ha costo lineare sia per l'allocazione di spazio contiguo che per la liberazione della memoria?",
+      "answer": 1,
+      "explanation": "L'allocazione richiede una ricerca nella lista (O(n)), mentre la liberazione richiede un inserimento in posizione ordinata (O(n)). Entrambe le operazioni sono lineari.",
+      "id": 318
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In un file system basato su FAT, una bitmap offre prestazioni temporali migliori rispetto a una free list?",
+      "answer": 0,
+      "explanation": "FAT non richiede allocazione contigua: la free list è direttamente implementata nella FAT ed è O(1). Una bitmap offrirebbe al massimo performance logaritmica, quindi la free list è preferibile con FAT. OS161 — System Call read()",
+      "id": 319
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, il buffer di destinazione nella system call read() deve essere in memoria utente (non in memoria kernel)?",
+      "answer": 1,
+      "explanation": "read() è una system call per i processi utente: il buffer di destinazione deve essere in memoria utente. Passare un indirizzo kernel è un errore di programmazione che il SO deve rilevare e segnalare.",
+      "id": 320
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Due processi che aprono lo stesso file in OS161 ottengono necessariamente lo stesso numero di file descriptor?",
+      "answer": 0,
+      "explanation": "I file descriptor sono assegnati per-processo in base alla sequenza di open() eseguita. Non esiste nessun vincolo che due processi ottengano lo stesso numero di fd per lo stesso file.",
+      "id": 321
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Due processi che aprono lo stesso file con open() separati in OS161 leggono il file in modo indipendente, ciascuno con il proprio offset?",
+      "answer": 1,
+      "explanation": "Ogni processo che esegue open() ottiene la propria struct openfile con il proprio offset: le letture sono quindi indipendenti e non interferiscono tra loro.",
+      "id": 322
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Due processi che eseguono solo operazioni di lettura concorrenti sullo stesso file in OS161 necessitano di un lock?",
+      "answer": 0,
+      "explanation": "Le sole operazioni di lettura non modificano lo stato condiviso: non è necessario il lock. Un lock sarebbe necessario solo in presenza di scritture concorrenti.",
+      "id": 323
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Se l'implementazione di sys read usa un buffer kernel allocato con kmalloc e liberato con kfree _ all'interno della stessa chiamata, due processi concorrenti condividono lo stesso buffer?",
+      "answer": 0,
+      "explanation": "Ogni invocazione di sys _ read alloca e libera il proprio buffer: i buffer sono indipendenti. Sarebbero condivisi solo con un buffer globale, ma in tal caso servirebbe sincronizzazione.",
+      "id": 324
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Nell'implementazione di sys _ read con buffer kernel, il valore di ritorno (nread) può essere inferiore al parametro size?",
+      "answer": 1,
+      "explanation": "Sì: size è il numero massimo di byte da leggere, ma il file potrebbe terminare prima. In quel caso nread = size - ku.uio_resid sarà inferiore a size.",
+      "id": 325
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Nell'implementazione di sys _ read mostrata, kmalloc potrebbe essere chiamato con size/2 invece di size?",
+      "answer": 1,
+      "explanation": "Sì, ma richiederebbe più chiamate VOP _ READ per leggere tutti i 'size' byte. L'implementazione proposta legge tutto in una singola VOP _ READ, più semplice ma che richiede un buffer di dimensione 'size' .",
+      "id": 326
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Le funzioni thread switch e thread _ _yield in OS161 svolgono esattamente lo stesso compito?",
+      "answer": 0,
+      "explanation": "Pur essendo simili, thread _ switch è più generale. thread _yield è un caso particolare di thread _ nuovo stato del thread corrente è READY. thread _ switch permette anche altri stati.",
+      "id": 327
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread _yield può essere visto come un caso particolare di thread _ nuovo stato del thread corrente è READY?",
+      "answer": 1,
+      "explanation": "switch in cui il Sì: thread _yield cede la CPU mantenendo il thread in stato READY. thread _ switch è più generale e permette di portare il thread in stati diversi da READY.",
+      "id": 328
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, un nuovo thread kernel viene eseguito immediatamente dopo la sua creazione?",
+      "answer": 0,
+      "explanation": "Il nuovo thread viene inserito nella coda dei thread pronti (READY). Potrà eseguire solo al prossimo thread _ switch, non immediatamente dopo la creazione. OS161 — System Call write() e open()",
+      "id": 329
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La per-process file table in OS161 è allocata in memoria utente?",
+      "answer": 0,
+      "explanation": "La per-process file table è una struttura dati interna del kernel: è in memoria kernel. Il fatto che sia dedicata a un processo non implica che sia accessibile in modalità utente da quel processo.",
+      "id": 330
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Due processi che hanno lo stesso numero di file descriptor (es. fd=5) scrivono necessariamente sullo stesso file?",
+      "answer": 0,
+      "explanation": "I file descriptor sono assegnati per-processo. Avere lo stesso numero non implica che puntino allo stesso file (eccetto stdin/stdout/stderr). I fd sono gestiti indipendentemente da ogni processo.",
+      "id": 331
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Due processi con lo stesso numero di fd non scrivono mai sullo stesso file?",
+      "answer": 0,
+      "explanation": "Sebbene non frequente, due processi possono avere lo stesso numero di fd mappato sullo stesso file. In tal caso scriverebbero sullo stesso file e sarebbero necessarie opportune sincronizzazioni.",
+      "id": 332
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In sys _ write, il ciclo for per stdout/stderr può essere sostituito con 'for (i=0; i Sì: kprintf con formato %c è equivalente a putch, quindi il comportamento è identico al ciclo originale.",
+      "answer": 1,
+      "explanation": "",
+      "id": 333
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In sys _ write, il ciclo for per stdout/stderr può essere sostituito con 'kprintf(\"%s\" , p)'?",
+      "answer": 0,
+      "explanation": "No: il formato %s richiede una stringa terminata da '\\0' , ma write() non garantisce che il buffer sia null- terminated. Ciò potrebbe causare letture fuori dai limiti del buffer.",
+      "id": 334
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In sys _ write, il ciclo for per stdout/stderr può essere sostituito con 'kprintf(\"%s\" , &p)'?",
+      "answer": 0,
+      "explanation": "No: oltre al problema della terminazione con '\\0' , l'istruzione è formalmente sbagliata. &p è di tipo char** (puntatore a puntatore a char), non char* , quindi kprintf riceverebbe un tipo errato.",
+      "id": 335
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In sys _ write, il ciclo for per stdout/stderr può essere sostituito con 'file _ write(fd, p, size)'?",
+      "answer": 0,
+      "explanation": "No: file _ write supporta solo l'output su file, non sulla console. Se file _ write supportasse la console, la gestione speciale di stdout/stderr in sys write non avrebbe alcun senso.",
+      "id": 336
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un'applicazione può supporre che l'header di un file e ogni sua sezione inizino sempre all'inizio di un blocco del disco?",
+      "answer": 0,
+      "explanation": "Non necessariamente: la memorizzazione nei blocchi del disco è gestita a un livello differente rispetto all'organizzazione logica del file. L'applicazione non controlla dove ogni sezione inizia a livello di blocco.",
+      "id": 337
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un file di testo copiato su tre file system con allocazione diversa (contigua, collegata, i-node) ha sempre la stessa frammentazione interna?",
+      "answer": 0,
+      "explanation": "La dimensione del file è la stessa, ma l'occupazione dipende dall'organizzazione del file system. La frammentazione interna varia tra i diversi tipi di allocazione e non può essere assunta uguale.",
+      "id": 338
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Tre file di testo separati (a.txt, b.txt, c.txt) possono condividere lo stesso blocco del disco nel file system?",
+      "answer": 0,
+      "explanation": "No: file diversi occupano blocchi diversi nel file system. La memorizzazione di file separati prevede blocchi distinti.",
+      "id": 339
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Dopo compressione in un archivio (es. .zip), il contenuto di più file può essere memorizzato (almeno parzialmente) nello stesso blocco del disco?",
+      "answer": 1,
+      "explanation": "Sì: l'operazione di compressione produce un singolo file archivio. I dati compressi di tutti i file originali sono memorizzati in sequenza nell'archivio, quindi contenuti di file diversi possono condividere lo stesso blocco.",
+      "id": 340
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il formato a record variabile di un file impatta sulla strategia di allocazione dei blocchi su disco?",
+      "answer": 0,
+      "explanation": "La strategia di allocazione dipende dal file system, non dal tipo o formato del file. Il formato a record variabile è un problema del livello applicativo, non del modulo di allocazione.",
+      "id": 341
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Ogni blocco di un file di testo contiene lo stesso numero di righe, calcolabile come block _ max line _ _ length?",
+      "answer": 0,
+      "explanation": "size / L'allocazione dei blocchi è gestita dal modulo di allocazione file e opera a livello di byte/blocco. Le righe di testo sono un concetto del livello applicativo: la loro distribuzione nei blocchi dipende dalla lunghezza effettiva di ciascuna riga.",
+      "id": 342
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) systemFileTable in OS161 è un array di struct openfile (non di puntatori) perché è una struttura globale condivisa da tutti i processi del sistema?",
+      "answer": 1,
+      "explanation": "La systemFileTable è la tabella globale del sistema che tiene traccia di tutti i file aperti. Contiene direttamente le struct openfile. La fileTable per-processo contiene invece puntatori a queste entry.",
+      "id": 343
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) fileTable in OS161 è un array di puntatori a struct openfile perché le sue entry puntano alle struct openfile nella systemFileTable?",
+      "answer": 1,
+      "explanation": "Sì: la fileTable per-processo contiene puntatori alle entry della systemFileTable. Più processi possono puntare alla stessa struct openfile, e per questo esiste il campo countRef.",
+      "id": 344
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il campo countRef nella struct openfile è ridondante rispetto al contatore di riferimenti interno al vnode?",
+      "answer": 0,
+      "explanation": "Non è ridondante: esistono due livelli di condivisione. Il contatore del vnode conta quante struct openfile puntano allo stesso file. Il countRef conta quante entry della fileTable per-processo puntano alla stessa openfile. Sono livelli distinti.",
+      "id": 345
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Per supportare il lock dei file in OS161, è preferibile uno spinlock posizionato nella systemFileTable?",
+      "answer": 0,
+      "explanation": "È preferibile un lock (non spinlock) per evitare il busy waiting. Il lock dovrebbe essere posizionato nella struct vnode, garantendo la mutua esclusione sull'accesso al file indipendentemente da quale processo accede.",
+      "id": 346
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione copyout in OS161 effettua una copia dalla memoria kernel alla memoria utente?",
+      "answer": 1,
+      "explanation": "Sì: copyout ha sorgente in memoria kernel e destinazione in memoria utente. Al contrario, copyin ha sorgente in memoria utente e destinazione in memoria kernel. Entrambe forniscono protezioni aggiuntive rispetto a memmove.",
+      "id": 347
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) spinlock _ acquire in OS161 implementa il pattern test-and-test-and-set: prima attende con una semplice lettura (spinlock data _ _get), poi tenta l'acquisizione con test-and-set (spinlock data _ _ testandset)?",
+      "answer": 1,
+      "explanation": "Sì: l'attesa viene consumata tramite spinlock data _ _get (sola lettura, meno costosa), mentre l'acquisizione effettiva usa spinlock data _ _ testandset. Questo riduce il traffico sul bus di memoria rispetto a usare solo test-and- set.",
+      "id": 348
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Nel pattern test-and-test-and-set, usare operazioni di sola lettura per l'attesa è più efficiente rispetto all'uso continuato di test-and-set?",
+      "answer": 1,
+      "explanation": "Sì: la lettura semplice ha un costo inferiore rispetto alla test-and-set, che richiede accesso esclusivo al bus di memoria. Il pattern riduce significativamente il traffico sul bus durante la fase di attesa.",
+      "id": 349
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) spinlock _ acquire2, nella versione originale mostrata (che fa 'continue' se testandset != 0), è già equivalente a spinlock _ acquire senza modifiche?",
+      "answer": 0,
+      "explanation": "No: la versione originale è buggy. Diventa equivalente se nell'if si controlla che il risultato sia != 0 (e si fa break quando == 0). Quando testandset restituisce 0, il lock è stato acquisito e si deve uscire dal ciclo.",
+      "id": 350
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In un sistema con grado fisso di multiprogrammazione, il thrashing può verificarsi anche se la somma dei working set di tutti i processi è inferiore alla memoria fisica disponibile, ma l'algoritmo di sostituzione delle pagine non è ottimizzato?",
+      "answer": 1,
+      "explanation": "Il thrashing dipende anche dalla qualità dell'algoritmo di sostituzione: un algoritmo inefficiente può causare continue sostituzioni di pagine attive anche quando la memoria sarebbe sufficiente in teoria.",
+      "id": 351
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In un sistema con paginazione basata su IPT (Inverted Page Table), è possibile che più pagine virtuali di processi diversi condividano una singola entry della tabella senza causare conflitti nella traduzione degli indirizzi?",
+      "answer": 1,
+      "explanation": "In una IPT ogni entry è identificata dalla coppia (pid, vpn). Processi diversi con lo stesso numero di pagina virtuale mappano su entry diverse grazie al campo pid, evitando qualsiasi conflitto.",
+      "id": 352
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In un sistema con sostituzione delle pagine locale (per singolo processo), un processo con frequenza di page fault molto elevata può causare una riduzione della memoria fisica disponibile per gli altri processi?",
+      "answer": 0,
+      "explanation": "Con sostituzione locale ogni processo opera solo all'interno del proprio insieme di frame assegnati. Un processo con alta frequenza di fault sostituisce solo le proprie pagine, senza impatto sui frame degli altri processi.",
+      "id": 353
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In un sistema con memoria virtuale e DMA, è possibile che si verifichi un page fault durante un trasferimento DMA, causando l'esito negativo del trasferimento se non vengono prese le dovute precauzioni?",
+      "answer": 1,
+      "explanation": "Il DMA accede direttamente alla memoria fisica bypassando la MMU. Se le pagine coinvolte vengono swapped out durante il trasferimento, il DMA scriverebbe su frame errati corrompendo i dati. Le pagine vanno bloccate in memoria (pinning) per tutta la durata del trasferimento.",
+      "id": 354
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In un sistema con più dispositivi di I/O e una singola CPU, le operazioni di I/O possono essere eseguite in parallelo anche se la CPU è occupata nell'esecuzione di un processo?",
+      "answer": 1,
+      "explanation": "Le operazioni di I/O sono gestite dai controller dei dispositivi in modo autonomo (es. via DMA). La CPU può eseguire un processo mentre il controller di I/O trasferisce dati indipendentemente.",
+      "id": 355
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In un sistema con I/O basato su interrupt, è possibile che un interrupt venga perso se il controller è occupato nell'elaborazione di un altro interrupt e il dispositivo non supporta l'accodamento degli interrupt?",
+      "answer": 1,
+      "explanation": "Se il controller di interrupt è occupato e il dispositivo non può accodare la richiesta, il segnale di interrupt viene ignorato. Per evitarlo si usano controller con accodamento (es. interrupt pending register) o si disabilitano gli interrupt solo per il tempo strettamente necessario.",
+      "id": 356
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Sebbene la soluzione proposta per supportare la deallocazione della memoria (freeppages) sia basata su bitmap, potrebbe essere implementata anche con una lista concatenata?",
+      "answer": 1,
+      "explanation": "Entrambe le strutture possono rappresentare lo stesso insieme di frame liberi/occupati. La bitmap è più compatta; la lista concatenata è più flessibile ma richiede più memoria per i puntatori.",
+      "id": 357
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione ram _ stealmem alloca memoria in modo incrementale a partire dal primo indirizzo disponibile dopo il caricamento del kernel?",
+      "answer": 1,
+      "explanation": "ram _ stealmem mantiene un puntatore (firstpaddr) che avanza a ogni allocazione. Non è possibile liberare memoria: l'allocazione è strettamente sequenziale e crescente.",
+      "id": 358
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Quando si usa una bitmap per tracciare la RAM allocata/libera, è necessario un secondo array che memorizzi le dimensioni delle partizioni allocate, sia per la memoria kernel che per i processi utente?",
+      "answer": 0,
+      "explanation": "Per i processi utente le dimensioni sono già note nelle strutture dell'address space (as _ npages). Per il kernel (kmalloc) serve conoscere la dimensione al momento della free, ma questo non richiede necessariamente un secondo array: ci sono soluzioni alternative (es. memorizzare la dimensione nel primo frame della partizione).",
+      "id": 359
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Lo stack di un processo utente non viene allocato in dumbvm tramite ram _ sua dimensione è costante e si trova sempre agli stessi indirizzi logici?",
+      "answer": 0,
+      "explanation": "stealmem perché la Falso: anche lo stack utente viene allocato tramite ram _ stealmem (in as _prepare load o as _ _ define _ stack). La dimensione fissa (DUMBVM _ STACKPAGES) non impedisce l'allocazione fisica tramite la stessa funzione.",
+      "id": 360
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Lo schema di allocazione di ram _ stealmem impedisce che partizioni kernel e partizioni utente siano interlacciate in memoria fisica?",
+      "answer": 0,
+      "explanation": "ram _ stealmem alloca in modo puramente sequenziale: prima il kernel (durante il boot), poi i processi utente. Ma se i processi utente vengono creati e terminati in ordine diverso, le loro partizioni fisiche possono risultare interlacciate con quelle kernel in memoria.",
+      "id": 361
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La funzione ram _ stealmem viene chiamata per allocare memoria sia per il kernel (memoria dinamica) che per i processi utente?",
+      "answer": 1,
+      "explanation": "In dumbvm ram _ stealmem è l'unica funzione di allocazione fisica. Viene usata da alloc _ kpages (per kmalloc del kernel) e da as _prepare _ load (per i segmenti dei processi utente).",
+      "id": 362
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In proc _ wait, cv _ operare in mutua esclusione?",
+      "answer": 1,
+      "explanation": "wait deve essere chiamata DOPO lock _ acquire (e non prima) perché deve cv _ wait rilascia atomicamente il lock e sospende il thread: il lock deve essere già acquisito al momento della chiamata. Chiamare cv _ wait prima di lock _ acquire è un errore grave che viola la semantica delle condition variable.",
+      "id": 363
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In proc _ wait, restituire return _ status senza prima rilasciare il lock con lock _ causare un deadlock?",
+      "answer": 1,
+      "explanation": "release può Se si esce dalla funzione senza rilasciare il lock, nessun altro thread potrà mai acquisirlo. Questo causa un deadlock nella prossima operazione che tenta di acquisire lo stesso lock.",
+      "id": 364
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In proc _ wait, proc _ destroy dovrebbe ricevere come argomento proc (il processo atteso) e non curproc (il processo corrente)?",
+      "answer": 1,
+      "explanation": "proc _ wait aspetta la terminazione di proc (che diventa uno zombie). Al termine dell'attesa è proc che va distrutto per liberarne le risorse. Distruggere curproc significherebbe eliminare il processo che sta ancora eseguendo proc wait.",
+      "id": 365
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) L'utilizzo di una pagina di dimensioni maggiori può comportare un utilizzo più efficiente della TLB nonostante il potenziale aumento della frammentazione interna?",
+      "answer": 1,
+      "explanation": "Con pagine più grandi ogni entry della TLB copre più memoria, quindi lo stesso numero di entry mappa un range di indirizzi più ampio → meno TLB miss. Il compromesso è la frammentazione interna (l'ultima pagina può essere parzialmente usata).",
+      "id": 366
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Due indirizzi virtuali diversi possono essere mappati allo stesso indirizzo fisico?",
+      "answer": 1,
+      "explanation": "Sì: è il caso della memoria condivisa (shared memory). Più processi possono avere entry diverse nella loro page table che puntano allo stesso frame fisico.",
+      "id": 367
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una page table può essere allocata dinamicamente (non deve avere dimensione fissa al momento della creazione del processo)?",
+      "answer": 1,
+      "explanation": "Le page table multilivello (o strutture come page table invertite) crescono dinamicamente: vengono allocate solo le parti effettivamente usate, risparmiando memoria per processi con spazi di indirizzi sparsi.",
+      "id": 368
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) La TLB garantisce sempre un accesso alla memoria più rapido rispetto a un sistema senza TLB?",
+      "answer": 0,
+      "explanation": "Solo se l'hit rate è sufficientemente alto. Un TLB miss richiede una o più accessi aggiuntivi alla page table in memoria, rendendolo più lento di un accesso diretto senza TLB. Con un working set molto grande e TLB piccola il miss rate può essere alto.",
+      "id": 369
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Se il numero di frame allocati a un processo è maggiore del suo working set, il numero di page fault è necessariamente zero?",
+      "answer": 0,
+      "explanation": "Durante la fase di warm-up il processo deve comunque caricare le pagine la prima volta (page fault iniziali). Solo dopo che tutte le pagine del working set sono in memoria i page fault diventano zero (in assenza di cambiamenti al working set).",
+      "id": 370
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) L'algoritmo LRU garantisce sempre il minor numero di page fault rispetto a qualsiasi altro algoritmo di sostituzione?",
+      "answer": 0,
+      "explanation": "LRU è ottimo in pratica ma non garantisce il minimo assoluto. L'algoritmo ottimale (OPT/MIN) produce meno page fault, ma richiede conoscenza del futuro. Esistono anche sequenze di accesso in cui LRU performa peggio di FIFO (anomalia non garantita ma possibile).",
+      "id": 371
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il DMA (Direct Memory Access) è sempre più efficiente delle operazioni I/O gestite dalla CPU?",
+      "answer": 0,
+      "explanation": "Per trasferimenti molto piccoli, l'overhead di configurare il DMA (programmare il controller, gestire l'interrupt al termine) supera il costo di fare il trasferimento direttamente via CPU (programmed I/O). Il DMA conviene solo per trasferimenti di blocchi sufficientemente grandi.",
+      "id": 372
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il polling può essere più efficiente degli interrupt in scenari di I/O ad alta velocità con arrivo continuo di dati?",
+      "answer": 0,
+      "explanation": "Gli interrupt sono generalmente più efficienti nelle reti ad alta velocità: il polling occupa la CPU continuamente anche quando non ci sono dati, sprecando cicli. Gli interrupt permettono alla CPU di fare altro e vengono notificati solo quando c'è qualcosa da gestire.",
+      "id": 373
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Uno scheduler I/O (es. SSTF, LOOK) può migliorare le prestazioni di un array RAID 5 rispetto all'accesso casuale ai dischi?",
+      "answer": 0,
+      "explanation": "Risposta ufficiale del corso: NO. Nota: la spiegazione del docente riconosce che uno scheduler ben progettato ottimizza l'ordine delle operazioni riducendo il seek time, ma la risposta fornita è NO — probabilmente perché in RAID 5 il parallelismo e il calcolo della parità rendono lo scheduling meno determinante rispetto a un singolo disco.",
+      "id": 374
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un SSD può soffrire di frammentazione che ne riduce le prestazioni?",
+      "answer": 0,
+      "explanation": "Gli SSD non soffrono di frammentazione come gli HDD perché non hanno parti meccaniche in movimento: l'accesso a blocchi non contigui ha lo stesso costo. La frammentazione logica può esistere ma viene gestita diversamente e non causa il degrado di prestazioni tipico degli HDD.",
+      "id": 375
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un SSD ha sempre una latenza di accesso inferiore rispetto a un HDD tradizionale?",
+      "answer": 1,
+      "explanation": "Gli SSD hanno generalmente latenza inferiore agli HDD grazie all'assenza di parti meccaniche (nessun seek time, nessuna latenza rotazionale). L'accesso elettronico alla memoria flash è intrinsecamente più veloce del posizionamento meccanico della testina.",
+      "id": 376
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) RAID 0 (striping senza parità) migliora l'affidabilità dei dati rispetto a un singolo disco?",
+      "answer": 0,
+      "explanation": "RAID 0 peggiora l'affidabilità: con N dischi, la probabilità di perdere dati è circa N volte quella di un singolo disco. Basta che un solo disco si guasti per perdere tutti i dati dell'array. RAID 0 migliora solo le prestazioni (throughput), non la ridondanza.",
+      "id": 377
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In load _ elf, la funzione as _prepare _ load alloca la memoria fisica per i segmenti del processo?",
+      "answer": 1,
+      "explanation": "as _prepare _ load è responsabile dell'allocazione della memoria fisica (frame) per i segmenti definiti in precedenza da as _ define _ region. In dumbvm chiama ram _ stealmem per ricavare i frame fisici necessari.",
+      "id": 378
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In load _ elf, la funzione load _ segment legge il segmento dati dall'ELF e lo carica in memoria?",
+      "answer": 1,
+      "explanation": "load _ segment legge dal file ELF (tramite VOP _ READ) il contenuto del segmento e lo copia nei frame fisici allocati, traducendo l'indirizzo virtuale in fisico tramite la page table / dumbvm.",
+      "id": 379
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In load _ elf, la funzione load _ segment legge il segmento codice dall'ELF e lo carica in memoria?",
+      "answer": 1,
+      "explanation": "load _ segment è la funzione generica che carica qualunque segmento ELF (sia .text che .data). Viene chiamata una volta per ogni segmento PT LOAD trovato nell'ELF header.",
+      "id": 380
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In load _ elf, la funzione as define _ _ region imposta gli indirizzi logici (virtuali) delle regioni del processo?",
+      "answer": 1,
+      "explanation": "as _ define _ region riceve vaddr, memsize e i permessi dal segmento ELF e li memorizza nell'address space (in dumbvm: as _ vbase1/as _ npages1 o as _ vbase2/as _ npages2). Non alloca ancora memoria fisica.",
+      "id": 381
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In load _ elf, la funzione as _ complete _ load viene chiamata prima di as _prepare _ load?",
+      "answer": 0,
+      "explanation": "L'ordine corretto in load _ elf è: as _ define _ region (per ogni segmento) → as _prepare load → load _ _ segment (per ogni segmento) → as _ complete load. as _ _ complete _ load viene chiamata per ultima, dopo che tutti i segmenti sono stati caricati.",
+      "id": 382
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In load _ elf, as define _ _ region alloca frame fisici per i segmenti?",
+      "answer": 0,
+      "explanation": "as _ define _ region registra solo la regione logica (vaddr, npages, permessi). L'allocazione fisica avviene in as _prepare _ load, chiamata successivamente.",
+      "id": 383
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In lab4, le funzioni sys OS161?",
+      "answer": 0,
+      "explanation": "__ exit e sys _ waitpid sono già presenti nell'implementazione base di OS161 base non include sys __ exit né sys _ waitpid. Sono chiamate di sistema che lo studente deve implementare nel lab4. Senza di esse i processi utente non possono terminare o attendere la terminazione di figli.",
+      "id": 384
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In lab4, il pid è un puntatore a una struttura processo?",
+      "answer": 0,
+      "explanation": "Il pid è un intero (pid _ t, tipicamente int). Non è un puntatore. È un identificatore numerico univoco assegnato al processo.",
+      "id": 385
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In lab4, il programma common _prog va in crash se sys _ waitpid non è implementata?",
+      "answer": 0,
+      "explanation": "Risposta ufficiale del corso: NO. common _prog non va necessariamente in crash: senza waitpid il processo padre termina semplicemente senza attendere i figli, ma il programma stesso non causa un crash esplicito.",
+      "id": 386
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In lab4, proc _ destroy viene chiamata da thread _ exit al termine di un processo utente?",
+      "answer": 0,
+      "explanation": "proc _ destroy non deve essere chiamata da thread _ exit (né da sys __ exit direttamente). Viene chiamata da sys _ waitpid dopo che il processo padre ha recuperato lo stato di uscita del figlio. Chiamarla prima causerebbe use-after-free.",
+      "id": 387
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In lab4, proc _ destroy viene chiamata all'interno di sys _ waitpid?",
+      "answer": 1,
+      "explanation": "Il ciclo di vita corretto è: sys __ exit salva il codice di uscita e segnala il padre → sys _ waitpid (nel padre) recupera il codice di uscita → chiama proc _ destroy per liberare la struttura proc del figlio.",
+      "id": 388
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In lab4, sys __ exit e sys _ waitpid possono essere chiamate da processi utente tramite syscall?",
+      "answer": 0,
+      "explanation": "Risposta ufficiale del corso: NO. I processi utente non possono chiamare direttamente le funzioni kernel sys exit __ e sys _ waitpid: devono passare attraverso il meccanismo di trap (syscall instruction su MIPS). Le funzioni kernel vengono invocate dal dispatcher del kernel, non direttamente dal processo utente.",
+      "id": 389
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In lab4, il pid viene assegnato ai processi utente durante il bootstrap del sistema?",
+      "answer": 0,
+      "explanation": "Il bootstrap assegna pid solo ai processi kernel. I processi utente ricevono il pid al momento della loro creazione (fork/execv), non al bootstrap.",
+      "id": 390
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In lab4, proc _ destroy viene chiamata direttamente da sys __ del processo?",
+      "answer": 0,
+      "explanation": "exit per liberare subito la struttura sys __ exit non deve chiamare proc _ destroy. Il processo deve rimanere in stato zombie finché il padre non chiama sys _ waitpid per leggere il codice di uscita. Solo allora sys _ waitpid chiama proc _ destroy.",
+      "id": 391
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un'applicazione gestisce un file strutturato composto da intestazione e sezioni. L'applicazione può supporre che l'intestazione e ciascuna sezione siano allineate ai (memorizzate a partire dai) limiti dei blocchi del disco nel file system?",
+      "answer": 0,
+      "explanation": "L'allineamento ai blocchi dipende dal file system e dall'allocazione interna, non è garantito all'applicazione. Il file system può memorizzare i dati in qualsiasi posizione all'interno dei blocchi. L'applicazione non deve fare assunzioni sull'allineamento fisico.",
+      "id": 392
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un'applicazione gestisce un file strutturato composto da intestazione e sezioni. Se l'intestazione è memorizzata in un file separato, questa deve essere allocata in blocchi di dati contigui?",
+      "answer": 0,
+      "explanation": "L'allocazione è gestita dal file system; non è obbligatorio che i blocchi siano contigui. Con formati inode o linked list, i blocchi possono essere sparsi sul disco. Solo l'allocazione contigua garantisce blocchi adiacenti.",
+      "id": 393
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un'applicazione gestisce un file strutturato composto da intestazione e sezioni. È obbligatorio che l'applicazione organizzi i dati in più file (invece che in un unico file): un file per l'intestazione e uno per ogni sezione?",
+      "answer": 0,
+      "explanation": "Non è obbligatorio. L'applicazione può usare un unico file con offset interni (l'intestazione contiene gli offset di ogni sezione), oppure più file separati. Entrambe le organizzazioni sono valide e dipendono dalle scelte progettuali dell'applicazione.",
+      "id": 394
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un'applicazione gestisce un file strutturato composto da intestazione e sezioni. Una volta che conosciamo (dopo averlo letto dall'intestazione) l'offset (nel file) di una sezione, è possibile leggere la sezione con accesso diretto/casuale con tutti i formati di allocazione dei file (oppure alcuni formati richiedono l'accesso sequenziale)?",
+      "answer": 1,
+      "explanation": "Con qualsiasi formato di allocazione (contiguo, linked list, inode), il sistema operativo implementa lseek() per consentire l'accesso diretto a qualsiasi offset. Il file system si occupa internamente di trovare il blocco fisico corrispondente. L'applicazione non deve preoccuparsi del formato.",
+      "id": 395
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un file di testo viene copiato su tre file system: allocazione contigua (per multipli di un blocco del disco, DMA abilitato), allocazione basata su linked list senza FAT (DMA abilitato), Inode (DMA disabilitato). La dimensione di un blocco del disco è la stessa su tutti e tre i file system. Possiamo supporre che la frammentazione interna sia la stessa su tutti i file system?",
+      "answer": 0,
+      "explanation": "La frammentazione interna dipende dal formato di allocazione. Con allocazione contigua per multipli di un blocco, l'ultimo blocco può essere parzialmente vuoto (fino a block _ size - 1 byte). Con linked list, ogni blocco usa parte dello spazio per il puntatore al successivo. Le strutture sono diverse, quindi la frammentazione interna non è necessariamente uguale tra i tre file system.",
+      "id": 396
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un file di testo viene copiato su tre file system: allocazione contigua (DMA abilitato), linked list senza FAT (DMA abilitato), Inode (DMA disabilitato). L'allocazione contigua e l'inode garantiscono l'accesso casuale/diretto a tempo costante O(1)?",
+      "answer": 1,
+      "explanation": "Con allocazione contigua, il blocco N si trova all'offset N×block _ size dall'inizio del file → accesso O(1). Con inode, i 12 puntatori diretti consentono accesso O(1) per i blocchi nella zona diretta; i blocchi indiretti richiedono uno o due accessi extra al blocco indice, ma rimane O(1) ammortizzato. Entrambi supportano accesso diretto efficiente.",
+      "id": 397
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un file di testo viene copiato su tre file system: allocazione contigua (DMA abilitato), linked list senza FAT (DMA abilitato), Inode (DMA disabilitato). Durante la lettura dell'intero file dall'inizio alla fine, l'allocazione basata su linked list sarà probabilmente più efficiente dell'inode, in termini di tempo di esecuzione, grazie al DMA?",
+      "answer": 1,
+      "explanation": "La differenza chiave è il DMA: la linked list ha DMA abilitato (il trasferimento avviene senza occupare la CPU), mentre l'inode ha DMA disabilitato (ogni trasferimento occupa la CPU per copiare i dati). Nonostante il sovraccarico dei puntatori nella linked list, il vantaggio del DMA rende la linked list più efficiente in questo scenario specifico.",
+      "id": 398
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un file di testo viene copiato su tre file system: allocazione contigua (DMA abilitato), linked list senza FAT (DMA abilitato), Inode (DMA disabilitato). Durante la lettura dell'intero file dall'inizio alla fine, l'allocazione collegata sarà più efficiente rispetto ad altri formati di allocazione (contigui e inode) perché l'elenco collegato è particolarmente efficace con l'accesso sequenziale?",
+      "answer": 0,
+      "explanation": "La maggiore efficienza della linked list in questo scenario è dovuta esclusivamente al DMA abilitato, non al fatto che la linked list sia intrinsecamente migliore per accesso sequenziale. L'allocazione contigua con DMA sarebbe ancora più efficiente (blocchi già adiacenti + DMA). Il vantaggio della linked list è situazionale (dovuto al DMA), non strutturale.",
+      "id": 399
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un'applicazione utilizza la modalità asincrona per leggere un file di dati (file binario di numeri interi a 32 bit) e calcolare la somma dei numeri. È possibile avviare letture multiple, ma nessun dato deve essere utilizzato finché l'IO corrispondente non è stato completato?",
+      "answer": 1,
+      "explanation": "Con I/O asincrono, si lanciano più richieste senza bloccarsi ad aspettarle. Tuttavia, i dati nel buffer di una richiesta non sono validi finché quella specifica richiesta non è completata (verificato tramite wait, callback o polling del flag di completamento). Usare dati non pronti è un errore.",
+      "id": 400
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un'applicazione utilizza la modalità asincrona per leggere un file di dati (file binario di numeri interi a 32 bit) e calcolare la somma dei numeri. Se il file viene letto utilizzando più thread, la somma deve essere considerata come sezione critica (e quindi trattata con opportune primitive di sincronizzazione)?",
+      "answer": 1,
+      "explanation": "Più thread che aggiornano la stessa variabile somma in parallelo creano una race condition. L'operazione somma += valore non è atomica (leggi-modifica-scrivi). Serve un mutex o un'operazione atomica (es. atomic _fetch _ add) per proteggere l'aggiornamento della variabile condivisa.",
+      "id": 401
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un'applicazione utilizza la modalità asincrona per leggere un file di dati (file binario di numeri interi a 32 bit) e calcolare la somma dei numeri. Per garantire che tutti i dati siano stati letti, è sufficiente che l'applicazione attenda il completamento dell'ultimo IO, perché quando è fatto, vengono eseguiti anche tutti gli IO precedenti?",
+      "answer": 0,
+      "explanation": "Le operazioni I/O asincrone non sono necessariamente completate in ordine cronologico di emissione. L'ultima richiesta emessa potrebbe completarsi prima di una precedente. Bisogna attendere il completamento di TUTTE le operazioni I/O (es. con waitall o controllando ognuna).",
+      "id": 402
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Un'applicazione utilizza la modalità asincrona per leggere un file di dati (file binario di numeri interi a 32 bit) e calcolare la somma dei numeri. La modalità asincrona è implementata internamente dall'I/O basato su interrupt, perché il polling non può supportare la modalità asincrona?",
+      "answer": 0,
+      "explanation": "La modalità asincrona può essere implementata sia con interrupt che con polling. Con il polling, il kernel (o l'applicazione) controlla periodicamente se l'operazione è completata. Non è vero che il polling non possa supportarla; entrambi i meccanismi possono realizzare l'I/O asincrono.",
+      "id": 403
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, si vuole fare in dumbvm la gestione dei frame liberi tramite free-list, invece che con bitmap (come fatto nella soluzione proposta per il lab 2). Non è necessaria la ricerca di frame liberi contigui, perché MIPS ha una TLB?",
+      "answer": 0,
+      "explanation": "dumbvm NON utilizza la TLB per mappare liberamente pagine arbitrarie a frame fisici arbitrari. I segmenti di codice e dati in dumbvm devono essere allocati in frame FISICAMENTE CONTIGUI (dumbvm carica interi segmenti in zone contigue di memoria fisica). Quindi la ricerca di frame contigui È necessaria.",
+      "id": 404
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, si vuole fare in dumbvm la gestione dei frame liberi tramite free-list. La free list dovrebbe essere utilizzata solo per il segmento di codice e il segmento di dati di un processo, non per lo stack utente, poiché lo stack ha una dimensione fissa in dumbvm?",
+      "answer": 0,
+      "explanation": "Sebbene lo stack in dumbvm abbia dimensione fissa (DUMBVM _ STACKPAGES pagine), viene comunque allocato con getppages, che usa la stessa struttura dati di allocazione. La free-list dovrebbe gestire TUTTI i frame fisici liberi, inclusi quelli destinati allo stack.",
+      "id": 405
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, si vuole fare in dumbvm la gestione dei frame liberi tramite free-list. La free-list può essere organizzata efficacemente come una lista di intervalli contigui di frame liberi?",
+      "answer": 1,
+      "explanation": "Invece di tenere un nodo per ogni singolo frame libero, si può memorizzare una lista di coppie (frame _ iniziale, numero_di _frame _ contigui), rappresentando intervalli. Questo è efficiente per le allocazioni contigue richieste da dumbvm e riduce il numero di nodi nella lista.",
+      "id": 406
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, si vuole fare in dumbvm la gestione dei frame liberi tramite free-list. Occorre supportare la ricerca di intervalli di frame liberi contigui?",
+      "answer": 1,
+      "explanation": "Sì. dumbvm alloca i segmenti di codice e dati come blocchi di frame fisicamente contigui (getppages(npages) deve restituire npages frame consecutivi). La free-list deve quindi supportare la ricerca e l'allocazione di intervalli contigui.",
+      "id": 407
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Sono dati i seguenti prototipi OS161 per funzioni in dumbvm: paddr _ t getppages(unsigned long npages); paddr t ram _ _ stealmem(unsigned long npages); void free _ kpages(vaddr _ int as _prepare _ load(struct addrspace *as). free _ kpages (chiamata da kfree) può essere utilizzata per liberare lo stack di livello kernel di un processo?",
+      "answer": 1,
+      "explanation": "t addr); Lo stack kernel di un processo è allocato con alloc _ kpages/kmalloc e liberato con free _ kpages/kfree. Quindi sì, free _ kpages è lo strumento corretto per liberare lo stack kernel di un processo.",
+      "id": 408
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Sono dati i seguenti prototipi OS161 per funzioni in dumbvm: paddr _ t getppages(unsigned long npages); paddr t ram _ _ stealmem(unsigned long npages); void free _ kpages(vaddr _ int as _prepare _ load(struct addrspace *as). getppages chiama ram stealmem?",
+      "answer": 1,
+      "explanation": "_ t addr); In dumbvm base, getppages chiama ram _ stealmem per allocare memoria 'rubandola' al sistema durante il bootstrap (prima che la gestione dinamica dei frame sia attiva). Questo è il meccanismo iniziale di allocazione della memoria fisica in OS161.",
+      "id": 409
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Sono dati i seguenti prototipi OS161 per funzioni in dumbvm: paddr _ t getppages(unsigned long npages); paddr t ram _ _ stealmem(unsigned long npages); void free _ kpages(vaddr _ t addr); int as _prepare _ load(struct addrspace *as). Il tipo vaddr _ t può essere usato per indirizzi logici sia kernel che user?",
+      "answer": 1,
+      "explanation": "vaddr _ t è il tipo per indirizzi virtuali/logici in OS161/MIPS. Lo spazio di indirizzi MIPS comprende sia lo spazio kernel (kseg0/kseg1 a partire da 0x80000000) che lo spazio utente (0x00000000–0x7FFFFFFF). vaddr _ t può rappresentare indirizzi di entrambe le zone.",
+      "id": 410
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Sono dati i seguenti prototipi OS161 per funzioni in dumbvm: paddr _ t getppages(unsigned long npages); paddr t ram _ _ stealmem(unsigned long npages); void free _ kpages(vaddr _ int as _prepare _ load(struct addrspace *as). La funzione as _prepare load restituisce la _ dimensione dello spazio degli indirizzi, espressa come numero di pagine?",
+      "answer": 0,
+      "explanation": "t addr); as _prepare _ load non restituisce la dimensione in pagine. Restituisce 0 (successo) o un codice di errore intero. Il suo scopo è preparare l'addrspace per il caricamento del programma (es. rendere i segmenti scrivibili per load _ elf) e allocare i frame fisici tramite getppages.",
+      "id": 411
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Considerando il codice di as define _ _ region in dumbvm (con #define PAGE FRAME _ 0xfffff000, sz += vaddr & ~(vaddr _ t)PAGE _ FRAME; vaddr &= PAGE _ FRAME;): la funzione definisce semplicemente (e memorizza nei campi dati appropriati di una struttura addrspace) l'indirizzo di partenza e la dimensione di un segmento per ogni chiamata di funzione?",
+      "answer": 1,
+      "explanation": "Sì. as _ define _ region aggiorna i campi as _ vbase1/as _ npages1 (prima chiamata) o as _ vbase2/as _ npages2 (seconda chiamata) nella struttura addrspace, memorizzando base virtuale e dimensione. NON alloca memoria fisica: quella avviene più tardi in as _prepare load.",
+      "id": 412
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Considerando il codice di as define _ _ region in dumbvm (con #define PAGE FRAME _ 0xfffff000): l'istruzione 'sz += vaddr & ~(vaddr _ t)PAGE _ FRAME' potrebbe essere sostituita dall'istruzione 'sz += vaddr % 4096'?",
+      "answer": 1,
+      "explanation": "PAGE _ FRAME = 0xfffff000, quindi ~(vaddr _ t)PAGE _ FRAME = 0x00000fff = 4095. Perciò vaddr & ~PAGE _ FRAME = vaddr & 0xFFF = vaddr % 4096 (per valori non negativi su 32 bit). Le due espressioni sono equivalenti: entrambe estraggono i 12 bit meno significativi di vaddr (l'offset dalla base di pagina).",
+      "id": 413
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Considerando il codice di as define _ _ region in dumbvm (con #define PAGE FRAME _ 0xfffff000): l'istruzione 'vaddr &= PAGE _ FRAME' cancella i 12 bit meno significativi di un indirizzo fisico?",
+      "answer": 1,
+      "explanation": "PAGE _ FRAME = 0xfffff000. L'AND con PAGE _ FRAME azzera i 12 bit meno significativi (l'offset all'interno della pagina), allineando vaddr al confine di pagina (multiplo di 4096 = 0x1000). L'operazione si applica a vaddr (indirizzo virtuale) ma il meccanismo bitwise è corretto.",
+      "id": 414
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Considerando il codice di as define _ _ region in dumbvm (con #define PAGE FRAME _ 0xfffff000): la funzione alloca memoria fisica per i segmenti di codice e dati, ma non per lo stack?",
+      "answer": 0,
+      "explanation": "as _ define _ region NON alloca memoria fisica per nessun segmento. Si limita a registrare base virtuale e dimensione nell'addrspace. L'allocazione fisica avviene più tardi: in as _prepare _ load per codice e dati, e in as _ define _ stack (o equivalente) per lo stack.",
+      "id": 415
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread thread switch(S _ switch è più generale, poiché thread _yield è implementato dalla chiamata _ _ READY, NULL, NULL)?",
+      "answer": 1,
+      "explanation": "thread _yield() è un caso speciale di thread _ switch(): mette il thread corrente in stato S READY e cede la CPU _ volontariamente. thread _ switch(stato, wc, lk) è la funzione generica che gestisce qualsiasi transizione di stato del thread (S _ READY, S _ SLEEP, S _ ZOMBIE).",
+      "id": 416
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread _ switch lavora sulla ready queue, rimuovendo dalla coda un thread pronto per l'esecuzione?",
+      "answer": 1,
+      "explanation": "thread _ switch seleziona il prossimo thread da eseguire dalla ready queue (tramite lo scheduler) e gli cede la CPU. Il thread selezionato viene rimosso dalla coda e messo in stato S _ RUN, mentre il thread corrente cambia stato (S _ READY, S _ SLEEP, ecc.).",
+      "id": 417
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread switch chiama switchframe _ _ switch(&cur->t _ context, &next->t _ context); in cui i registri della CPU vengono salvati in next->t _ context e ripristinati da cur->t context?",
+      "answer": 0,
+      "explanation": "_ È il CONTRARIO: i registri del thread CORRENTE vengono SALVATI in cur->t _ context, e i registri del thread SUCCESSIVO vengono RIPRISTINATI da next->t _ context. La firma è switchframe _ switch(salva _qui, ripristina da _ _qui). Scambiare i due causa un crash immediato.",
+      "id": 418
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, il prototipo di thread _yield è void thread _yield(void), quindi la funzione può essere utilizzata solo per interrompere l'esecuzione del thread corrente (quindi nessun altro thread) e metterlo nello stato S READY?",
+      "answer": 1,
+      "explanation": "_ Sì. thread _yield() senza parametri agisce sempre e solo sul thread CORRENTE: lo mette in stato S _ la CPU volontariamente allo scheduler. Non può essere usata per interrompere o sospendere altri thread.",
+      "id": 419
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread _ S _ SLEEP (che significa attesa)?",
+      "answer": 1,
+      "explanation": "switch viene chiamato da wchan _ sleep, per mettere un thread nello stato wchan _ sleep chiama thread _ switch(S _ SLEEP, wc, lk) per sospendere il thread corrente su un wait channel. S _ SLEEP indica che il thread è in attesa di un evento (es. I/O completato, semaforo segnalato). Viene risvegliato da wchan _ wakeone() o wchan _ wakeall().",
+      "id": 420
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread _ create alloca e inizializza semplicemente la struttura C del thread?",
+      "answer": 1,
+      "explanation": "thread _ create alloca la struct thread, ne inizializza i campi (nome, stack kernel, stato iniziale, ecc.) ma NON la inserisce nella ready queue né la esegue. È puramente inizializzazione della struttura dati. L'inserimento nella ready queue avviene in thread _fork.",
+      "id": 421
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread fork chiama thread create?",
+      "answer": 1,
+      "explanation": "_ _ thread _fork crea un nuovo thread che eseguirà una funzione specificata; internamente usa thread _ create per allocare e inizializzare la struttura del thread, poi lo inserisce nella ready queue (tramite thread make _ _ runnable) affinché possa essere schedulato.",
+      "id": 422
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread _ fork genera un processo utente figlio/child?",
+      "answer": 0,
+      "explanation": "thread _fork crea un nuovo THREAD kernel, non un processo utente. I processi utente vengono creati tramite la syscall sys _fork(), che internamente utilizza thread _fork per creare il thread kernel del nuovo processo. thread _fork in sé opera a livello di thread, non di processo utente.",
+      "id": 423
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread _ fork riceve come parametro (un puntatore a) una funzione, da richiamare in caso di errore (se, ad esempio, il thread non può essere creato)?",
+      "answer": 0,
+      "explanation": "thread _fork riceve come parametro una funzione che sarà l'ENTRY POINT del nuovo thread (la funzione che il nuovo thread eseguirà al primo scheduling), NON una callback di errore. La firma è: thread _fork(nome, proc, entrypoint, dato1, dato2).",
+      "id": 424
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread _ fork ha un parametro struct proc * proc, che può essere NULL o un puntatore a una struct proc esistente?",
+      "answer": 1,
+      "explanation": "Sì. Il parametro proc specifica il processo a cui associare il nuovo thread. Se NULL, il thread viene associato al processo corrente. Se si passa un puntatore a un proc esistente (es. kproc per thread kernel), il nuovo thread viene associato a quel processo.",
+      "id": 425
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread _ exit() distrugge la struttura dati del thread e restituisce il puntatore al processo padre?",
+      "answer": 0,
+      "explanation": "thread _ exit() ha tipo void (non restituisce nulla) e NON distrugge immediatamente la struttura del thread. Questo avviene dopo tramite exorcise(), quando il prossimo thread viene schedulato. Non esiste concetto di 'restituire puntatore al padre' in questo contesto.",
+      "id": 426
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread _ exit() incrementa il contatore dei thread in un processo?",
+      "answer": 0,
+      "explanation": "thread _ exit() chiama proc _ remthread() che RIMUOVE il thread dal processo corrente (decrementa il contatore dei thread nel processo). Non incrementa nessun contatore: il thread sta terminando, non iniziando.",
+      "id": 427
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread _ exit() cancella (assegnando NULL) il puntatore al thread nella struttura del processo?",
+      "answer": 0,
+      "explanation": "thread _ exit() chiama proc _ remthread() che rimuove il thread dalla lista/array dei thread del processo, ma la struct proc non ha un singolo campo puntatore 'al thread' da azzerare. Un processo può avere più thread; la rimozione avviene dalla struttura dati che li contiene.",
+      "id": 428
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, thread _ exit() chiama la funzione proc rem _ _ thread()?",
+      "answer": 1,
+      "explanation": "Sì. thread _ exit() chiama proc _ remthread() (talvolta nominata proc rem _ _ thread()) per dissociare il thread corrente dal processo prima di terminare. Successivamente chiama thread _ switch(S _ ZOMBIE, ...) per cedere la CPU definitivamente, senza mai tornare.",
+      "id": 429
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, proc _ destroy() può essere chiamata all'interno della chiamata di sistema SYS __ EXIT, dopo aver chiamato thread _ exit(), se il numero di thread nel processo diventa 0?",
+      "answer": 0,
+      "explanation": "Non è possibile chiamare proc _ destroy() dopo thread _ exit(), perché thread _ exit() non ritorna mai (termina il thread corrente con thread _ switch(S _ ZOMBIE)). Inoltre, la struct proc deve restare valida (come zombie) finché il padre non chiama waitpid() per leggere il codice di uscita.",
+      "id": 430
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, proc _ destroy() non può essere chiamata prima di thread _ exit(), a meno che tutti i thread siano stati staccati dal processo e lo stato di uscita sia stato letto?",
+      "answer": 1,
+      "explanation": "proc _ destroy() può essere chiamata solo quando: (1) tutti i thread del processo sono terminati e staccati dalla struct proc, e (2) il codice di uscita è già stato consumato da waitpid(). Prima di queste condizioni, la struttura del processo deve rimanere valida.",
+      "id": 431
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, proc _ destroy() attende la terminazione del processo, quindi libera la struttura del processo?",
+      "answer": 0,
+      "explanation": "proc _ destroy() NON attende nulla. È waitpid() che attende la terminazione del processo figlio (tramite semaforo o altra primitiva). proc _ destroy() si limita a liberare la memoria della struct proc, assumendo che il processo sia già terminato e il codice di uscita già letto.",
+      "id": 432
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, proc _ destroy() legge lo stato di uscita e lo restituisce al chiamante?",
+      "answer": 0,
+      "explanation": "È waitpid() che legge lo stato di uscita del processo figlio e lo restituisce al processo padre. proc _ destroy() libera la memoria della struct proc. Sono responsabilità distinte: waitpid = attendi + leggi stato di uscita + chiama proc _ destroy; proc _ destroy = libera memoria.",
+      "id": 433
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, la system call waitpid() riceve come parametro l'identificatore (PID) del processo da attendere?",
+      "answer": 1,
+      "explanation": "Sì. waitpid(pid, statusp, options) riceve: il PID del processo figlio da attendere, un puntatore dove scrivere il codice di uscita (statusp), e opzioni di comportamento (es. WNOHANG). Il PID identifica univocamente quale processo figlio si vuole attendere.",
+      "id": 434
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, waitpid() attende un cambio di stato di un processo (in lab4 viene gestito solo lo stato di uscita/exit)?",
+      "answer": 1,
+      "explanation": "In POSIX completo, waitpid può attendere vari cambiamenti di stato (terminazione, stop, continue). In lab4 di OS161, si implementa solo l'attesa della terminazione (exit tramite SYS __ EXIT). Gli altri cambiamenti di stato non sono gestiti nell'implementazione base.",
+      "id": 435
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, waitpid() può essere chiamato dalla funzione common _prog(), chiamata dal menu dopo aver creato un processo utente?",
+      "answer": 0,
+      "explanation": "waitpid() è una syscall invocata dallo spazio utente tramite trap. common _prog() è una funzione kernel del menu di OS161 e non invoca direttamente syscall di spazio utente. Il menu gestisce l'attesa dei processi utente tramite meccanismi kernel (es. semafori, thread _join).",
+      "id": 436
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In OS161, waitpid() può chiamare proc _ destroy(curproc), dopo che il semaforo utilizzato per attendere (o un'altra primitiva) è stato segnalato?",
+      "answer": 0,
+      "explanation": "waitpid() attende il processo FIGLIO (identificato dal PID passato come parametro), non il processo corrente. Dopo aver letto lo stato di uscita del figlio, chiamerebbe proc _ destroy() sul processo FIGLIO, non su curproc (che è il padre che sta aspettando e continuerà a esistere).",
+      "id": 437
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) In un allocatore Buddy, la frammentazione esterna viene ridotta ed è possibile frammentazione interna?",
+      "answer": 1,
+      "explanation": "Il Buddy system alloca blocchi di dimensioni potenza di 2. Questo riduce la frammentazione esterna: i blocchi liberi adiacenti dello stesso livello (buddy) si fondono facilmente. Tuttavia la frammentazione interna è possibile: se si richiedono 65 byte, si ottiene un blocco da 128 byte, sprecando 63 byte.",
+      "id": 438
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Con un allocatore Buddy, non è possibile frammentazione interna (no internal fragmentation is possible with Buddy)?",
+      "answer": 0,
+      "explanation": "La frammentazione interna È POSSIBILE con Buddy. Poiché i blocchi hanno solo dimensioni potenza di 2, qualsiasi allocazione di k byte (con k non esattamente una potenza di 2) sprecherà fino a (potenza di 2 _ _ _ successiva - k) byte all'interno del blocco allocato.",
+      "id": 439
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Con un allocatore Buddy, i blocchi liberi possono avere solo dimensioni pari a una potenza di 2, il che elimina il problema della frammentazione esterna?",
+      "answer": 0,
+      "explanation": "Le dimensioni a potenza di 2 RIDUCONO ma non ELIMINANO la frammentazione esterna. Rimane possibile avere blocchi liberi di dimensioni diverse che non si riescono a fondere (se non sono buddy). Il Buddy riduce la frammentazione esterna facilitando la coalescenza, non eliminandola completamente.",
+      "id": 440
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Con un allocatore Buddy, la frammentazione esterna viene ridotta allocando blocchi di dimensioni multiple di una pagina?",
+      "answer": 1,
+      "explanation": "I blocchi Buddy sono dimensionati come potenze di 2 (che includono le pagine e loro multipli: 4KB, 8KB, 16KB...). Questo schema riduce la frammentazione esterna perché i blocchi liberi adiacenti dello stesso livello possono essere fusi (coalescing), rendendo più facile soddisfare allocazioni grandi.",
+      "id": 441
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una free list (di frame liberi) potrebbe essere ordinata per supportare l'allocazione di frame contigui a un costo lineare. L'ordinamento non è necessario?",
+      "answer": 0,
+      "explanation": "Per trovare frame FISICAMENTE CONTIGUI in modo efficiente (costo O(n)), l'ordinamento è necessario. Senza ordinamento, bisognerebbe confrontare ogni coppia di frame per verificare l'adiacenza, con costo O(n²) nel caso peggiore.",
+      "id": 442
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una free list (di frame liberi) potrebbe essere ordinata per supportare l'allocazione di frame contigui a un costo lineare. La free list dovrebbe essere ordinata per dimensione decrescente?",
+      "answer": 0,
+      "explanation": "Ordinare per dimensione decrescente non aiuta a trovare frame FISICAMENTE CONTIGUI. La contigui-tà fisica dipende dagli indirizzi fisici, non dalla dimensione dei blocchi. Una lista ordinata per dimensione non permette di identificare facilmente frame con indirizzi fisici consecutivi.",
+      "id": 443
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una free list (di frame liberi) potrebbe essere ordinata per supportare l'allocazione di frame contigui a un costo lineare. La free list dovrebbe essere ordinata per indirizzi sia fisici che logici?",
+      "answer": 0,
+      "explanation": "Gli indirizzi fisici e logici possono differire (dipendono dalla mappatura). Per trovare frame FISICAMENTE CONTIGUI, conta solo l'indirizzo FISICO. Ordinare per indirizzi logici non garantisce la contigui-tà fisica: due indirizzi logici consecutivi possono corrispondere a frame fisici non adiacenti.",
+      "id": 444
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una free list (di frame liberi) potrebbe essere ordinata per supportare l'allocazione di frame contigui a un costo lineare. La free list dovrebbe essere ordinata solo per indirizzi fisici?",
+      "answer": 1,
+      "explanation": "Ordinando la free list per indirizzo fisico crescente, è possibile scorrere la lista in O(n) cercando frame con indirizzi fisici consecutivi. Due frame sono fisicamente contigui se il secondo ha indirizzo fisico = primo + PAGE SIZE. Con _ l'ordinamento, si trovano in una sola passata lineare.",
+      "id": 445
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Una per-process file table è allocata nello spazio user?",
+      "answer": 0,
+      "explanation": "La per-process file table è una struttura del KERNEL, non dello spazio utente. Risiede nella memoria kernel associata al processo. Lo spazio utente accede ai file solo tramite file descriptor (interi), che fungono da indici in questa tabella kernel.",
+      "id": 446
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il puntatore alla posizione corrente di lettura/scrittura in un file aperto risiede nel blocco di controllo del file (file control block)?",
+      "answer": 0,
+      "explanation": "La posizione corrente di lettura/scrittura (file offset) risiede nella open file table (system-wide) o nella per-process file table, NON nel file control block (FCB/inode). L'inode contiene metadati PERMANENTI del file (permessi, dimensione, puntatori ai blocchi), non lo stato transitorio di una singola apertura.",
+      "id": 447
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Il requisito principale per l'implementazione delle directory è una ricerca efficiente, con il nome del file come chiave di ricerca?",
+      "answer": 1,
+      "explanation": "Le directory mappano nomi di file a inode number (o equivalenti). L'operazione fondamentale è trovare il numero di inode dato il nome del file (ricerca per nome). Le implementazioni ottimizzate usano hash table, alberi B o strutture simili per rendere questa ricerca efficiente.",
+      "id": 448
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) L'operazione di chiusura di un file (close) può modificare sia la per-process file table che la system-wide file table?",
+      "answer": 1,
+      "explanation": "close() rimuove il file descriptor dalla per-process file table del processo. Decrementa inoltre il reference count nella system-wide open file table. Se il reference count scende a 0, l'entry viene rimossa dalla system-wide table (e eventuali dati bufferizzati vengono scritti). Entrambe le tabelle vengono modificate.",
+      "id": 449
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Considerando le possibili implementazioni delle chiamate di sistema read/write: l'accesso casuale (diretto) può essere simulato dall'accesso sequenziale?",
+      "answer": 1,
+      "explanation": "Sì, ma in modo inefficiente. Per accedere al byte N di un file usando solo accesso sequenziale, si leggono e scartano i primi N byte. Funzionalmente corretto (costo O(N)), ma non è come si implementa nella pratica.",
+      "id": 450
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Considerando le possibili implementazioni delle chiamate di sistema read/write: l'accesso casuale (diretto) non può essere implementato tramite formati di allocazione file basati su liste concatenate (ad esempio FAT, lista di blocchi)?",
+      "answer": 0,
+      "explanation": "È FALSO. La FAT supporta l'accesso diretto: per accedere al blocco N, si scorre la catena FAT N volte seguendo i puntatori. È inefficiente (O(N)) ma POSSIBILE. Anche con linked list senza FAT, il kernel può simulare lseek() scorrendole. L'accesso diretto è possibile con tutti i formati.",
+      "id": 451
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Considerando le possibili implementazioni delle chiamate di sistema read/write: l'accesso casuale (diretto) può essere implementato da tutti i formati di allocazione dei file?",
+      "answer": 1,
+      "explanation": "Tutti i formati (contiguo, FAT/linked list, inode) possono implementare l'accesso diretto tramite lseek(). Con allocazione contigua e inode è O(1) o O(1) ammortizzato; con linked list/FAT è O(N). La differenza è nell'EFFICIENZA, non nella POSSIBILITÀ di implementazione.",
+      "id": 452
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Considerando le possibili implementazioni delle chiamate di sistema read/write: l'accesso sequenziale non può essere simulato dall'accesso casuale (diretto)?",
+      "answer": 0,
+      "explanation": "È FALSO. L'accesso sequenziale PUÒ essere simulato trivialmente dall'accesso diretto: si usa lseek() + read() accedendo ai byte/blocchi nell'ordine crescente 0, 1, 2, ... Ogni accesso diretto a posizione crescente equivale a lettura sequenziale.",
+      "id": 453
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Sull'organizzazione dei dischi RAID: dopo un guasto, l'utilizzo del sistema deve essere interrotto fino al completamento della riparazione?",
+      "answer": 0,
+      "explanation": "I sistemi RAID con ridondanza (RAID 1, 5, 6, ecc.) sono progettati per tollerare guasti senza interruzione del servizio. Il sistema continua a funzionare in modalità degraded durante la ricostruzione del disco guasto, garantendo la disponibilità dei dati.",
+      "id": 454
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Sull'organizzazione dei dischi RAID: dati N dischi in configurazione striping, se tutti i dischi hanno un dato MTTF, la probabilità di un guasto del sistema aumenta con l'aumento del valore di N?",
+      "answer": 1,
+      "explanation": "Con striping puro (RAID 0), un guasto di QUALSIASI singolo disco causa la perdita di tutti i dati. Con N dischi indipendenti ognuno con MTTF = M, il MTTF del sistema è circa M/N. All'aumentare di N, il MTTF del sistema diminuisce (la probabilità di guasto aumenta).",
+      "id": 455
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Sull'organizzazione dei dischi RAID: il mirroring include bit di parità?",
+      "answer": 0,
+      "explanation": "Il mirroring (RAID 1) replica integralmente i dati su due o più dischi. I bit di parità sono usati in RAID 3, 4, 5, 6 come meccanismo alternativo di ridondanza (più efficiente in spazio). Mirroring e parità sono due approcci distinti alla fault tolerance nei sistemi RAID.",
+      "id": 456
+    },
+    {
+      "type": "boolean",
+      "question": "(INTERNALS 2) Sull'organizzazione dei dischi RAID: sono date due configurazioni: A con 2 dischi in mirroring e B con 4 dischi (striping + mirroring, RAID 10). Tutti i dischi hanno lo stesso MTTF. L'MTTTDL (perdita di dati) di A è superiore all'MTTTDL di B?",
+      "answer": 1,
+      "explanation": "RAID A (2 dischi in mirroring): perde dati solo se entrambi i dischi guastano. RAID B (RAID 10: 2 coppie in mirroring, con striping): perde dati se entrambi i dischi di ALMENO UNA coppia guastano. Con più dischi (4 vs 2), la probabilità che si verifichi tale evento è maggiore in B. Quindi MTTTDL di A > MTTTDL di B.",
+      "id": 457
     }
   ]
 }

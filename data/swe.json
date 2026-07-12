@@ -1,0 +1,1978 @@
+{
+  "metadata": {
+    "id": "swe",
+    "name": "SWE",
+    "icon": "👷",
+    "color": "#f97316",
+    "bg": "#ffedd5",
+    "language": "EN",
+    "category": "UNI"
+  },
+  "questions": [
+    {
+      "id": 1,
+      "type": "open",
+      "question": "Explain the main goal of the software process. In your answer, distinguish between process properties and product properties.",
+      "explanation": "Un processo software è l'insieme di attività (specifica, sviluppo, validazione ed evoluzione) volte a realizzare e aggiornare il software garantendo tempi, budget e standard elevati, con l'obiettivo principale di creare prodotti (codice, documenti e dati) dalle caratteristiche prevedibili e misurabili, il che rende fondamentale distinguere due categorie di proprietà:\nLe proprietà di processo valutano le dinamiche di produzione misurando i costi finanziari, l'impegno in ore-persona, il rispetto delle scadenze e la conformità agli standard.\nLe proprietà di prodotto, invece, definiscono il sistema rilasciato e si dividono in funzionali (ovvero \"cosa\" il software deve fare per raggiungere il suo scopo) e non funzionali (che descrivono \"come\" lavora, determinandone l'effettiva qualità sul mercato). Quest'ultima categoria racchiude l'usabilità (la facilità di apprendimento e la soddisfazione dell'utente), l'efficienza (prestazioni e l'ottimizzazione delle risorse di sistema), l'affidabilità e disponibilità (percentuale di uptime e l'assenza di difetti), la manutenibilità (sforzo necessario per aggiornare, correggere o migrare il codice) e la sicurezza, intesa sia come protezione dalle intrusioni (security) sia come tutela dell'incolumità fisica degli utenti (safety)."
+    },
+    {
+      "id": 2,
+      "type": "open",
+      "question": "Describe the main software production activities and explain why there are logical dependencies between them.",
+      "explanation": "Le principali attività di produzione del software sono quattro: l'ingegneria dei requisiti (che stabilisce cosa deve fare il software), l'architettura e il design (che definisce le unità del sistema e come sono organizzate), l'implementazione (la scrittura vera e propria del codice sorgente) e l'integrazione delle varie unità.\nTra queste attività esistono delle rigide dipendenze logiche, poiché ciascuna fase dipende dai risultati di quelle precedenti. Ad esempio, per poter progettare l'architettura (design) è indispensabile conoscere prima i requisiti, così come per scrivere il codice (implementazione) è necessario basarsi sia sui requisiti che sul design precedentemente definiti."
+    },
+    {
+      "id": 3,
+      "type": "open",
+      "question": "What are Verification & Validation activities? Explain how V&V applies to requirements, design, and code.",
+      "explanation": "Le attività di Verifica e Validazione (V&V) servono a controllare che ciò che si sta costruendo sia corretto, funzionante e risponda alle aspettative. Queste attività si applicano a diversi livelli del processo:\n- Sui requisiti si controlla esternamente se il team ha compreso correttamente ciò che il cliente/utente desidera, e internamente se il documento dei requisiti è coerente.\n- Sul design si verifica esternamente se l'architettura progettata è in grado di supportare i requisiti richiesti, e internamente se il design è coerente.\n- Sul codice si controlla esternamente se il codice implementato supporta effettivamente il design e i requisiti, e internamente se è coerente (ad esempio attraverso controlli sintattici)."
+    },
+    {
+      "id": 4,
+      "type": "open",
+      "question": "Compare the Waterfall Model and the Iterative Model. For each model, describe one advantage and one disadvantage.",
+      "explanation": "Il Modello a Cascata è un approccio lineare e sequenziale allo sviluppo del software. Utilizza una struttura chiara, determina gli obiettivi finali fin dall'inizio e trasferisce bene le informazioni. Rende molto difficili i cambiamenti in corso d'opera, esclude il cliente/utente finale durante lo sviluppo e ritarda la fase di test fino al completamento del prodotto.\nIl Modello Iterativo, al contrario, non parte con una specifica completa ma inizia sviluppando solo una parte del software, che viene poi revisionata per identificare ulteriori requisiti ed evolvere il sistema un'iterazione alla volta. È facilmente adattabile alle esigenze del progetto e del cliente, che cambiano costantemente. Non è adatto per progetti più piccoli e definire gli incrementi può comunque richiedere una definizione preliminare dell'intero sistema."
+    },
+    {
+      "id": 5,
+      "type": "open",
+      "question": "Explain why software maintenance can become more difficult over time. Use the idea that later changes are constrained by previous requirements, design, and implementation choices.",
+      "explanation": "La manutenzione del software diventa sempre più difficile col passare del tempo perché ogni fase di manutenzione equivale a una nuova sequenza di sviluppo, la quale è però strettamente vincolata da ciò che è stato fatto in precedenza. Qualsiasi modifica futura è limitata dalle scelte iniziali di requisiti, design e implementazione: ad esempio, se il primo sviluppo sceglie Java come linguaggio o un'architettura client-server, gli sviluppi successivi dovranno mantenere tali scelte. Con il passare degli anni, il numero di questi vincoli si accumula a tal punto che apportare cambiamenti profondi può diventare quasi impossibile."
+    },
+    {
+      "id": 6,
+      "type": "multiple",
+      "question": "Which of the following is a software process property?",
+      "options": [
+        "Functionality",
+        "Reliability",
+        "Duration",
+        "User interface"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 7,
+      "type": "multiple",
+      "question": "In the software process, which activity mainly answers the question “what should the software do?”",
+      "options": [
+        "Implementation",
+        "Requirements engineering",
+        "Integration",
+        "Configuration management"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 8,
+      "type": "multiple",
+      "question": "What is a typical disadvantage of the Waterfall Model?",
+      "options": [
+        "It has no clear structure",
+        "It always requires formal languages",
+        "It makes change difficult",
+        "It does not produce documentation"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 9,
+      "type": "multiple",
+      "question": "Which statement best describes the V-Model?",
+      "options": [
+        "It completely removes documentation",
+        "It associates testing activities with the different development stages",
+        "It is suitable only for small informal projects",
+        "It avoids requirements verification"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 10,
+      "type": "multiple",
+      "question": "Which of the following is a typical task of configuration management?",
+      "options": [
+        "Defining the functional requirements of the system",
+        "Writing the source code directly",
+        "Identifying and storing documents and software units, while tracking their relationships and history",
+        "Deciding the commercial price of the product"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 11,
+      "type": "open",
+      "question": "Explain the role of project management in software engineering.",
+      "explanation": "Il Project Management ha il ruolo di pianificare, stimare e monitorare il processo di sviluppo per garantire che il software venga prodotto in modo prevedibile. Nello specifico, si occupa di rispondere a tre domande fondamentali: \"Quanto costerà?\" (attraverso la stima iniziale e il tracciamento del budget), \"Quando sarà pronto?\" (attraverso la schedulazione dei tempi) e \"Chi farà cosa?\" (organizzando il team e assegnando il lavoro)."
+    },
+    {
+      "id": 12,
+      "type": "open",
+      "question": "What is the difference between a resource, an activity, a phase, a milestone, and a deliverable in project management?",
+      "explanation": "Questi termini indicano concetti ben distinti:\n- Resource: persone e strumenti necessari per portare avanti il progetto.\n- Activity: tempo speso da una singola risorsa per eseguire un compito specifico, coerente e ben definito.\n- Phase: raggruppamento di più attività che devono essere eseguite.\n- Milestone: evento o una condizione chiave del progetto (es. \"consegna del documento di design\") che funge da traguardo e ha un impatto diretto sull'inizio delle attività successive.\n- Deliverable: prodotto finale o intermedio del processo (es. codice, casi di test, prototipi). Può essere a uso interno per il team, oppure esterno da consegnare al cliente, con o senza un valore contrattuale."
+    },
+    {
+      "id": 13,
+      "type": "open",
+      "question": "Compare project management in a traditional Waterfall process and in an iterative/agile process.",
+      "explanation": "Nel processo Waterfall (a Cascata), il piano di progetto viene definito integralmente e in un'unica volta subito dopo la fase di definizione dei requisiti. È un approccio rigido, molto adatto ad ambienti stabili, grandi progetti o sistemi critici per la sicurezza (es. aerospaziale, automotive).\nNel processo Iterativo o Agile, il piano di progetto non viene definito interamente all'inizio, ma viene creato un nuovo piano per ogni singola iterazione, adattandosi ai \"requisiti dinamici\" man mano che emergono. È un approccio flessibile, ideale per ambienti dinamici e progetti di dimensioni ridotte (es. web, app mobile)."
+    },
+    {
+      "id": 14,
+      "type": "open",
+      "question": "Explain the difference between calendar time and effort.",
+      "explanation": "Il Tempo di Calendario è la misurazione cronologica effettiva del tempo (in giorni, settimane o date precise del calendario) che trascorre dall'inizio alla fine di un'attività. Deve tenere conto, ad esempio, delle ferie o dei giorni non lavorativi.\nL'Impegno (Effort) indica invece l'ammontare totale di lavoro netto necessario per completare un compito. Dipende dal numero di persone impiegate e si calcola moltiplicando il numero di risorse per la durata, misurandolo comunemente in \"ore-persona\" (person hours).\nLe due metriche sono collegate ma non coincidenti: ad esempio, un effort di 6 ore-persona richiederà 6 ore di tempo di calendario se ci lavora 1 persona, ma solo 3 ore di tempo di calendario se 2 persone ci lavorano contemporaneamente."
+    },
+    {
+      "id": 15,
+      "type": "open",
+      "question": "Describe the main steps of the risk management process.",
+      "explanation": "I passaggi principali sono:\n1. Risk identification: Riconoscere i rischi possibili analizzando il progetto o le esperienze passate (classificandoli in noti, prevedibili o sconosciuti).\n2. Risk analysis/assessment: Calcolare e classificare la probabilità che il rischio si verifichi, il suo impatto (da trascurabile a catastrofico) e calcolare l'esposizione al rischio (probabilità moltiplicata per impatto).\n3. Risk planning: Decidere la strategia da adottare per ogni rischio. Le tre opzioni principali sono: evitarlo (cambiando i requisiti), trasferirlo (es. a un altro sistema o tramite assicurazioni) oppure assumerlo e tenerlo sotto controllo.\n4. Risk monitoring: Tenere continuamente traccia dello stato dei rischi tramite un Risk Log durante il progetto, applicando eventuali azioni correttive e aggiornando costantemente l'analisi con l'identificazione di nuovi rischi."
+    },
+    {
+      "id": 16,
+      "type": "multiple",
+      "question": "In project management, what is a deliverable?",
+      "options": [
+        "The amount of time spent by a resource on a task",
+        "A final or intermediate product produced during the process",
+        "A person or tool used in the project",
+        "A risk that has already occurred"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 17,
+      "type": "multiple",
+      "question": "Which formula correctly represents effort?",
+      "options": [
+        "Effort = cost per hour × productivity",
+        "Effort = number of resources × duration",
+        "Effort = price × duration",
+        "Effort = impact × probability"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 18,
+      "type": "multiple",
+      "question": "What does a Gantt chart mainly show?",
+      "options": [
+        "The internal structure of the source code",
+        "The personality types of team members",
+        "Activities placed on a calendar, including dependencies and parallel or serial tasks",
+        "The market value of the final software product"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 19,
+      "type": "multiple",
+      "question": "What is risk exposure?",
+      "options": [
+        "Risk probability × risk impact",
+        "Risk probability × project duration",
+        "Risk control × team size",
+        "Risk impact × software size"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 20,
+      "type": "multiple",
+      "question": "In risk management, what is the purpose of risk monitoring?",
+      "options": [
+        "To define the initial project requirements only once",
+        "To monitor risk status during the project, identify new risks, and update the risk ranking",
+        "To replace all corrective actions with reactive decisions",
+        "To estimate source code size using lines of code"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 21,
+      "type": "open",
+      "question": "Explain the goal of Requirements Engineering.",
+      "explanation": "L'obiettivo principale è descrivere cosa il sistema dovrà fare, formalizzandolo all'interno di un Documento dei Requisiti. In sintesi, consiste nel definire chiaramente le proprietà che il prodotto dovrà possedere ancor prima di iniziare lo sviluppo."
+    },
+    {
+      "id": 22,
+      "type": "open",
+      "question": "What is the difference between a requirement and a product property?",
+      "explanation": "Un requisito è una richiesta o aspettativa iniziale, mentre una proprietà del prodotto è la caratteristica effettiva che il sistema avrà una volta realizzato. Il prodotto finale può avere o non avere proprietà che corrispondono esattamente ai requisiti iniziali: ad esempio, un requisito potrebbe richiedere un tempo di risposta inferiore a 0,5 secondi, ma la proprietà reale del prodotto finito potrebbe tradursi in un tempo di risposta compreso tra 2 e 10 secondi."
+    },
+    {
+      "id": 23,
+      "type": "open",
+      "question": "What are the main properties of good requirements?",
+      "explanation": "Dei requisiti devono possedere due caratteristiche fondamentali:\n- Completezza (Completeness): devono includere le descrizioni di tutte le funzionalità richieste dal sistema.\n- Coerenza (Consistency): non devono presentare conflitti o contraddizioni tra le varie descrizioni delle funzionalità.\nInoltre, i requisiti (specialmente quelli non funzionali) devono essere misurabili, altrimenti risultano inutili. I buoni requisiti evitano anche difetti comuni come l'ambiguità, la ridondanza, le omissioni e le sovraspecifiche (ovvero scendere già in dettagli di design)."
+    },
+    {
+      "id": 24,
+      "type": "open",
+      "question": "Describe the role of context diagrams and interfaces in Requirements Engineering.",
+      "explanation": "Nell'Ingegneria dei Requisiti, il diagramma di contesto serve a definire i confini del sistema e il suo ambiente. Il suo ruolo è chiarire cosa è dentro il sistema (ciò che il team sta sviluppando) e cosa è fuori (le entità esterne che si interfacciano col sistema, come attori, utenti o altre applicazioni).\nLe interfacce (che possono essere interfacce utente, procedurali o di scambio dati) definiscono le modalità fisiche e logiche con cui il sistema scambia informazioni e servizi con l'esterno. Insieme, diagramma di contesto e interfacce sono essenziali per concordare l'ambito (scope) d'azione del sistema."
+    },
+    {
+      "id": 25,
+      "type": "open",
+      "question": "What is the difference between functional and non-functional requirements?",
+      "explanation": "I requisiti funzionali descrivono i servizi e i comportamenti specifici che il sistema deve fornire. Essi definiscono operativamente \"cosa deve fare il programma\".\nI requisiti non funzionali impongono invece dei vincoli sui servizi forniti dal sistema. Non descrivono una singola funzione, ma metriche di qualità globale come l'usabilità, l'efficienza, la manutenibilità, l'affidabilità, la sicurezza e la \"safety\". Spesso sono addirittura più critici di quelli funzionali: se i requisiti non funzionali non vengono rispettati, il sistema risulta del tutto inutilizzabile."
+    },
+    {
+      "id": 26,
+      "type": "multiple",
+      "question": "What is the main purpose of Requirements Engineering?",
+      "options": [
+        "To write the final source code of the system",
+        "To define the product properties before development starts",
+        "To replace project management activities",
+        "To decide the final price of the software product"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 27,
+      "type": "multiple",
+      "question": "Which of the following is an example of a non-functional requirement?",
+      "options": [
+        "The user shall be able to add a product to the shopping cart",
+        "The system shall process payment transactions",
+        "Each function shall respond in less than half a second",
+        "The administrator shall be able to update product information"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 28,
+      "type": "multiple",
+      "question": "What is the purpose of a context diagram?",
+      "options": [
+        "To define what is inside and outside the system and identify interfaces with external actors",
+        "To describe the internal source code structure",
+        "To estimate the cost of implementation",
+        "To replace all functional requirements"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 29,
+      "type": "multiple",
+      "question": "Which of the following is a typical defect in requirements?",
+      "options": [
+        "Use of test cases",
+        "Ambiguity",
+        "Clear numbering",
+        "Stakeholder identification"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 30,
+      "type": "multiple",
+      "question": "Why are non-measurable non-functional requirements problematic?",
+      "options": [
+        "Because they are always too detailed",
+        "Because they cannot be implemented in any programming language",
+        "Because they are difficult or impossible to verify objectively",
+        "Because they only apply to user interfaces"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 31,
+      "type": "open",
+      "question": "Explain how software architecture helps a system remain maintainable as it changes and grows over time.",
+      "explanation": "L'architettura software conferisce al sistema una \"forma\" organizzata (dividendolo in componenti e stabilendone le comunicazioni) con lo scopo specifico di facilitarne lo sviluppo, la distribuzione, l'operatività e, soprattutto, la manutenzione. Dato che i sistemi di successo inevitabilmente crescono e aumentano di complessità col tempo, l'architettura aiuta a gestire questa complessità separando le \"policy\" (le regole di business, che cambiano meno di frequente) dai \"meccanismi\" (interfacce, database, framework, che cambiano spesso). Questa rigida gestione delle dipendenze permette al sistema di evolvere senza crollare sotto il peso della sua stessa complessità."
+    },
+    {
+      "id": 32,
+      "type": "open",
+      "question": "Describe the goals of software architecture in relation to development, maintenance, and long-term cost.",
+      "explanation": "I tre obiettivi supremi di una buona architettura software sono:\n1. Mantenere il sistema di valore e utile per i suoi utenti nel corso del tempo.\n2. Minimizzare i costi di vita (lifetime cost) del sistema.\n3. Massimizzare la produttività dei programmatori.\nPer raggiungere questi traguardi, l'architettura deve mirare a rendere il sistema il più possibile facile da comprendere, sviluppare, mantenere, rilasciare e modificare."
+    },
+    {
+      "id": 33,
+      "type": "open",
+      "question": "Explain the role of modularity in software architecture, focusing on decomposition into components or services.",
+      "explanation": "La modularità è il concetto fondante per scomporre e organizzare un sistema complesso. Consiste nel dividere il software in componenti o servizi (che possono essere file, classi, librerie o interi microservizi) puntando a due metriche fondamentali: alta coesione (mantenere vicine le funzioni e i dati che hanno senso insieme) e basso accoppiamento (minimizzare le dipendenze tra moduli diversi). Questo permette di lavorare su una parte del sistema senza dover necessariamente conoscere o interferire con le altre."
+    },
+    {
+      "id": 34,
+      "type": "open",
+      "question": "Compare monolithic and distributed architectures in terms of deployment units, communication, scalability, and operational complexity.",
+      "explanation": "- Deployment: L'architettura monolitica raggruppa tutto il codice in una singola unità di rilascio globale, mentre l'architettura distribuita utilizza unità di rilascio multiple e separate.\n- Comunicazione: Nel monolite i componenti comunicano internamente senza sovraccarico di rete, mentre nel modello distribuito la comunicazione avviene tramite protocolli di accesso remoto (es. HTTP/REST).\n- Scalabilità: Il monolite ha limiti pratici di scalabilità indipendente: se una singola funzione richiede più risorse, bisogna replicare l'intero monolite su più server. Le architetture distribuite permettono invece di scalare le singole istanze dei servizi solo dove e quando serve.\n- Complessità operativa: Il monolite vanta un modello operativo molto più semplice, che facilita enormemente i test e il debugging. L'architettura distribuita aggiunge un forte \"overhead\" (sovraccarico) e molta complessità dovuta alla rete e alla gestione parallela dei processi."
+    },
+    {
+      "id": 35,
+      "type": "open",
+      "question": "Describe the main characteristics of microservices and explain why business boundaries, autonomy, and independent deployment are important.",
+      "explanation": "I microservizi portano la scomposizione in domini all'estremo: sono piccoli servizi software autonomi, racchiusi nei propri \"contesti limitati\" (bounded contexts), che comunicano tramite interfacce standardizzate.\n- Business boundaries (Confini di business): È fondamentale mappare i servizi sui confini aziendali logici perché permette di raggruppare nello stesso servizio \"le cose che cambiano per lo stesso motivo\" e separarle da quelle che cambiano per motivi diversi.\n- Autonomia: Ogni servizio è un processo a sé stante con il proprio database. Questo garantisce il disaccoppiamento: una modifica fatta a un servizio non deve avere alcun impatto a cascata sui clienti o sugli altri servizi. Permette inoltre a team di piccole dimensioni di lavorarci in modo iper-produttivo.\n- Rilascio indipendente: Nelle architetture tradizionali una piccola modifica richiede di compilare e rilasciare l'intero sistema, un processo lungo e rischioso. Nei microservizi, il rilascio indipendente fa sì che si debba aggiornare unicamente il servizio modificato: questo rende i rilasci estremamente più veloci, frequenti e meno rischiosi per l'azienda."
+    },
+    {
+      "id": 36,
+      "type": "multiple",
+      "question": "Software architecture is mainly concerned with:",
+      "options": [
+        "The visual style of the user interface and the naming of classes",
+        "The division of the system into components, their arrangement, and their communication",
+        "The detailed implementation of every method before development starts",
+        "The selection of programming language only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 37,
+      "type": "multiple",
+      "question": "In Clean Architecture, what does the Dependency Rule state?",
+      "options": [
+        "Inner policy layers should depend on outer mechanism layers",
+        "Source code dependencies should point inward, toward higher-level policies",
+        "Databases should directly control business entities",
+        "User interfaces should contain all business rules"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 38,
+      "type": "multiple",
+      "question": "Which statement best describes a modular monolith?",
+      "options": [
+        "It is deployed as multiple independent services, each with its own process",
+        "It is deployed as a single unit, but its internal modules should have clear responsibilities and boundaries",
+        "It has no internal structure and all code is placed in one module",
+        "It requires every module to communicate only through network calls"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 39,
+      "type": "multiple",
+      "question": "When is a layered architecture generally less suitable?",
+      "options": [
+        "For small applications with clear separation of responsibilities",
+        "For situations with low budget and short time",
+        "For high-performance or highly dynamic systems",
+        "For applications that need a simple starting structure"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 40,
+      "type": "multiple",
+      "question": "What is a main trade-oF of microservices?",
+      "options": [
+        "They remove all communication overhead",
+        "They make every system simpler by default",
+        "They support independent scaling and deployment, but add communication and operational complexity",
+        "They require all services to share the same database and programming language"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 41,
+      "type": "open",
+      "question": "Explain how Docker supports the deployment of applications with different frameworks, versions, and dependencies on the same host.",
+      "explanation": "Docker risolve il problema della coesistenza di applicazioni con requisiti incompatibili virtualizzando il sistema operativo. A differenza dei metodi tradizionali, i container Docker non possiedono un proprio sistema operativo interno, ma condividono il kernel del sistema operativo della macchina ospitante (host). Al tempo stesso, Docker dota ogni container di una propria copia virtuale della tabella dei processi, delle interfacce di rete e dei punti di montaggio del file system. Questo elevato livello di isolamento consente di far girare contemporaneamente sullo stesso host più container con dipendenze ed esigenze totalmente differenti (come versioni diverse di Node.js, Java o Python) senza che entrino in conflitto tra loro."
+    },
+    {
+      "id": 42,
+      "type": "open",
+      "question": "Compare Docker containers and virtual machines.",
+      "explanation": "Le Macchine Virtuali (VM) includono un intero sistema operativo ospite (Guest OS) che viene eseguito sopra un hypervisor. Questo le rende pesanti, avide di risorse e lente all'avvio. I Container Docker, invece, non hanno un sistema operativo ospite, ma condividono direttamente il kernel dell'host. Questo approccio li rende estremamente più leggeri: occupano pochissimo spazio su disco, sono meno esigenti in termini di risorse hardware e si avviano molto più rapidamente rispetto alle VM."
+    },
+    {
+      "id": 43,
+      "type": "open",
+      "question": "Describe the difference between a Docker image and a Docker container.",
+      "explanation": "Un'Immagine Docker è un modello statico (template). Consiste in una sorta di \"fotografia\" (snapshot) dell'applicazione e del suo ambiente, e contiene il codice, le dipendenze e tutto ciò che serve per farla girare. Un Container Docker è invece l'entità logica dinamica: è l'istanza vera e propria dell'immagine quando questa è in esecuzione all'interno dell'ambiente Docker. In sintesi, l'immagine è il progetto di partenza, il container è il programma in azione."
+    },
+    {
+      "id": 44,
+      "type": "open",
+      "question": "Explain how Docker image layers and container layers work. Include the difference between read-only image layers and the read-write container layer.",
+      "explanation": "La gestione dello spazio e delle modifiche in Docker si basa sulla sovrapposizione di livelli (layers):\n- Livelli dell'Immagine (Read-Only): Quando si costruisce un'immagine tramite il Dockerfile, ogni istruzione genera un nuovo livello di sola lettura e immutabile. Questi livelli vengono impilati l'uno sull'altro e uniti per formare l'immagine finale tramite l'Union File System. Se più container nascono dalla stessa immagine, possono condividere serenamente questi livelli di base.\n- Livello del Container (Read-Write): Quando si avvia un container a partire da un'immagine, Docker aggiunge un sottile livello di lettura-scrittura (Read-Write) in cima ai livelli dell'immagine. Durante l'esecuzione del container, tutte le modifiche ai file avvengono solo su questo livello specifico, tramite una procedura chiamata Copy-On-Write (COW), senza alterare in alcun modo l'immagine originale sottostante. Tuttavia, quando il container viene distrutto, questo livello R/W viene rimosso definitivamente e tutti i dati non salvati altrove vanno persi."
+    },
+    {
+      "id": 45,
+      "type": "open",
+      "question": "Describe the role of Docker Compose in multi-container applications.",
+      "explanation": "Docker Compose è lo strumento fondamentale per definire e gestire applicazioni complesse che richiedono più container per funzionare. Utilizzando un singolo file di configurazione (il docker-compose.yml), permette di dichiarare in un colpo solo:\n- I servizi (i diversi container dell'applicazione, es. backend e frontend).\n- Le reti (affinché i container possano comunicare tra loro).\n- I volumi (per salvare in modo persistente i dati all'esterno dei container).\nGrazie a questo file, Docker Compose automatizza interamente la creazione, l'avvio e la configurazione dell'intera infrastruttura multi-container, semplificando notevolmente le fasi di sviluppo, test e rilascio."
+    },
+    {
+      "id": 46,
+      "type": "multiple",
+      "question": "What is Docker mainly used for?",
+      "options": [
+        "Designing graphical user interfaces",
+        "Building, running, managing, and distributing containerised applications",
+        "Replacing all operating systems with virtual machines",
+        "Writing source code automatically"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 47,
+      "type": "multiple",
+      "question": "Which statement best describes a Docker container?",
+      "options": [
+        "A static template used only to build applications",
+        "A complete virtual machine with its own guest operating system",
+        "A running instance of a Docker image with an isolated environment",
+        "A remote repository for storing source code"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 48,
+      "type": "multiple",
+      "question": "What happens when a Docker container is destroyed, assuming no volume or external storage is used?",
+      "options": [
+        "The original image layers are modified permanently",
+        "The container layer is removed, including the changes stored in it",
+        "All containers created from the same image are deleted",
+        "The Docker Engine is uninstalled"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 49,
+      "type": "multiple",
+      "question": "What is the purpose of a Dockerfile?",
+      "options": [
+        "To define the instructions needed to build a Docker image",
+        "To monitor CPU usage of the host machine only",
+        "To replace the need for any application dependencies",
+        "To configure Git branches and commits"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 50,
+      "type": "multiple",
+      "question": "What is the main difference between Continuous Delivery and Continuous Deployment?",
+      "options": [
+        "Continuous Delivery has no automated tests, while Continuous Deployment does",
+        "Continuous Delivery requires manual approval before production deployment, while Continuous Deployment deploys automatically after successful checks",
+        "Continuous Delivery is only for Docker images, while Continuous Deployment is only for source code",
+        "Continuous Delivery runs locally, while Continuous Deployment cannot use pipelines"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 51,
+      "type": "open",
+      "question": "Explain the main ideas of Agile software development.",
+      "explanation": "L'Agile software development non è solo una metodologia tecnica, ma un approccio radicalmente diverso all'organizzazione del lavoro e alla collaborazione. Si fonda sui valori del Manifesto Agile, che privilegiano: gli individui e le interazioni rispetto a processi e strumenti; il software funzionante rispetto alla documentazione esaustiva; la collaborazione col cliente rispetto alla negoziazione contrattuale; e la risposta al cambiamento rispetto al seguire rigidamente un piano. L'obiettivo principale è rispondere rapidamente ai cambiamenti e migliorare continuamente sia il prodotto che il processo di sviluppo, consegnando valore in modo incrementale."
+    },
+    {
+      "id": 52,
+      "type": "open",
+      "question": "Compare Agile and traditional development in terms of planning, release frequency, response to change, and customer involvement.",
+      "explanation": "- Pianificazione: L'approccio tradizionale (es. Waterfall) si basa su una massiccia pianificazione iniziale e su processi rigidi. L'Agile, al contrario, favorisce l'adattabilità e la suddivisione in cicli brevi (iterazioni), permettendo di modificare i piani in base al feedback.\n- Frequenza di rilascio: Nel modello tradizionale il rilascio del prodotto avviene di solito in un'unica soluzione alla fine del progetto (ad esempio dopo mesi o anni). L'Agile adotta consegne piccole e frequenti (da un paio di settimane a un paio di mesi), promuovendo cicli molto più brevi per mettere in produzione il sistema il prima possibile.\n- Risposta al cambiamento: Lo sviluppo tradizionale rende molto difficili e onerosi i cambiamenti in corso d'opera. L'Agile accoglie positivamente i cambiamenti dei requisiti, persino in fasi avanzate, sfruttandoli come un vantaggio competitivo per il cliente.\n- Coinvolgimento del cliente: I metodi tradizionali spesso escludono il cliente o l'utente finale dopo la fase di definizione dei requisiti. L'Agile impone invece una stretta collaborazione quotidiana tra sviluppatori e stakeholder (business people) per tutta la durata del progetto."
+    },
+    {
+      "id": 53,
+      "type": "open",
+      "question": "Describe the main roles in Scrum.",
+      "explanation": "- Product Owner (PO): Controlla l'ordine di priorità degli elementi nel backlog del team. Lavora a stretto contatto con gli stakeholder per assicurare che venga consegnato il massimo valore di business (decidendo cosa costruire e quando) e mantiene viva la \"visione\" del prodotto (per chi è costruito e perché).\n- Scrum Master: Agisce come un facilitatore e un \"coach\", non come un capo. Il suo obiettivo è supportare il team affinché si auto-organizzi, mediare i conflitti e rimuovere qualsiasi impedimento o ostacolo, sia interno che esterno, che blocchi il lavoro.\n- Team members (Membri del team): Sono le persone (solitamente tra 5 e 9) che collaborano attivamente per raggiungere l'obiettivo finale. Si auto-organizzano decidendo autonomamente gli strumenti, l'assegnazione dei compiti e stimando l'impegno necessario per sviluppare le funzionalità."
+    },
+    {
+      "id": 54,
+      "type": "open",
+      "question": "Explain the purpose of the Scrum Sprint and describe the main Scrum activities.",
+      "explanation": "Lo Sprint è l'iterazione di base all'interno di Scrum: è un ciclo di lavoro a tempo fisso (da 1 a 4 settimane) che ha lo scopo di produrre un pezzo di software funzionante pronto per essere dimostrato e revisionato.\nLe attività (o eventi) principali che si svolgono durante o attorno allo Sprint sono:\n- Sprint Planning (Pianificazione): Incontro in cui si decide cosa fare (selezionando le storie dal Product Backlog) e come farlo (scomponendo le storie in piccoli task e stimandone il tempo). Il risultato è la creazione dello Sprint Backlog.\n- Daily Scrum: Un incontro quotidiano brevissimo (massimo 15 minuti, solitamente in piedi) dedicato solo al team di sviluppo. Serve ad aggiornarsi su cosa è stato completato, cosa si farà e quali ostacoli si stanno incontrando.\n- Story Time (Raffinamento del backlog): Un momento dedicato a revisionare, chiarire e stimare (sizing) le user story future affinché siano ben comprese e pronte per gli sprint successivi.\n- Sprint Review: Una dimostrazione in cui si mostra il software funzionante agli stakeholder per raccogliere le loro reazioni e i loro feedback, che guideranno le future decisioni del Product Owner.\n- Sprint Retrospective: Una riunione finale che esamina i dati e i processi dello sprint appena concluso. L'obiettivo è generare intuizioni sulle cause dei problemi (senza cercare colpevoli) e decidere come migliorare l'efficacia nel ciclo successivo."
+    },
+    {
+      "id": 55,
+      "type": "open",
+      "question": "Describe the main principles of Extreme Programming.",
+      "explanation": "L'Extreme Programming (XP) porta i concetti agili all'estremo attraverso pratiche molto rigorose:\n- Separazione delle decisioni: Mantenere una chiara distinzione tra le decisioni di business (prese dagli stakeholder) e le decisioni tecniche (prese dagli sviluppatori).\n- Semplicità del design (Simplistic): Mantenere il design dell'architettura il più semplice possibile, seguendo la filosofia del \"progetta per l'esigenza di oggi, non per quella di domani\".\n- Test Driven Development (TDD): Scrivere il codice dei test automatici prima di scrivere il codice di produzione vero e proprio. Prevede test unitari per i programmatori (che devono passare sempre al 100%) e test di accettazione per verificare il raggiungimento degli obiettivi del cliente.\n- Pair programming (Programmazione in coppia): Tutto il codice di produzione viene scritto da due persone su un unico computer. Una persona (Person 1) implementa il metodo, mentre l'altra (Person 2) pensa in ottica strategica a test e miglioramenti. Questo garantisce ispezioni continue ed evita l'esistenza di un unico \"esperto\" per un dato pezzo di codice.\n- Rilasci piccoli (Small releases): Mettere il sistema in produzione il più in fretta possibile per ottenere feedback veloci, preferendo cicli di pianificazione molto brevi (1-2 mesi) anziché pianificazioni a lungo termine.\n- Cliente sul posto (On-site customer): Il vero cliente del progetto deve essere parte integrante del team per definire le esigenze di business, risolvere rapidamente i problemi e prioritizzare le funzionalità."
+    },
+    {
+      "id": 56,
+      "type": "multiple",
+      "question": "What is one of the main goals of Agile software development?",
+      "options": [
+        "To avoid customer feedback until the final release",
+        "To respond quickly to change and deliver value incrementally",
+        "To remove collaboration between developers and stakeholders",
+        "To produce a complete plan that cannot be changed"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 57,
+      "type": "multiple",
+      "question": "In Scrum, what is the main responsibility of the Product Owner?",
+      "options": [
+        "To control the priority of backlog items and maximise business value",
+        "To assign every task directly to individual developers",
+        "To replace the development team during the Sprint",
+        "To manage the operating system and deployment infrastructure"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 58,
+      "type": "multiple",
+      "question": "What is the main purpose of the Scrum Master?",
+      "options": [
+        "To act as the boss of the team",
+        "To write all user stories alone",
+        "To facilitate the team, remove impediments, and support self-organisation",
+        "To approve every line of source code"
+      ],
+      "answer": 2
+    },
+    {
+      "id": 59,
+      "type": "multiple",
+      "question": "What does the INVEST principle describe?",
+      "options": [
+        "Properties of good Product Backlog Items",
+        "The financial budget of a software company",
+        "The stages of a release pipeline",
+        "The structure of a database schema"
+      ],
+      "answer": 0,
+      "explanation": "Il principio INVEST (Independent, Negotiable, Valuable, Estimable, Small, Testable) descrive le caratteristiche desiderabili delle user story all’interno del Product Backlog, garantendo che siano gestibili e di valore per il team e per il cliente."
+    },
+    {
+      "id": 60,
+      "type": "multiple",
+      "question": "Which statement best describes Test-Driven Development in Extreme Programming?",
+      "options": [
+        "Tests are written only after the system is released",
+        "Automated tests are written before production code and run frequently",
+        "Testing is performed only by the final customer",
+        "Tests replace the need for working software"
+      ],
+      "answer": 1
+    },
+    {
+      "id": 61,
+      "type": "multiselect",
+      "question": "Selezionare tutte e sole le affermazioni corrette:",
+      "options": [
+        "L’ambiguità nei requisiti è accettabile se il requisito è breve.",
+        "Un requisito funzionale descrive principalmente la struttura interna del codice.",
+        "Un context diagram aiuta a distinguere ciò che è dentro il sistema da ciò che è esterno al sistema.",
+        "Un requisito non funzionale non deve essere verificabile, perché riguarda qualità generali del sistema.",
+        "Un requisito come “il sistema deve rispondere entro 500 ms nel 95% delle richieste” è verificabile."
+      ],
+      "answer": [
+        2,
+        4
+      ]
+    },
+    {
+      "id": 62,
+      "type": "multiselect",
+      "question": "Selezionare tutte e sole le affermazioni corrette:",
+      "options": [
+        "Una layered architecture richiede sempre che ogni layer sia distribuito su un server diverso.",
+        "In Clean Architecture, le dipendenze del codice devono puntare ai dettagli infrastrutturali esterni.",
+        "I microservizi eliminano il costo della comunicazione tra componenti.",
+        "L’architettura software riguarda anche la divisione del sistema in componenti e le loro comunicazioni.",
+        "Un monolite modulare è distribuito come insieme di servizi indipendenti."
+      ],
+      "answer": [
+        3
+      ]
+    },
+    {
+      "id": 63,
+      "type": "multiselect",
+      "question": "Selezionare tutte e sole le affermazioni corrette:",
+      "options": [
+        "L’effort misura il lavoro impiegato, mentre il calendario misura il tempo trascorso.",
+        "Un Gantt chart descrive la struttura interna delle classi software.",
+        "Un deliverable è un risultato finale o intermedio prodotto durante il progetto.",
+        "La risk exposure si calcola come durata del progetto divisa per il numero di risorse.",
+        "Una milestone è una persona assegnata a un’attività."
+      ],
+      "answer": [
+        0,
+        2
+      ]
+    },
+    {
+      "id": 64,
+      "type": "multiselect",
+      "question": "Selezionare tutte e sole le affermazioni corrette:",
+      "options": [
+        "Continuous Delivery e Continuous Deployment significano esattamente la stessa cosa.",
+        "Un container Docker è una macchina virtuale completa con un proprio sistema operativo guest.",
+        "Distruggere un container modifica permanentemente i layer read-only dell’immagine.",
+        "Docker Compose può essere usato per definire applicazioni composte da più container.",
+        "Un’immagine Docker è un template da cui possono essere creati container."
+      ],
+      "answer": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": 65,
+      "type": "multiple",
+      "question": "Che cos’è una configuration (nel contesto del configuration management)?",
+      "options": [
+        "È una collezione di elementi di un progetto software e delle loro versioni esatte in un dato momento",
+        "È un processo di controllo delle modifiche al codice",
+        "È un database non versionato che conserva la documentazione di progetto",
+        "È un artefatto binario generato dalla build",
+        "È il calendario delle versioni rilasciate"
+      ],
+      "answer": 0
+    },
+    {
+      "id": 66,
+      "type": "multiselect",
+      "question": "Quali sono le differenze chiave fra processo waterfall e processo iterativo?",
+      "options": [
+        "Il waterfall è sempre più breve di un processo iterativo",
+        "Nel waterfall le fasi sono sequenziali senza sovrapposizioni significative, nell’iterativo si ripetono cicli incrementali",
+        "Il processo iterativo richiede meno coinvolgimento degli stakeholder rispetto al waterfall",
+        "Il waterfall consegna software funzionante solo alla fine, l’iterativo fornisce versioni eseguibili a ogni ciclo",
+        "Il waterfall è intrinsecamente agile"
+      ],
+      "answer": [
+        1,
+        3
+      ]
+    },
+    {
+      "id": 67,
+      "type": "multiselect",
+      "question": "Qual è la differenza tra effort e calendar time?",
+      "options": [
+        "L’effort misura le ore/uomo totali, il calendar time misura l’intervallo di tempo trascorso",
+        "L’effort non varia con la dimensione del team, il calendar time può ridursi aggiungendo persone",
+        "L’effort equivale alla durata moltiplicata per il costo",
+        "Il calendar time coincide sempre con l’effort per attività a singolo operatore",
+        "L’effort non può essere stimato"
+      ],
+      "answer": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": 68,
+      "type": "multiselect",
+      "question": "Cos’è un Gantt chart?",
+      "options": [
+        "È un diagramma a barre che mostra le attività lungo una linea temporale",
+        "È uno strumento per visualizzare dipendenze e sovrapposizioni fra attività management)",
+        "È una tecnica principale di analisi dei rischi di progetto",
+        "È un mezzo per monitorare l’avanzamento rispetto al piano iniziale",
+        "È un diagramma UML dell’architettura software"
+      ],
+      "answer": [
+        0,
+        1,
+        3
+      ]
+    },
+    {
+      "id": 69,
+      "type": "multiselect",
+      "question": "Quali tra queste risposte contribuiscono alla definizione dei requisiti non funzionali?",
+      "options": [
+        "Specificano qualità come prestazioni, sicurezza, usabilità più che comportamento funzionale",
+        "Requisiti non verificabili mediante test",
+        "Impongono vincoli sul modo in cui il sistema deve operare piuttosto che su ciò che deve fare",
+        "Elementi di backlog a bassa priorità",
+        "Miglioramenti facoltativi che possono essere posticipati"
+      ],
+      "answer": [
+        0,
+        2
+      ]
+    },
+    {
+      "type": "multiple",
+      "question": "Un buon documento dei requisiti dovrebbe essere:",
+      "options": [
+        "Completo e consistente",
+        "Ambiguo e completo",
+        "Ridondante e consistente",
+        "Affidabile e completo",
+        "Misurabile e completo"
+      ],
+      "answer": 0,
+      "id": 70
+    },
+    {
+      "type": "multiselect",
+      "question": "Quali sono i benefici del pair programming?",
+      "options": [
+        "Maggiore qualità del codice",
+        "Maggiore velocità di sviluppo",
+        "Riduzione dei costi di sviluppo",
+        "Aumento della conoscenza condivisa",
+        "Definizione dell'intero design del software nelle fasi iniziali del progetto"
+      ],
+      "answer": [
+        0,
+        3
+      ],
+      "id": 71
+    },
+    {
+      "type": "multiple",
+      "question": "Considerando i requisiti non-funzionali di una applicazione software",
+      "options": [
+        "L'affidabilità è più importante dell'usabilità e della manutenibilità",
+        "L'usabilità è più importante dell'affidabilità e della manutenibilità",
+        "La manutenibilità è più importante dell'usabilità e dell'affidabilità.",
+        "La manutenibilità, l'affidabilità e l'usabilità sono ugualmente importanti.",
+        "La classificazione delle proprietà non funzionali deve essere definita dalle parti interessate."
+      ],
+      "answer": 4,
+      "id": 72
+    },
+    {
+      "type": "multiple",
+      "question": "La funzione A chiama la funzione B, che a sua volta chiama la funzione C. Applicando la tecnica di integrazione bottom-up come si deve procedere?",
+      "options": [
+        "Test di C, poi test di B+C, poi test di A+B+C",
+        "Test di C, poi test di A+B+C",
+        "Test di A+B+C",
+        "Test di C, poi test di B + mock di C, test di A + mock di B, test di A+B+C",
+        "Test di A + mock di B, test di A+B+ mock di C, test di A+B+C"
+      ],
+      "answer": 0,
+      "id": 73
+    },
+    {
+      "type": "multiselect",
+      "question": "Quali sono gli elementi chiave di un diagramma di Gantt?",
+      "options": [
+        "Attività",
+        "Responsabili delle attività",
+        "Sequenze temporali",
+        "Budget di progetto",
+        "Milestone"
+      ],
+      "answer": [
+        0,
+        2,
+        4
+      ],
+      "id": 74
+    },
+    {
+      "type": "multiselect",
+      "question": "Quali scenari di sviluppo richiedono un’elevata percentuale di costi di manutenzione?",
+      "options": [
+        "Software di consumo (giochi)",
+        "Sistemi operativi",
+        "IT a supporto delle aziende",
+        "Software per dispositivi mobili",
+        "Nessuna delle precedenti"
+      ],
+      "answer": [
+        1,
+        2
+      ],
+      "id": 75
+    },
+    {
+      "type": "multiselect",
+      "question": "Quali sono i vantaggi dell’utilizzo di un modello di controllo delle modifiche Lock-Modify-Unlock?",
+      "options": [
+        "Nessuna modifica concorrente",
+        "Maggiore velocità di sviluppo",
+        "Obbliga a serializzare il lavoro",
+        "Facilità di utilizzo",
+        "Riduzione dei conflitti"
+      ],
+      "answer": [
+        0,
+        4
+      ],
+      "id": 76
+    },
+    {
+      "type": "multiselect",
+      "question": "Quali sono i principali svantaggi del modello di architettura a repository?",
+      "options": [
+        "Difficoltà nel gestire l’evoluzione dei dati",
+        "Aumento della sicurezza del sistema",
+        "I sottosistemi devono concordare su un modello di dati comune",
+        "Mancanza di un registro centrale di nomi e servizi",
+        "Facile gestione centralizzata"
+      ],
+      "answer": [
+        0,
+        2
+      ],
+      "id": 77
+    },
+    {
+      "type": "multiple",
+      "question": "Quale delle seguenti non è una tecnica applicabile al testing white box?",
+      "options": [
+        "Coverage degli statement",
+        "Boundary condition testing",
+        "Coverage dei path",
+        "Coverage delle decisioni",
+        "Coverage dei loop"
+      ],
+      "answer": 1,
+      "id": 78
+    },
+    {
+      "type": "multiple",
+      "question": "Quale dei seguenti approcci di testing è considerato dinamico?",
+      "options": [
+        "Ispezioni",
+        "Analisi del codice sorgente",
+        "Test di unità",
+        "Analisi statica",
+        "Revisione dei requisiti"
+      ],
+      "answer": 2,
+      "id": 79
+    },
+    {
+      "type": "multiselect",
+      "question": "Quali sono le caratteristiche distintive del pattern architetturale “Client-Server”?",
+      "options": [
+        "I dati sono distribuiti in modo uniforme tra tutti i client",
+        "I server forniscono servizi specifici come la gestione dei dati",
+        "Non esiste un modello di dati condiviso tra i sottosistemi",
+        "I client chiamano direttamente i metodi dei server senza intermediari",
+        "I client possono accedere ai server tramite una rete"
+      ],
+      "answer": [
+        1,
+        4
+      ],
+      "id": 80
+    },
+    {
+      "type": "multiselect",
+      "question": "Se si volesse progettare un sistema per la gestione di una fabbrica che è in forte espansione, quali possono essere due proprietà non funzionali che ha senso considerare durante la progettazione di tale sistema?",
+      "options": [
+        "Affidabilità",
+        "Facilità d’uso",
+        "Numero di funzionalità",
+        "Manutenibilità",
+        "Complessità del codice"
+      ],
+      "answer": [
+        0,
+        3
+      ],
+      "id": 81
+    },
+    {
+      "type": "multiselect",
+      "question": "Quali dei seguenti sono esempi di design pattern?",
+      "options": [
+        "Singleton",
+        "Composite",
+        "MVC",
+        "Facade",
+        "Client-Server"
+      ],
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "id": 82
+    },
+    {
+      "type": "multiple",
+      "question": "Qual è uno dei limiti principali dell’ispezione del codice?",
+      "options": [
+        "Non può essere applicata al codice sorgente",
+        "Richiede molto tempo ed è dispendiosa in termini di risorse",
+        "Non è efficace nel trovare difetti funzionali",
+        "Può essere eseguita solo durante il testing dinamico",
+        "Non può rilevare difetti di progettazione"
+      ],
+      "answer": 1,
+      "id": 83
+    },
+    {
+      "id": 84,
+      "type": "multiple",
+      "question": "Which of the following statements accurately distinguishes the primary goals of a software process regarding product and process properties?",
+      "options": [
+        "It aims to optimize process properties, such as development duration and cost, while ensuring product properties, like reliability and functionality, meet requirements.",
+        "It focuses exclusively on accelerating the final deployment pipeline, ignoring internal structural attributes as long as the graphical user interface remains responsive.",
+        "It linearly defines the commercial price of the final deliverable by statically analyzing the total lines of source code written during the implementation phase.",
+        "It strictly mandates the use of functional programming languages to mathematically guarantee the absence of runtime memory leaks in the final application.",
+        "It separates system compilation from integration testing to ensure that hardware resource limits are perfectly balanced across distributed network clusters."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 85,
+      "type": "multiple",
+      "question": "What is a fundamental characteristic and corresponding disadvantage of the traditional Waterfall Model?",
+      "options": [
+        "Activities are executed sequentially without overlap, making it rigid and exceptionally difficult to accommodate requirement changes late in the project lifecycle.",
+        "It requires all source code to be dynamically compiled during runtime, which inherently slows down the overall execution speed of the final software product.",
+        "It completely eliminates the need for formal documentation, which accelerates early development but causes significant confusion during the maintenance phase.",
+        "It forces developers to deploy multiple independent microservices simultaneously, greatly increasing the operational complexity of the server infrastructure.",
+        "It relies heavily on continuous daily feedback from end-users, leading to massive scope creep and constant architectural refactoring throughout the coding phase."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 86,
+      "type": "multiple",
+      "question": "Which of the following statements accurately describes the Test-Driven Development (TDD) technique as utilized in Extreme Programming?",
+      "options": [
+        "Automated test cases are written prior to the production code; the developer writes just enough code to pass the failing test, then refactors the implementation.",
+        "Testing is performed exclusively by the final customer during the User Acceptance Testing phase to guarantee the software perfectly matches the business logic.",
+        "Developers write complex regression test suites only after the entire monolithic system architecture is completely implemented and deployed to the production server.",
+        "It completely replaces the need for continuous integration pipelines by mathematically proving the correctness of algorithms using formal specification languages.",
+        "It involves executing comprehensive mutation testing on external third-party libraries to ensure they do not introduce security vulnerabilities into the application."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 87,
+      "type": "multiselect",
+      "question": "In the context of the Scrum framework, what are the primary responsibilities of the Product Owner?",
+      "options": [
+        "To actively control the priority of Product Backlog items and ensure the development team maximizes the business value of the software being delivered.",
+        "To write all the necessary source code for the most complex architectural features and conduct thorough peer reviews of junior developers' submissions.",
+        "To define clear acceptance criteria for user stories, ensuring the development team understands what is required for an increment to be considered 'Done'.",
+        "To manage the underlying operating system infrastructure and configure the automated Continuous Deployment pipelines for the final production environment.",
+        "To act as the direct supervisor of the development team, conducting performance reviews and assigning highly specific technical tasks during the daily stand-up."
+      ],
+      "answer": [
+        0,
+        2
+      ]
+    },
+    {
+      "id": 88,
+      "type": "multiple",
+      "question": "How does the Incremental software process fundamentally differ from the standard Iterative process?",
+      "options": [
+        "In the Incremental model, requirements and design are fixed upfront, but integration and delivery are split into manageable parts provided to the customer over time.",
+        "The Incremental model completely abandons all forms of formal documentation, whereas the Iterative model requires extensive UML diagrams before writing any code.",
+        "The Incremental model restricts development to solely back-end database optimization, while the Iterative model focuses entirely on graphical user interface enhancements.",
+        "In the Incremental model, the entire software system is delivered in one final release, whereas the Iterative model delivers broken fragments of code randomly.",
+        "The Incremental model strictly utilizes formal mathematical proofs for validation, whereas the Iterative model relies entirely on ad-hoc manual exploratory testing."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 89,
+      "type": "multiple",
+      "question": "In software project management, what is the crucial distinction between 'calendar time' (duration) and 'effort'?",
+      "options": [
+        "Duration measures the absolute chronological time needed to finish a project, while effort represents the total amount of human work required, usually measured in person-hours.",
+        "Duration indicates the financial budget allocated for purchasing hardware resources, whereas effort measures the computational complexity of the final software algorithms.",
+        "Duration is measured exclusively in lines of code per day, while effort is calculated by counting the number of unassigned defect tickets remaining in the issue tracker.",
+        "Duration refers to the lifespan of the software product before it becomes obsolete, whereas effort quantifies the storage space consumed by the deployed system.",
+        "Duration denotes the time a user spends interacting with the system interface, while effort indicates the network bandwidth consumed during data synchronization."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 90,
+      "type": "multiple",
+      "question": "What does a Gantt chart primarily visualize in the context of project management?",
+      "options": [
+        "It displays project activities arranged on a chronological calendar timeline, explicitly illustrating task dependencies and whether tasks are performed in parallel or serially.",
+        "It maps the internal memory allocation of a running application to identify potential memory leaks and optimize the garbage collection cycles of the software system.",
+        "It analyzes the psychological personality types of various team members to mathematically optimize communication channels and resolve interpersonal conflicts.",
+        "It evaluates the commercial market value of the software product against competitor applications by plotting predicted quarterly financial revenue projections.",
+        "It diagrams the logical flow of data through complex database schemas to ensure the architecture adheres perfectly to third normal form normalization rules."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 91,
+      "type": "multiple",
+      "question": "A software project is estimated to be 600 Function Points (FP). If 1 FP equals 20 Lines of Code (LOC) and the team productivity is 15 LOC per person-day, how many person-days of effort are required?",
+      "options": [
+        "The project requires an estimated total of 800 person-days of effort to complete.",
+        "The project requires an estimated total of 12,000 person-days of effort to complete.",
+        "The project requires an estimated total of 40 person-days of effort to complete.",
+        "The project requires an estimated total of 450 person-days of effort to complete.",
+        "The project requires an estimated total of 9,000 person-days of effort to complete."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 92,
+      "type": "multiselect",
+      "question": "Which of the following definitions accurately describes a 'Deliverable' in software project management?",
+      "options": [
+        "A final or intermediate product produced during the software engineering process, which can be internal to the company or externally validated by the customer.",
+        "A specific formal document, such as a requirements specification or a design architecture document, that holds contractual value between the client and the developer.",
+        "A synchronization event in the project timeline that strictly dictates the transition between different development phases, regardless of the artifacts produced.",
+        "A quantitative metric utilized exclusively to calculate the total cyclomatic complexity of a source code module before it is merged into the main repository branch.",
+        "A pre-compiled external software library purchased from a third-party vendor to accelerate the implementation of complex cryptographic encryption algorithms."
+      ],
+      "answer": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": 93,
+      "type": "multiple",
+      "question": "What is the primary purpose of creating a context diagram during the Requirements Engineering phase?",
+      "options": [
+        "To clearly define the boundaries of the system, establishing what is inside the scope and identifying all interfaces interacting with external actors or systems.",
+        "To comprehensively describe the internal source code architecture, detailing every class hierarchy and polymorphism dependency within the application module.",
+        "To automatically generate executable test cases that validate the performance bottlenecks of the database queries under extreme concurrent user loads.",
+        "To accurately estimate the total financial cost of implementation by mathematically correlating the number of user interfaces with the hourly rate of developers.",
+        "To completely replace textual functional requirements by visually mapping the exact color palettes and typographical choices required for the frontend interface."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 94,
+      "type": "multiple",
+      "question": "Which of the following statements represents a classic example of a Non-Functional Requirement (NFR)?",
+      "options": [
+        "The system's search functionality must return and render database query results to the end-user interface in less than 500 milliseconds.",
+        "The customer shall be securely permitted to add a selected commercial product to their digital shopping cart before proceeding to the checkout.",
+        "The backend server shall process standard credit card payment transactions and update the inventory ledger immediately upon payment confirmation.",
+        "The system administrator shall possess the exclusive capability to modify product descriptions and adjust prices through the administrative dashboard.",
+        "The software application must automatically generate a PDF invoice detailing the purchased items and send it to the user's registered email address."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 95,
+      "type": "multiselect",
+      "question": "During a formal inspection of a requirements document, which of the following are considered typical defects that must be identified and resolved?",
+      "options": [
+        "Ambiguity, where a specific sentence is phrased vaguely and can be legitimately interpreted in multiple contradictory ways by different software developers.",
+        "Over-specification, where the document dictates precise, low-level technical design and implementation details instead of focusing on what the system should achieve.",
+        "The utilization of advanced object-oriented design patterns within the final source code, leading to unnecessarily high cyclomatic complexity metrics.",
+        "The complete absence of a continuous integration and continuous deployment (CI/CD) pipeline configuration script within the project repository root.",
+        "The failure to utilize a distributed container orchestration platform like Kubernetes to automatically manage the application's microservices in production."
+      ],
+      "answer": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": 96,
+      "type": "multiple",
+      "question": "Why is it highly problematic when a non-functional requirement is drafted in a non-measurable way?",
+      "options": [
+        "Because if it is not quantifiable, it becomes exceedingly difficult or entirely impossible to objectively verify whether the finalized system satisfies the requirement.",
+        "Because non-measurable constraints inevitably force developers to utilize highly complex formal specification languages to mathematically model the system state.",
+        "Because modern programming languages completely lack the compilation directives necessary to implement qualitative features within the application binary.",
+        "Because it restricts the user interface designers from implementing responsive layouts, forcing the application to rely on outdated, static command-line visuals.",
+        "Because non-measurable requirements automatically trigger a cascade of continuous integration failures due to inherent conflicts within the version control system."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 97,
+      "type": "multiple",
+      "question": "In the context of the Clean Architecture model, what does the fundamental Dependency Rule explicitly dictate?",
+      "options": [
+        "Source code dependencies must strictly point inward; inner layers containing high-level business policies must never depend on outer layers containing mechanisms like databases.",
+        "Inner policy layers must heavily depend on outer mechanism layers to ensure that business entities can directly access and modify the graphical user interface elements.",
+        "The database management system must operate as the central orchestrator, directly controlling and dictating the behavior of all internal business logic entities.",
+        "User interfaces must encapsulate all core business rules to minimize network latency between the client frontend application and the backend data storage server.",
+        "All system components must possess bidirectional dependencies, allowing classes to freely inherit methods from any structural layer to maximize code reuse."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 98,
+      "type": "multiple",
+      "question": "Which statement provides the most accurate technical description of a 'modular monolith' architecture?",
+      "options": [
+        "It is deployed as a single, unified execution unit, but its internal source code is strictly structured into well-defined modules with clear responsibilities and boundaries.",
+        "It consists of numerous independently deployable microservices running in separate isolated processes, communicating exclusively via RESTful network APIs.",
+        "It is a legacy architecture completely lacking internal organizational structure, where all program logic is tightly coupled into a single massive, unmaintainable source file.",
+        "It strictly requires that every internal function communicates with other functions only through extremely high-latency asynchronous message broker queues.",
+        "It is an architecture deployed exclusively within Docker containers, where each container hosts a completely different and incompatible programming language runtime."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 99,
+      "type": "multiple",
+      "question": "What represents a significant trade-off or disadvantage when adopting a Microservices architecture instead of a monolithic approach?",
+      "options": [
+        "While supporting independent scaling and deployment, it drastically increases operational complexity, network communication overhead, and the difficulty of distributed debugging.",
+        "It completely removes all inter-process communication overhead, inadvertently causing the system to process data so quickly that standard relational databases cannot keep up.",
+        "It forces the entire development team to utilize exclusively one outdated programming language, severely limiting the adoption of modern, highly optimized software libraries.",
+        "It requires all deployed services to share a single, massive centralized database schema, creating a severe bottleneck that negates any potential performance improvements.",
+        "It inherently makes the system architecture simpler by default, leading to developers neglecting essential security protocols and data validation methodologies."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 100,
+      "type": "multiselect",
+      "question": "Describe the 'repository' architectural style and identify its core characteristics.",
+      "options": [
+        "It is a centralized model where several independent applications interact exclusively by exchanging standardized data files through a core shared repository.",
+        "It provides a high level of security and facilitates efficient backup management because all critical data is centrally located and uniformly controlled.",
+        "It consists of a sequential pipeline of completely isolated modules where the output data from one module flows directly into the input of the next module.",
+        "It forces all interconnected client applications to communicate with each other exclusively using rapid, low-latency synchronous remote procedure calls (RPC).",
+        "It is an architectural pattern specifically designed to ensure that only a single instance of a critical class, such as a load balancer, is ever instantiated in memory."
+      ],
+      "answer": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": 101,
+      "type": "multiple",
+      "question": "In the context of software quality assurance, what is the core principle of 'Mutation Testing'?",
+      "options": [
+        "It is a technique used to evaluate the effectiveness of a test suite by intentionally injecting artificial defects (mutations) into the source code to see if the tests detect them.",
+        "It consists of systematically mutating the graphical user interface layout at runtime to ensure the application remains perfectly responsive across different mobile device screens.",
+        "It involves aggressively modifying the external database schema during production execution to evaluate how securely the system handles unexpected SQL injection attacks.",
+        "It is a static analysis method that examines the control flow graph of the program to discover uninitialized variables without ever executing the compiled binary.",
+        "It randomly alters the network transmission protocols to verify that the application's encryption algorithms can dynamically adapt to continuously shifting bandwidth constraints."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 102,
+      "type": "multiple",
+      "question": "According to Weinberg's Law in the context of verification and validation, why is the original creator of a program generally unsuitable to test it?",
+      "options": [
+        "Due to emotional attachment to their own code and preconceived assumptions, the creator subconsciously overlooks defects and is not adequately motivated to find errors.",
+        "The creator is fundamentally prohibited by international ISO standards from participating in the testing phase to prevent severe legal conflicts of interest regarding the final product.",
+        "Because the developer possesses an overly detailed understanding of the system's cyclomatic complexity, they inevitably focus solely on performance rather than logic faults.",
+        "The creator automatically relies on advanced automated continuous deployment tools, completely neglecting the necessary manual exploratory testing required for validation.",
+        "Because writing the code consumes all allocated project effort, project management strictly reassigns the creator to develop the next milestone rather than wasting time testing."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 103,
+      "type": "multiselect",
+      "question": "What are the primary differences between top-down and bottom-up integration testing strategies?",
+      "options": [
+        "Top-down integration tests the highest-level units first and requires the creation of 'stubs' to simulate the behavior of lower-level components that are not yet integrated.",
+        "Bottom-up integration starts testing units with no dependencies first, saving the effort of writing stubs, but instead requiring the creation of 'drivers' to test them.",
+        "Top-down integration strictly utilizes black-box testing methodologies exclusively, whereas bottom-up integration relies completely on white-box testing algorithms.",
+        "Bottom-up integration ensures that critical architectural design flaws at the highest user interface level are detected much earlier in the software development process.",
+        "Both integration strategies fundamentally require that the entire source code is completely finished and compiled into a single monolithic executable before any testing begins."
+      ],
+      "answer": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": 104,
+      "type": "multiple",
+      "question": "How do 'testing' and 'debugging' distinctively contribute to software quality?",
+      "options": [
+        "Testing is the systematic process designed to identify failures in the software's behavior, whereas debugging is the analytical process of discovering and fixing the underlying faults.",
+        "Testing involves modifying the source code to optimize execution speed, whereas debugging is strictly concerned with rewriting the original requirements document to match the code.",
+        "Testing is performed exclusively by automated algorithms in the deployment pipeline, while debugging is conducted strictly by the final customer during the beta validation phase.",
+        "Testing focuses entirely on evaluating the aesthetic design of the graphical user interface, whereas debugging focuses purely on optimizing the backend relational database queries.",
+        "Testing verifies the mathematical correctness of individual functions using formal proofs, whereas debugging relies on black-box methodologies to validate user interactions."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 105,
+      "type": "multiple",
+      "question": "Which of the following activities represents a core, fundamental task of software Configuration Management (CM)?",
+      "options": [
+        "Identifying, organizing, and securely storing documents and software units, while meticulously tracking their modification history, versions, and internal relationships.",
+        "Defining the highly specific, low-level functional requirements of the system by conducting extensive interviews with the primary external business stakeholders.",
+        "Writing the system's core source code directly into the production environment to guarantee that user-requested features are deployed with absolute minimum latency.",
+        "Calculating the final commercial pricing strategy of the software product based strictly on the estimated lines of code and the geographical location of the development team.",
+        "Executing comprehensive automated regression testing suites directly on the end-user's local hardware to assess the ultimate graphical performance of the application."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 106,
+      "type": "multiselect",
+      "question": "In the context of configuration management, what exactly defines a 'baseline', and what is its primary utility?",
+      "options": [
+        "It is a specific, highly stable configuration of a set of items (e.g., it compiles perfectly and passes tests) that serves as a foundation for further development.",
+        "It is heavily utilized to securely deliver an application version internally or externally, providing a guaranteed stable point to which the system can eventually roll back.",
+        "It is the initial, unchangeable architectural design document that strictly prevents developers from adopting any iterative or agile development methodologies in the future.",
+        "It is an automated script that actively monitors the system's runtime memory allocation to dynamically adjust the garbage collector's baseline performance thresholds.",
+        "It defines the absolute minimum acceptable internet bandwidth required for the client application to successfully connect to the centralized remote database server."
+      ],
+      "answer": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": 107,
+      "type": "multiple",
+      "question": "Why does the process of software maintenance generally become increasingly difficult and expensive over an extended period of time?",
+      "options": [
+        "Because as the system ages, new modifications are heavily constrained by a complex web of previous requirements, structural design decisions, and rigid implementation choices.",
+        "Because modern programming languages continuously undergo fundamental syntax changes, rendering older compiled binaries completely incompatible with newer hardware architectures.",
+        "Because developers intentionally encrypt the source code repository after initial delivery to prevent competitors from analyzing the application's proprietary business logic.",
+        "Because the underlying operating systems automatically delete legacy software configurations to aggressively conserve storage space on the end-user's solid-state drives.",
+        "Because older software systems cannot mathematically support the integration of object-oriented design patterns, forcing all updates to be written in assembly language."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 108,
+      "type": "multiple",
+      "question": "What are the typical states that a Change Request (CR) transitions through during a standard software maintenance process?",
+      "options": [
+        "The request is Submitted, then Analyzed/Evaluated; it is subsequently Accepted or Rejected; if accepted, it is Implemented, and finally Verified and Closed.",
+        "The request is Encrypted, then broadcasted directly to the customer; it is randomly tested by the marketing team; and finally deleted to conserve database storage.",
+        "The request is directly injected into the live production source code, bypassing all testing phases, and is evaluated entirely based on immediate end-user feedback.",
+        "The request is manually translated into a strict mathematical formula, processed by an automated formal verification tool, and immediately compiled into a microservice.",
+        "The request begins as a critical system failure, forces an immediate hardware reboot, and results in the automatic rollback of the entire application version history."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 109,
+      "type": "multiple",
+      "question": "Which statement provides the most technically accurate description distinguishing a Docker container from a traditional Virtual Machine?",
+      "options": [
+        "A container is a running instance of an image sharing the host's OS kernel for isolated environments, whereas a virtual machine requires a full, heavy guest operating system.",
+        "A container is a static, unchangeable text template used to build applications, whereas a virtual machine is the actual compiled binary executed directly by the processor.",
+        "A container completely replaces the need for any underlying hardware infrastructure, whereas a virtual machine strictly requires a dedicated cluster of physical servers.",
+        "A container executes code significantly slower than a virtual machine because it must constantly translate every instruction through an advanced software hypervisor layer.",
+        "A container is utilized exclusively for designing graphical user interfaces locally, whereas virtual machines are exclusively dedicated to running backend relational databases."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 110,
+      "type": "multiple",
+      "question": "What specific operational outcome occurs when a Docker container is destroyed, assuming no external storage volumes have been configured?",
+      "options": [
+        "The read-write container layer is permanently removed, meaning all data modifications or state changes stored within it during execution are completely and irrecoverably lost.",
+        "The underlying read-only image layers from which the container was instantiated are permanently modified, irrevocably altering any future containers spawned from that image.",
+        "Every other active container currently running on the same host that was created from the exact same base image is automatically halted and deleted by the Docker Engine.",
+        "The Docker Engine initiates an automatic uninstallation sequence, requiring the system administrator to manually reconfigure the entire continuous deployment pipeline.",
+        "The container automatically compresses its internal state into a static ZIP archive and uploads it directly to the centralized, public Docker Hub repository."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 111,
+      "type": "multiple",
+      "question": "What is the primary operational difference distinguishing Continuous Delivery from Continuous Deployment?",
+      "options": [
+        "Continuous Delivery requires an explicit manual approval step before deploying to production, whereas Continuous Deployment releases every successful build entirely automatically.",
+        "Continuous Delivery completely lacks automated testing suites to speed up processing, whereas Continuous Deployment heavily relies on exhaustive unit and integration testing.",
+        "Continuous Delivery is an architecture utilized exclusively for building Docker images, whereas Continuous Deployment is a framework meant solely for compiling C++ source code.",
+        "Continuous Delivery executes entirely within the developer's local machine environment, whereas Continuous Deployment strictly requires the use of expensive cloud-based pipelines.",
+        "Continuous Delivery mathematically guarantees zero downtime during application updates, whereas Continuous Deployment necessitates taking the entire server cluster offline."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 112,
+      "type": "multiple",
+      "question": "Which of the following statements accurately describes the correct UML Use Case modeling principles for the described 'Smart Locker Reservation System' scenario?",
+      "options": [
+        "The 'Authenticated User', 'Librarian', and 'Technician' serve as primary human actors, while the 'Payment Gateway' functions as a secondary supporting external actor.",
+        "The 'QR Code' must be modeled as a primary active actor since it directly interacts with the locker hardware infrastructure to grant physical access to the user.",
+        "The 'Search Locker' use case must inevitably possess an <<extend>> relationship pointing towards the 'Reserve Locker' use case to execute the database query properly.",
+        "The notification system must be modeled as a specialized generalization of the Librarian actor, inheriting all administrative system privileges and relationship associations.",
+        "The physical 'Smart Locker' itself must be explicitly represented as a primary human actor initiating the 'Update Intervention Status' use case autonomously."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 113,
+      "type": "multiselect",
+      "question": "Consider the 'Reserve Smart Locker' use case where an authenticated user attempts to secure a locker. Which of the following statements correctly evaluate the structural components of this use case?",
+      "options": [
+        "The external payment gateway functions as a secondary supporting actor since it provides a necessary external service to finalize the primary reservation transaction.",
+        "The successful generation and delivery of a cryptographic QR code can be formally defined as a success guarantee (postcondition) concluding the nominal use case flow.",
+        "The formal verification of the user's identity through an authentication mechanism accurately serves as a mandatory precondition required before initiating the reservation.",
+        "The complete absence of available lockers represents a successful main scenario because the system correctly evaluated the database state without triggering a runtime exception.",
+        "The triggering event of a use case is strictly synonymous with its precondition, meaning the user's intention to reserve simultaneously validates their network login status."
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": 114,
+      "type": "multiple",
+      "question": "Given the specification for the `compute_pool_fee` function, which dictates different pricing rules based on the user's age (age in [0, 120]), which of the following represents a valid and mathematically rigorous boundary value test case?",
+      "options": [
+        "Testing with age = 11 and age = 12 properly evaluates the precise boundary condition determining the transition between the discounted demographic price and the standard base price.",
+        "Testing with age = 30 and age = 40 mathematically guarantees complete statement coverage because both inputs fall perfectly within the standard adult demographic equivalence class.",
+        "Evaluating the function with the parameter member = True and subsequently member = False simultaneously assesses the boundary values of the boolean logic domain for the age variable.",
+        "Testing with entry_hour = 12 effectively validates the operational age boundary since the temporal parameter indirectly dictates the maximum allowable age limit for the user.",
+        "Supplying a negative integer such as age = -5 tests a valid equivalence class demonstrating the software system's inherent ability to dynamically calculate refunds for previous transactions."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 115,
+      "type": "multiselect",
+      "question": "Analyze the provided `classify_order(total, items, vip)` function and the given test cases (T1, T2, T3). Which of the following statements regarding code coverage metrics are accurate?",
+      "options": [
+        "The provided test suite successfully achieves 100% edge coverage because every possible branch outcome within the internal control flow graph is traversed at least once.",
+        "The given test cases achieve 100% node coverage since every reachable operational statement within the function's structural architecture is executed during the testing phase.",
+        "The multiple condition coverage for the first decision remains strictly incomplete because the specific logical combination evaluating to (False, True) is absent from the test suite.",
+        "Adding the specific test case evaluating `classify_order(600, 3, False)` is mathematically sufficient to guarantee complete multiple condition coverage of the second decision block.",
+        "The provided suite of test cases (T1, T2, T3) inherently achieves complete multiple condition coverage for the second decision statement without requiring the addition of any further inputs."
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "id": 116,
+      "type": "multiselect",
+      "question": "Which of the following statements accurately reflect the fundamental principles and best practices of Requirements Engineering?",
+      "options": [
+        "A structural context diagram effectively delineates the exact boundaries of the software system, explicitly distinguishing internal components from external interacting actors.",
+        "A specification explicitly stating that 'the system must process and respond to 95% of requests within 500 milliseconds' constitutes a highly verifiable non-functional requirement.",
+        "Deliberate ambiguity within formal requirements specification is generally considered an acceptable practice provided the textual description remains concise and syntactically brief.",
+        "Non-functional requirements explicitly bypass the necessity for objective verifiability because they strictly govern subjective, abstract architectural qualities of the system hardware.",
+        "A functional requirement is primarily utilized to comprehensively describe the low-level, internal algorithmic structure of the source code before compilation execution begins."
+      ],
+      "answer": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": 117,
+      "type": "multiple",
+      "question": "Which statement provides the most accurate definition of the scope and focus of software architecture?",
+      "options": [
+        "Software architecture is fundamentally concerned with the hierarchical division of a system into logical components, their spatial arrangement, and their inter-process communications.",
+        "A strictly layered architectural pattern universally dictates that every individual logical tier must be physically deployed onto a completely independent and isolated hardware server.",
+        "A modular monolithic architecture is inherently deployed as a dynamically orchestrated collection of entirely independent and physically distributed network microservices.",
+        "The Clean Architecture paradigm explicitly mandates that internal source code dependencies must strictly point outward toward volatile, external infrastructural details and databases.",
+        "The adoption of a microservices architecture mathematically guarantees the complete elimination of all network communication overhead and inter-component serialization latency."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 118,
+      "type": "multiselect",
+      "question": "In the context of software project management, which of the following statements correctly define standard terminology and metrics?",
+      "options": [
+        "A project deliverable is formally defined as a tangible, final or intermediate artifact produced systematically during the execution of the software engineering lifecycle.",
+        "The metric of effort exclusively measures the total human work expended (e.g., person-hours), whereas calendar time measures the absolute chronological duration elapsed.",
+        "A project milestone is primarily defined as a specific software developer or human resource explicitly assigned to immediately complete a highly critical programming activity.",
+        "The quantitative measurement of risk exposure is mathematically computed by dividing the overall project chronological duration by the total number of available active developers.",
+        "A comprehensive Gantt chart is exclusively utilized to visually diagram the internal polymorphic relationships and inheritance structures of object-oriented software classes."
+      ],
+      "answer": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": 119,
+      "type": "multiselect",
+      "question": "Which of the following statements correctly describe the functionality and behavior of Docker and Continuous Integration/Continuous Deployment (CI/CD) pipelines?",
+      "options": [
+        "A standardized Docker image functions as an immutable, read-only template containing the application and dependencies from which active containers are dynamically instantiated.",
+        "The Docker Compose utility is purposefully designed to explicitly define, configure, and seamlessly orchestrate applications that are composed of multiple interconnected containers.",
+        "A Docker container fundamentally operates as a complete, hardware-level virtual machine, strictly requiring its own dedicated, resource-heavy guest operating system to function.",
+        "The methodological practices of Continuous Delivery and Continuous Deployment represent the exact same automated deployment pipeline without any semantic or procedural differences.",
+        "The process of intentionally destroying a runtime container permanently and irrevocably modifies the underlying read-only layers of the original Docker architectural source image."
+      ],
+      "answer": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": 120,
+      "type": "multiple",
+      "question": "When comparing the traditional Waterfall Model with the Iterative Model, which of the following statements accurately highlights a significant advantage or disadvantage?",
+      "options": [
+        "The Waterfall model offers a highly predictable planning structure, but its sequential rigidity makes it exceptionally difficult to accommodate changing requirements late in the development cycle.",
+        "The Iterative model mathematically guarantees the complete absence of architectural defects by restricting all coding activities to a single, unchangeable, and prolonged implementation phase.",
+        "The Waterfall model mandates the continuous deployment of functional software increments every two weeks, whereas the Iterative model delivers the entire system strictly at the project conclusion.",
+        "A fundamental disadvantage of the Iterative model is its total reliance on formal specification languages, which drastically increases the mathematical complexity of the requirements analysis phase.",
+        "The Waterfall model thrives dynamically in highly volatile commercial environments because its deliberate lack of formal documentation allows developers to refactor the database schema autonomously."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 121,
+      "type": "multiple",
+      "question": "Which statement best describes the fundamental structure and objective of the V-Model in software engineering?",
+      "options": [
+        "It explicitly associates specific verification and validation testing activities with their corresponding development stages on the opposite side of the V-shape.",
+        "It is a purely agile framework that completely removes the need for upfront documentation by focusing exclusively on continuous velocity and user story mapping.",
+        "It is a conceptual model suitable only for very small, informal projects because it avoids any formal requirements verification prior to the coding phase.",
+        "It requires all source code to be completely written and compiled before any requirements gathering or architectural design phases can officially commence.",
+        "It mathematically guarantees that all identified software defects are automatically resolved by strictly enforcing the use of strongly typed programming languages."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 122,
+      "type": "multiple",
+      "question": "In the context of software project risk management, how is 'Risk Exposure' formally calculated?",
+      "options": [
+        "It is computed as the mathematical product of the risk's probability of occurrence and the severity of its potential impact on the project.",
+        "It is calculated by dividing the total chronological project duration by the statistical probability of a critical hardware infrastructure failure.",
+        "It is defined solely by the overall financial budget allocated for purchasing external security audits and automated vulnerability scanning tools.",
+        "It is determined by multiplying the total lines of source code by the exact number of junior developers currently assigned to the development team.",
+        "It is quantified by evaluating the cyclomatic complexity of the monolithic architecture and subtracting the number of passed automated integration tests."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 123,
+      "type": "multiple",
+      "question": "During the risk management process, what is the primary purpose of continuous risk monitoring?",
+      "options": [
+        "To dynamically track the status of existing risks, proactively identify newly emerging risks, and constantly update the project's overall risk ranking.",
+        "To completely replace all proactive corrective actions with reactive management decisions once a critical software failure has already manifested in production.",
+        "To define the initial project requirements and architectural constraints only once during the kickoff meeting, ensuring they remain immutable throughout development.",
+        "To strictly estimate the final physical size of the compiled software binary using historical data based on thousands of lines of source code.",
+        "To automatically penalize specific developers financially whenever a known risk escalates into an active defect within their assigned repository branch."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 124,
+      "type": "multiple",
+      "question": "Which of the following descriptions accurately characterizes the 'Singleton' design pattern and its appropriate usage?",
+      "options": [
+        "It is a creational pattern ensuring that only a single instance of a specific class is ever created, which is useful for centralized components like load balancers.",
+        "It is a structural pattern designed to convert the incompatible interface of one class into another interface that the client software explicitly expects to utilize.",
+        "It is a behavioral pattern that automatically duplicates the entire arithmetic logic core to create a parallel signature verification pathway during standard computation.",
+        "It is an architectural style where several distributed applications communicate exclusively through the rapid exchange of standardized, encrypted data files.",
+        "It is a concurrency pattern utilized specifically to instantiate thousands of independent worker threads simultaneously without triggering operating system memory leaks."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 125,
+      "type": "multiple",
+      "question": "Under which architectural circumstances is the 'Pipeline' (or Pipes and Filters) style most appropriately utilized?",
+      "options": [
+        "When multiple independent modules are connected sequentially, and data strictly flows from one module to the next as the only means of communication (e.g., a compiler).",
+        "When a high-performance system requires complex, bidirectional, and synchronous Remote Procedure Calls (RPC) between heavily coupled microservice components.",
+        "When the graphical user interface must be completely decoupled from the underlying database schema using a centralized, single-point event message broker.",
+        "When all external client applications need to securely read and write data to a single, monolithic, and heavily encrypted remote cloud storage repository.",
+        "When the software strictly requires an object-oriented inheritance hierarchy to dynamically generate polymorphism during runtime execution."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 126,
+      "type": "multiple",
+      "question": "In software verification, what exactly is a 'Testing Oracle' and why is it essential?",
+      "options": [
+        "It is an ideal mechanism or concept (automatic or manual) that definitively determines the expected correct output for any given test case execution.",
+        "It is a highly specialized hardware component embedded within the CPU that mathematically guarantees the complete absence of infinite loops in the source code.",
+        "It is a purely commercial database management system utilized exclusively to store the vast amounts of historical telemetry data generated by beta users.",
+        "It is a formal agile ceremony where the Scrum Master predicts the exact velocity of the development team for the upcoming sprint based on previous metrics.",
+        "It is a static analysis tool that strictly prevents developers from committing code to the repository if the cyclomatic complexity exceeds a predefined threshold."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 127,
+      "type": "multiple",
+      "question": "In the context of the GIT version control system, what are the three primary logical sections into which a project is divided?",
+      "options": [
+        "The Git Directory (storing metadata/versions), the Working Directory (the currently checked-out version), and the Staging Area (information prepared for the next commit).",
+        "The Central Mainframe (storing all global user credentials), the Distributed Node (the local compiler environment), and the Continuous Delivery Pipeline.",
+        "The Public Subversion Repository (for open-source access), the Private Encrypted Vault (for proprietary algorithms), and the Automated Testing Sandbox.",
+        "The Requirement Specification Document (for initial planning), the Object-Oriented Codebase (for active programming), and the Final Compiled Executable.",
+        "The Hardware Execution Layer (managing CPU registers), the Operating System Kernel (allocating memory pages), and the High-Level Application Interface."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 128,
+      "type": "multiple",
+      "question": "A custom software product developed for a banking institution requires 18 months for initial development and is projected to operate for 10 years. Where will the largest portion of the total lifecycle costs likely be incurred?",
+      "options": [
+        "During the 10-year operation and maintenance phase, because evolutive, corrective, and enhancement maintenance historically requires significantly more total effort.",
+        "During the initial requirements gathering phase, because defining secure financial protocols strictly requires hiring multiple highly expensive external legal consultants.",
+        "During the initial 18-month coding phase, because writing secure algorithms requires purchasing highly specialized and expensive proprietary compilation software.",
+        "During the absolute final month of the operational lifespan, because legally decommissioning a financial system requires complex cryptographic key destruction procedures.",
+        "The costs will be distributed perfectly equally across every single month of the 11.5-year total lifecycle due to strict Agile budget normalization practices."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 129,
+      "type": "multiple",
+      "question": "What specific software engineering problem is primarily addressed by establishing 'Traceability'?",
+      "options": [
+        "The challenge of systematically linking high-level business requirements to their corresponding design components, source code functions, and specific verification test cases.",
+        "The difficulty of mathematically calculating the exact network latency between a distributed cloud microservice and its remote relational database management system.",
+        "The operational problem of tracking memory leaks inside a compiled monolithic application during extreme concurrent user load testing scenarios.",
+        "The organizational issue of physically locating which specific developer is actively working from a remote office during daily Scrum stand-up meetings.",
+        "The computational complexity of reverse-engineering an obfuscated hardware Trojan maliciously embedded within a third-party integrated circuit."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 130,
+      "type": "multiple",
+      "question": "In Extreme Programming (XP), which statement most accurately describes the practice of 'Pair Programming'?",
+      "options": [
+        "Two developers share a single workstation; one actively writes the code (the driver) while the other continuously reviews the logic and thinks strategically (the navigator).",
+        "Two developers are assigned the exact same task but work in completely isolated rooms, and the system automatically selects the codebase that passes tests faster.",
+        "A junior developer is permanently partnered with a senior customer representative who strictly dictates the code syntax line-by-line without understanding programming.",
+        "It requires developers to write their source code using two different programming languages simultaneously to guarantee absolute platform independence.",
+        "It is an automated testing strategy where a pair of separate continuous integration servers compile the exact same repository branch to ensure redundant safety."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 131,
+      "type": "multiple",
+      "question": "Within Agile methodologies, what fundamental concept does the INVEST acronym explicitly describe?",
+      "options": [
+        "It outlines the essential properties of a well-formed Product Backlog Item: Independent, Negotiable, Valuable, Estimable, Small, and Testable.",
+        "It defines the mandatory stages of a secure release pipeline: Integration, Normalization, Verification, Encryption, Serialization, and Transmission.",
+        "It dictates the strict financial budgeting phases for a software startup: Incubation, Negotiation, Valuation, Expansion, Synchronization, and Termination.",
+        "It represents the core components of a relational database schema: Indexes, Nodes, Variables, Entities, Strings, and Tables.",
+        "It is a framework for identifying physical hardware faults: Interruption, Noise, Voltage, Electromagnetism, Static, and Temperature."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 132,
+      "type": "multiple",
+      "question": "A project has a Planned Value of 100 units (50 on Activity 1, 50 on Activity 2). One month in, the project has consumed 60 units. Activity 1 is completely finished, but Activity 2 is not. What is the current Earned Value (EV)?",
+      "options": [
+        "The Earned Value is 50 units, because Activity 2 is not finished and therefore its planned value cannot be officially counted towards the earned metric.",
+        "The Earned Value is 60 units, because Earned Value is strictly defined as the total amount of financial resources that have been physically consumed to date.",
+        "The Earned Value is 100 units, because the total Planned Value is automatically granted to the project manager regardless of the actual task completion status.",
+        "The Earned Value is 10 units, which is mathematically derived by subtracting the initial Planned Value of Activity 1 from the total consumed resources.",
+        "The Earned Value is exactly 0 units, because standard project management methodologies explicitly forbid calculating metrics until all project activities are 100% complete."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 133,
+      "type": "multiple",
+      "question": "Which of the following elements is formally classified as a 'software process property' rather than a 'software product property'?",
+      "options": [
+        "The total chronological duration and resources required to complete the software development lifecycle.",
+        "The mathematical reliability and uptime metrics demonstrated by the final compiled executable in a production server.",
+        "The responsiveness and aesthetic design quality of the graphical user interface experienced by the end user.",
+        "The precise functional capabilities and business logic algorithms explicitly requested by the project stakeholders.",
+        "The structural integrity and cryptographic security level of the application's underlying database schema."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 134,
+      "type": "multiple",
+      "question": "Within the software engineering lifecycle, which specific activity is primarily responsible for answering the fundamental question: 'What should the software do?'",
+      "options": [
+        "Requirements Engineering, which focuses on gathering, analyzing, and defining the precise functionalities the system must provide.",
+        "System Integration, which ensures that independently developed microservices communicate properly over the network architecture.",
+        "Configuration Management, which tracks the version history of the source code and prevents concurrent modification conflicts.",
+        "Software Implementation, which translates high-level UML diagrams into executable algorithms using a specific programming language.",
+        "Deployment Operations, which handles the provisioning of cloud server infrastructure and continuous delivery pipelines."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 135,
+      "type": "multiple",
+      "question": "What is the primary, defining goal of Agile software development methodologies when contrasted with traditional sequential models?",
+      "options": [
+        "To respond rapidly to inevitable changing requirements and continuously deliver functional business value incrementally throughout the project.",
+        "To strictly avoid any preliminary customer feedback until the final release phase to prevent scope creep and budget overruns.",
+        "To explicitly eliminate all direct verbal collaboration between developers and stakeholders, relying entirely on formal written documentation.",
+        "To produce an exhaustive, immutable architectural project plan during the first month that absolutely cannot be altered later.",
+        "To replace human quality assurance testers entirely by mathematically proving the correctness of all code using formal specification languages."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 136,
+      "type": "multiple",
+      "question": "In the Scrum agile framework, what is the core responsibility and main purpose of the Scrum Master role?",
+      "options": [
+        "To act as a servant-leader who facilitates team ceremonies, removes external impediments, and actively supports the team's self-organization.",
+        "To serve as the traditional project manager and direct boss, assigning specific daily programming tasks to individual developers.",
+        "To unilaterally write and prioritize all user stories in the product backlog without consulting the external business stakeholders.",
+        "To perform exhaustive peer reviews on the source code and explicitly approve or reject every single commit before it reaches production.",
+        "To manage the financial budget of the software project and negotiate contractual release dates with the client's executive board."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 137,
+      "type": "multiple",
+      "question": "In software project estimation and management, which mathematical relationship correctly represents the calculation of 'Effort'?",
+      "options": [
+        "Effort = Number of assigned human resources × Total chronological duration spent on the specific activity.",
+        "Effort = The fixed monetary cost per hour of development × The cyclomatic complexity metric of the compiled source code.",
+        "Effort = The commercial retail price of the final software product × The planned calendar duration of the maintenance phase.",
+        "Effort = The statistical probability of a critical hardware failure × The financial impact severity of that failure.",
+        "Effort = The total lines of code produced (LOC) ÷ The maximum network bandwidth available in the deployment environment."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 138,
+      "type": "multiple",
+      "question": "What is the fundamental objective and main purpose of conducting Requirements Engineering at the beginning of a software project?",
+      "options": [
+        "To definitively identify, document, and validate the product's functional and non-functional properties before any technical development commences.",
+        "To strictly write and compile the foundational backend source code required to establish the database connections for the application.",
+        "To completely replace all traditional project management activities by utilizing automated agile tracking dashboards and burndown charts.",
+        "To calculate and finalize the commercial retail price of the software product based on the estimated hardware consumption costs.",
+        "To mathematically prove the absolute absence of runtime security vulnerabilities using advanced static analysis tools."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 139,
+      "type": "multiple",
+      "question": "Software architecture is primarily concerned with establishing which of the following structural aspects of a system?",
+      "options": [
+        "The high-level division of the system into distinct logical components, their spatial arrangement, and the protocols governing their communication.",
+        "The precise aesthetic visual style of the graphical user interface, including CSS color palettes and the specific naming conventions for CSS classes.",
+        "The absolute line-by-line detailed algorithmic implementation of every internal class method before the actual coding phase begins.",
+        "The exclusive and final selection of the primary programming language and integrated development environment (IDE) used by the team.",
+        "The legal drafting of the End User License Agreement (EULA) and the management of third-party open-source software licenses."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 140,
+      "type": "multiple",
+      "question": "Under which specific system constraints is a strict Layered Architectural pattern generally considered less suitable or potentially detrimental?",
+      "options": [
+        "In high-performance or highly dynamic systems where the strict passing of data through multiple rigid intermediate layers introduces unacceptable latency.",
+        "In very small, simple applications where a clear, conceptual separation of distinct responsibilities (like presentation and data access) is desired.",
+        "In extreme low-budget situations with very short deadlines, because layers automatically force the purchase of highly expensive third-party server hardware.",
+        "In initial startup applications that require a simple, easily understandable starting structure before scaling into complex microservices.",
+        "In software environments completely lacking an internet connection, because layered architectures fundamentally require distributed cloud computing to function."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 141,
+      "type": "multiple",
+      "question": "In modern software deployment infrastructure, what is the primary operational use case for the Docker platform?",
+      "options": [
+        "To reliably build, run, manage, and distribute containerized applications across diverse hardware host environments without dependency conflicts.",
+        "To fundamentally replace all physical host operating systems by installing a complex Type-1 hardware hypervisor capable of running legacy software.",
+        "To automatically write, format, and debug raw source code by analyzing the developer's textual prompts using an integrated artificial intelligence engine.",
+        "To design and render high-resolution 3D graphical user interfaces natively utilizing the direct computational power of the host machine's GPU.",
+        "To securely encrypt all incoming and outgoing network traffic at the router level, preventing man-in-the-middle attacks on the local network."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 142,
+      "type": "multiple",
+      "question": "What is the explicit technical purpose of utilizing a Dockerfile within a containerized software project?",
+      "options": [
+        "To define a sequential script of configuration instructions and commands strictly required by the Docker Engine to automatically build a new Docker image.",
+        "To actively monitor the real-time CPU and RAM utilization of the physical host machine and automatically throttle aggressive background processes.",
+        "To completely eliminate the need for the application to download any external dependencies by permanently hardcoding them into the system BIOS.",
+        "To explicitly configure Git repository branches, manage merge conflict resolution, and securely authorize commits to the remote master branch.",
+        "To dynamically orchestrate thousands of active containers across a distributed swarm of independent servers during a massive spike in user traffic."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 143,
+      "type": "multiple",
+      "question": "What is the core content and organizational structure of the ISO/IEC 12207 standard regarding software lifecycle processes?",
+      "options": [
+        "It establishes a comprehensive, hierarchical framework of software processes formally categorized into primary, supporting, and organizational activities.",
+        "It dictates a rigid sequence of mathematical proofs required to formally verify the absolute security of cryptographic encryption algorithms.",
+        "It strictly defines the maximum allowable cyclomatic complexity metrics for object-oriented source code prior to production deployment.",
+        "It provides a mandatory, universally accepted commercial pricing formula based exclusively on the generated lines of code and required person-hours.",
+        "It exclusively standardizes the physical hardware requirements and memory limits necessary for deploying continuous integration servers."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 144,
+      "type": "multiple",
+      "question": "How does the Evolutionary software process model fundamentally differ from the standard Incremental model?",
+      "options": [
+        "In the Evolutionary model, requirements can change at each iteration and the continuously refined prototype ultimately becomes the final delivered product.",
+        "The Evolutionary model completely prohibits any form of customer feedback until the final iteration, whereas the Incremental model requires daily client meetings.",
+        "The Evolutionary model relies exclusively on strict, immutable upfront requirements, while the Incremental model actively encourages discarding the entire codebase weekly.",
+        "The Evolutionary model is utilized strictly for hardware driver development, whereas the Incremental model is reserved solely for web-based graphical user interfaces.",
+        "The Evolutionary model explicitly requires that each iteration is programmed in a completely different language to ensure maximum platform compatibility."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 145,
+      "type": "multiple",
+      "question": "According to standard Agile methodology and the Scrum framework, what is the highly recommended maximum duration for a Sprint iteration?",
+      "options": [
+        "A maximum duration of 4 to 5 weeks, to maintain a rapid feedback loop and ensure the frequent delivery of functional software increments.",
+        "A strict minimum of 6 months, to mathematically guarantee that complex relational database schemas can be fully normalized before testing begins.",
+        "Exactly 48 hours, to force developers into a continuous pair-programming hackathon environment that dramatically accelerates algorithm optimization.",
+        "A fluid duration that strictly depends on the precise cyclomatic complexity of the codebase, meaning sprints can last anywhere from 1 day to 2 years.",
+        "A maximum of one calendar year, ensuring that all comprehensive formal documentation is finalized and legally approved prior to any coding."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 146,
+      "type": "multiple",
+      "question": "In software project estimation, what is the primary operational mechanism of the Wideband Delphi method?",
+      "options": [
+        "It is an estimation technique based on achieving consensus among a panel of experts through multiple rounds of anonymous forecasting and discussion.",
+        "It is a purely automated algorithmic tool that statically parses the source code repository to predict future bug rates using historical execution timelines.",
+        "It is a rigid financial formula utilized exclusively to calculate the precise hardware costs required to deploy an application in a distributed cloud environment.",
+        "It is a psychological framework used to evaluate the emotional stability of the development team and optimize their daily workstation seating arrangements.",
+        "It is a formal testing strategy where developers are deliberately isolated in completely separate environments to write redundant code for fault tolerance."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 147,
+      "type": "multiple",
+      "question": "According to the Constructive Cost Model (COCOMO), what is the fundamental mathematical relationship between project effort and chronological duration?",
+      "options": [
+        "Duration depends on the estimated effort through an exponential formula where the exponent is less than 1, indicating that adding more personnel yields diminishing returns.",
+        "Duration and effort share a strictly linear relationship, meaning that doubling the amount of human resources will inherently cut the project calendar time exactly in half.",
+        "Effort is entirely independent of duration; project time is dictated exclusively by the processing speed of the automated continuous integration compiling servers.",
+        "Duration is inversely proportional to the square root of the required lines of code, completely ignoring the experiential skill level of the assigned programming team.",
+        "Effort dynamically decreases over time, meaning that extending the chronological duration of a project mathematically guarantees a reduction in overall financial costs."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 148,
+      "type": "multiple",
+      "question": "In the context of project management scheduling, how is 'Slack Time' accurately defined?",
+      "options": [
+        "It is the maximum admissible delay that a specific activity can experience without negatively impacting the overall scheduled end time of the entire project.",
+        "It is the mandated period of rest assigned to software developers between Agile sprints to mitigate burnout and ensure psychological recovery.",
+        "It is the precise temporal latency introduced by the network bandwidth when transferring compiled Docker images to the production environment.",
+        "It is the calculated time required for the garbage collector to free unreferenced memory blocks within the application's runtime environment.",
+        "It is the designated grace period legally afforded to the customer to unilaterally alter the foundational requirements document without financial penalty."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 149,
+      "type": "multiple",
+      "question": "When utilizing Lines of Code (LOC) as a quantitative measure for software size, what represents its most significant theoretical disadvantage?",
+      "options": [
+        "It is exceptionally difficult to estimate accurately early in the project lifecycle, and its value is heavily dependent on the chosen programming language and developer style.",
+        "It mathematically forces developers to write unnecessarily concise, unreadable code blocks to artificially inflate their reported daily productivity metrics.",
+        "It is physically impossible to calculate in modern object-oriented languages due to the unpredictable nature of dynamic memory allocation and inheritance.",
+        "It fundamentally ignores the execution speed of the final compiled binary, prioritizing aesthetic code formatting over strict algorithmic computational complexity.",
+        "It requires the deployment of highly expensive, proprietary static analysis tools that significantly slow down the automated continuous delivery pipeline."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 150,
+      "type": "multiple",
+      "question": "What is a fundamental architectural problem concerning the implementation of multiple Non-Functional Requirements (NFRs) within a complex software system?",
+      "options": [
+        "Different NFRs often possess inherent conflicts (e.g., maximizing security encryption severely degrades response time performance), forcing architects to accept necessary trade-offs.",
+        "NFRs are mathematically impossible to express in any formal documentation language, rendering them entirely subjective and untestable during the quality assurance phase.",
+        "The implementation of strict NFRs completely prevents the adoption of modern Agile methodologies, forcing teams to regress to the traditional Waterfall model.",
+        "NFRs inherently demand the exclusive use of assembly language programming to directly control the processor registers and bypass the operating system kernel.",
+        "Attempting to satisfy NFRs dynamically alters the relational database schema at runtime, leading to inevitable data corruption and transaction deadlocks."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 151,
+      "type": "multiple",
+      "question": "Why is the financial and operational cost of fixing a software defect significantly lower if it is identified during the Requirements phase rather than during the Coding or Operation phases?",
+      "options": [
+        "Correcting a defect early only requires altering the initial documentation, whereas later fixes demand cascading modifications to design documents, source code, tests, and deployed patches.",
+        "Developers charge lower hourly rates during the early stages of a project, whereas maintaining legacy code automatically triggers expensive premium overtime compensation clauses.",
+        "Requirements documents are exclusively written in simple plaintext editors, meaning version control systems can process and merge changes instantaneously without human intervention.",
+        "The compiler cannot physically detect logical errors until the software is deployed to a live production environment, rendering early code alterations computationally irrelevant.",
+        "Automated continuous deployment pipelines are explicitly programmed to ignore all changes made to the source code repository prior to the official system integration testing phase."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 152,
+      "type": "multiple",
+      "question": "Describe the 'Perspective-based reading' technique utilized during formal software inspections.",
+      "options": [
+        "It is an inspection methodology where reviewers explicitly adopt specific, distinct points of view (e.g., end user, software designer, quality tester) to evaluate the requirements document.",
+        "It is an automated static analysis tool that dynamically visualizes the source code's control flow graph in a three-dimensional perspective to identify infinite loop vulnerabilities.",
+        "It relies exclusively on analyzing the project from a financial perspective to determine if the development team's salaries align with the estimated commercial return on investment.",
+        "It is a specialized graphical user interface testing technique where visual layouts are tested by rendering the application on physically rotated mobile device screens.",
+        "It is a conflict resolution protocol utilized by the Scrum Master to mediate interpersonal disputes between backend architects and frontend designers during the daily stand-up."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 153,
+      "type": "multiple",
+      "question": "Which structural design pattern is explicitly designed to provide a simplified, unified high-level interface to a complex subsystem of interacting classes?",
+      "options": [
+        "The Facade pattern.",
+        "The Strategy pattern.",
+        "The Abstract Factory pattern.",
+        "The Model-View-Controller (MVC) pattern.",
+        "The Singleton pattern."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 154,
+      "type": "multiple",
+      "question": "How do the Model-View-Controller (MVC) and Strategy design patterns fundamentally operate within a software architecture?",
+      "options": [
+        "MVC separates an application into data (Model), presentation (View), and logic (Controller), while Strategy allows interchangeable behavioral algorithms to be selected dynamically at runtime.",
+        "MVC strictly guarantees that only one instance of a database connection exists, while Strategy structurally converts an incompatible class interface into a compatible one.",
+        "MVC is exclusively utilized for mathematically validating backend database constraints, whereas Strategy handles the aesthetic rendering of CSS stylesheets on the frontend.",
+        "MVC dynamically encrypts network traffic utilizing AES-GCM, while Strategy ensures that continuous integration pipelines automatically halt upon encountering a compilation error.",
+        "MVC is a creational pattern focused on instantiating families of related objects, while Strategy is an architectural style mandating the use of fully distributed cloud microservices."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 155,
+      "type": "multiple",
+      "question": "In object-oriented design, what are the primary respective purposes of the Abstract Factory and Adapter patterns?",
+      "options": [
+        "Abstract Factory provides an interface for creating families of related objects without specifying their concrete classes, whereas Adapter allows classes with incompatible interfaces to work together.",
+        "Abstract Factory restricts class instantiation to a single unique object, whereas Adapter dynamically alters the behavior of an algorithm based on external network latency.",
+        "Abstract Factory strictly isolates the user interface from the underlying business logic, whereas Adapter ensures that all asynchronous database queries execute in a strictly linear sequence.",
+        "Abstract Factory mathematically prevents memory leaks by automating garbage collection, whereas Adapter encrypts sensitive user credentials before they are stored in the database.",
+        "Abstract Factory is utilized exclusively to manage Docker container orchestration, whereas Adapter facilitates communication between traditional virtual machines and the host operating system."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 156,
+      "type": "multiple",
+      "question": "What is the defining operational difference between the Visual approach and the Layout-based scripted approach to Graphical User Interface (GUI) testing?",
+      "options": [
+        "The Visual approach relies on image recognition to identify graphic components (e.g., buttons), whereas the Layout approach identifies components by retrieving their specific underlying property IDs.",
+        "The Visual approach statically analyzes the source code to mathematically verify pixel coordinates, whereas the Layout approach strictly requires human testers to manually click every interface element.",
+        "The Visual approach exclusively tests the emotional satisfaction of the end user, whereas the Layout approach measures the precise CPU milliseconds required to render the application window.",
+        "The Visual approach strictly requires a distributed cloud environment to operate, whereas the Layout approach functions entirely offline by interacting directly with the computer's BIOS.",
+        "The Visual approach alters the color scheme dynamically to prevent screen burn-in, whereas the Layout approach rigidly enforces a strictly monochromatic accessibility mode."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 157,
+      "type": "multiple",
+      "question": "In software engineering, what is the strict technical distinction between a 'defect-free' software system and a 'reliable' software system?",
+      "options": [
+        "A defect-free system contains no internal faults (which is practically impossible), whereas a reliable system simply exhibits no observable external failures during operation in a specified environment.",
+        "A defect-free system is completely immune to malicious hardware Trojans, whereas a reliable system continuously generates automated bug reports without ever attempting to resolve them.",
+        "A defect-free system exclusively utilizes static memory allocation to prevent runtime crashes, whereas a reliable system dynamically encrypts all user input using asymmetric cryptographic keys.",
+        "A defect-free system can only be achieved by writing the entire application in Assembly language, whereas a reliable system relies on Python scripts to automatically restart crashed microservices.",
+        "There is absolutely no technical distinction; the two terms are entirely synonymous and are used interchangeably in formal ISO software quality standards."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 158,
+      "type": "multiple",
+      "question": "Which of the following sets correctly represents formal mathematical measures commonly utilized to empirically evaluate the overall quality of a software product?",
+      "options": [
+        "Fault Density (number of defects divided by software size), Mean Time Between Failures (MTBF), and quantitative User Satisfaction scores derived from formalized questionnaires.",
+        "The total count of lines of source code, the absolute financial cost of the hardware servers, and the specific number of agile sprints completed prior to the initial release.",
+        "The precise network latency measured in milliseconds, the specific physical weight of the deployment hard drives, and the maximum clock speed of the underlying microprocessor.",
+        "The number of distinct programming languages used, the cyclomatic complexity of the project management Gantt chart, and the total psychological stress reported by the developers.",
+        "The physical size of the physical office space, the total volume of coffee consumed by the team, and the absolute number of documented meetings held with external stakeholders."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 159,
+      "type": "multiple",
+      "question": "Within the domain of static verification techniques, what are the respective objectives of Control Flow Analysis, Data Flow Analysis, and MISRA-C?",
+      "options": [
+        "Control Flow checks the structural logic constructs; Data Flow tracks variables to find anomalies like uninitialized uses; and MISRA-C enforces a strict set of safe coding rules for C/C++.",
+        "Control Flow continuously monitors dynamic network traffic; Data Flow encrypts sensitive user credentials; and MISRA-C is a specialized agile framework utilized strictly for automotive software project management.",
+        "Control Flow orchestrates the deployment of Docker containers; Data Flow manages the replication of relational databases; and MISRA-C mathematically guarantees the absence of physical hardware Trojans.",
+        "Control Flow evaluates the emotional state of the development team; Data Flow tracks the financial budget of the project; and MISRA-C is an obsolete programming language utilized exclusively for mainframe computers.",
+        "Control Flow dictates the physical layout of the user interface; Data Flow dictates the aesthetic color palette; and MISRA-C is a proprietary graphical design tool utilized for drafting architectural UML diagrams."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 160,
+      "type": "multiple",
+      "question": "In software Configuration Management, what are the primary functional differences and respective drawbacks of the 'Lock-modify-unlock' and 'Copy-modify-merge' strategies?",
+      "options": [
+        "Lock-modify-unlock prevents concurrent edits but can cause developer starvation if a lock is forgotten; Copy-modify-merge allows parallel work but requires manual resolution if merging conflicts occur.",
+        "Lock-modify-unlock strictly utilizes asymmetric cryptography to secure the repository, whereas Copy-modify-merge physically copies the codebase onto USB drives for offline physical transportation.",
+        "Lock-modify-unlock completely automates the bug-fixing process without human intervention, whereas Copy-modify-merge requires the project manager to manually retype every single line of source code.",
+        "Lock-modify-unlock is utilized exclusively for continuous deployment to cloud servers, whereas Copy-modify-merge is restricted solely to formatting textual requirements documents.",
+        "Lock-modify-unlock mathematically guarantees that the cyclomatic complexity never increases, whereas Copy-modify-merge intentionally introduces random defects to test the resilience of the quality assurance team."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 161,
+      "type": "multiple",
+      "question": "In centralized version control systems like Subversion (SVN), what explicitly defines a 'Mixed Revision' state?",
+      "options": [
+        "A localized scenario within a developer's working copy where different files currently possess distinct revision numbers because only a subset of the files was recently updated or committed.",
+        "A critical database failure occurring directly on the central repository server when two independent developers attempt to initialize identical network communication ports simultaneously.",
+        "A formal configuration management baseline where the source code repository completely loses all tracking metadata and randomly scrambles the commit history log.",
+        "A physical hardware incompatibility issue where the continuous integration server attempts to compile a 64-bit software application utilizing a deprecated 32-bit microprocessor.",
+        "An advanced object-oriented design pattern that dynamically alters the inheritance structure of a class hierarchy based on the real-time geographic location of the end user."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 162,
+      "type": "multiple",
+      "question": "Within the formal discipline of Change Management, what is the primary role and responsibility of the Configuration Control Board (CCB)?",
+      "options": [
+        "It is an official committee tasked with explicitly evaluating, ranking, and subsequently approving or rejecting proposed Change Requests before they are implemented into the software baseline.",
+        "It is an automated software daemon that continuously scans the source code repository for severe syntax errors and autonomously deletes non-compiling branches without human intervention.",
+        "It is a specialized network hardware appliance utilized exclusively to actively firewall the primary database server from advanced persistent threat (APT) cyberattacks.",
+        "It is a formalized agile ceremony where the entire development team gathers to aggressively debate the aesthetic design choices of the graphical user interface.",
+        "It is an external legal regulatory body that mandates the specific pricing strategy the company must utilize when commercially distributing the final compiled software product."
+      ],
+      "answer": 0
+    },
+    {
+      "id": 163,
+      "type": "multiple",
+      "question": "What defines a software 'Build', and what are the typical technical challenges associated with this process?",
+      "options": [
+        "A build is the automated process of converting source code into an executable entity; challenges primarily involve managing complex module dependencies, resolving references, and ensuring correct version integration.",
+        "A build strictly refers to the physical assembly of the hardware server racks; challenges involve mitigating thermal overheating and ensuring adequate electrical power distribution in the data center.",
+        "A build is the formal process of drafting the initial requirements document; challenges primarily revolve around mediating severe interpersonal emotional conflicts between competing business stakeholders.",
+        "A build is a purely mathematical simulation of the software's execution; challenges include factoring exceptionally large prime numbers to guarantee the absolute security of the cryptographic keys.",
+        "A build explicitly defines the creation of the graphical user interface wireframes; challenges involve selecting the most accessible color palettes and optimizing the typography for visually impaired users."
+      ],
+      "answer": 0
+    }
+  ]
+}

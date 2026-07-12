@@ -1483,7 +1483,11 @@ class QuizApp {
             this.state.reviewIndices = this.state.allAnswers
                 .map((ans, idx) => {
                     const isOpen = this.state.questions[idx].type === 'open';
-                    return ((!ans || !ans.isCorrect || isOpen) ? idx : -1);
+                    if (isOpen) {
+                        if (ans && ans.confirmed) return ans.isCorrect ? -1 : idx;
+                        return idx;
+                    }
+                    return ((!ans || !ans.isCorrect) ? idx : -1);
                 })
                 .filter(idx => idx !== -1);
         } else {

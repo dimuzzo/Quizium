@@ -1453,9 +1453,26 @@ class QuizApp {
 
     showResults(isTimeOut = false) {
         this.stopTimer();
-        this.state.correctAnswers = this.state.allAnswers.filter(a => a && a.isCorrect).length;
-        this.state.wrongAnswers = this.state.allAnswers.filter(a => a && a.confirmed && !a.isCorrect).length;
-        this.state.skippedAnswers = this.state.allAnswers.filter(a => !a || !a.confirmed).length;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let skippedCount = 0;
+
+        for (let i = 0; i < this.state.totalQuestions; i++) {
+            if (this.isQuestionAnswered(i)) {
+                const ans = this.state.allAnswers[i];
+                if (ans && ans.isCorrect) {
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                }
+            } else {
+                skippedCount++;
+            }
+        }
+
+        this.state.correctAnswers = correctCount;
+        this.state.wrongAnswers = wrongCount;
+        this.state.skippedAnswers = skippedCount;
 
         const percent = Math.round((this.state.correctAnswers / this.state.totalQuestions) * 100);
         document.getElementById('scorePercentage').textContent = `${percent}%`;

@@ -1275,11 +1275,12 @@
 
     /* --- Grill aside panel --- */
     .quiz-grill {
+        --grill-width: 33.333%;
         position: relative;
         display: flex;
         flex-direction: column;
-        flex: 0 0 33.333%;
-        max-width: 33.333%;
+        flex: 0 0 var(--grill-width);
+        max-width: var(--grill-width);
         background: var(--bg-body);
         border-right: 1px solid var(--border);
         margin: 0;
@@ -1297,12 +1298,13 @@
     }
 
     .quiz-grill.grill-hidden {
-        flex: 0 0 0;
-        max-width: 0;
+        flex: 0 0 0 !important;
+        max-width: 0 !important;
         opacity: 0;
         margin-left: 0;
         margin-right: 0;
-        padding: 0;
+        padding: 0 !important;
+        border-right: none !important;
         pointer-events: none;
         overflow: hidden;
     }

@@ -1,45 +1,42 @@
-# Quizium
+# Active Recall Hub
 
-Quizium is a dynamic and interactive quiz application that allows users to test their knowledge on various subjects. The app is built with HTML, CSS, and vanilla JavaScript.
+Active Recall Hub is a dynamic and interactive quiz application built with HTML, CSS, and vanilla JavaScript, offering high-performance active recall learning without framework overhead.
 
 ## How the App Works
 
 The application loads subject data dynamically from JSON files located in the `data/` folder.
-1.  **Discovery**: The app reads a manifest file `data/quizzes.json` to discover available quiz IDs.
-2.  **Dynamic Metadata**: For each quiz, the app fetches the JSON file and extracts metadata (name, category, icon, color) directly from the file's content.
-3.  **Home Screen**: Quizzes are automatically grouped by the `category` field defined in their metadata.
-4.  **Configuration & Mode**: Users can select question count (which defaults automatically to the total maximum available), time modes, and correction modes before starting.
+1. **Discovery**: The app reads a manifest file `data/quizzes.json` to discover available quiz IDs.
+2. **Dynamic Metadata**: For each quiz, the app fetches the JSON file and extracts metadata (name, category, icon, color) directly from the file's content.
+3. **Home Screen**: Quizzes are automatically grouped by the `category` field defined in their metadata.
+4. **Configuration & Mode**: Users can select question count (which defaults automatically to the total maximum available), time modes, and correction modes before starting.
 
 ## Time Modes
 
 Select your preferred pacing style before starting the quiz:
 
--   **None**: Take your time! No time tracking or limits.
--   **Stopwatch**: Tracks your elapsed time. Good for measuring how fast you can complete the quiz.
--   **Timer**: Sets a countdown limit (e.g., 10 minutes).
-    -   *Auto-Select*: Interacting with the timer slider automatically enables Timer mode.
-    -   *Timeout*: The quiz automatically ends if the time runs out.
-    -   *Results*: Shows the actual time taken if you finish early (e.g., if you set 10m but finish in 2m, results show 2m).
+- **None**: Take your time! No time tracking or limits.
+- **Stopwatch**: Tracks your elapsed time. Good for measuring how fast you can complete the quiz.
+- **Timer**: Sets a countdown limit (e.g., 10 minutes).
+    - *Auto-Select*: Interacting with the timer slider automatically enables Timer mode.
+    - *Timeout*: The quiz automatically ends if the time runs out.
+    - *Results*: Shows the actual time taken if you finish early (e.g., if you set 10m but finish in 2m, results show 2m).
 
 ## Correction Modes
 
 Choose when to receive feedback on your answers (located in the Setup screen):
 
--   **Instant Correction** (Default):
-    -   Get immediate feedback after selecting an answer.
-    -   Correct answers turn Green, wrong answers turn Red.
-    -   Once selected, the answer is locked and cannot be changed.
-    -   Explanations are shown immediately.
--   **Final Correction**:
-    -   No feedback is shown during the quiz.
-    -   You can change your selected answer by clicking another option.
-    -   Selected answers are marked with a neutral blue outline.
-    -   Scores and incorrect answers are revealed only at the end.
-
--   **Open-Ended Self-Evaluation**:
-    -   When answering an open-ended question, your text area locks upon confirmation.
-    -   A "System Explanation" or ideal answer is immediately revealed.
-    -   You must self-evaluate your answer as **Correct** or **Incorrect** to record your score and proceed to the next question.
+- **Instant Correction** (Default):
+    - Get immediate feedback after selecting an answer.
+    - Correct answers turn Green, wrong answers turn Red.
+    - Once selected, the answer is locked and cannot be changed.
+    - Question instruction text displays explicit directives (`Select ONE answer:`, `Select ONE or MORE answers:`).
+    - Explanations and self-assessment prompts (for open-ended questions) are shown immediately upon confirmation.
+- **Final Correction**:
+    - No feedback is shown during quiz taking.
+    - You can change your selected answer anytime by clicking another option.
+    - Selected answers are marked with a neutral blue outline.
+    - Scores and incorrect answers are revealed only at the end on the Results screen.
+    - Open-ended questions defer self-assessment to **Review Mode**, allowing you to grade your answers after submitting to determine your final score.
 
 ## Keyboard Shortcuts
 
@@ -60,52 +57,59 @@ Improve your workflow with these keyboard shortcuts (Desktop):
 
 *Note: Number keys are disabled if the corresponding option is not available or if navigation modifiers (Ctrl/Alt) are held. Navigation/Selection keys are blocked when the confirmation modal is open.*
 
-## Quiz Grill (Desktop Only)
+## Desktop Quiz Grill
 
-The **Quiz Grill** is a powerful navigation sidebar that provides a "bird's-eye view" of your quiz progress:
--   **Question Map**: Each dot represent a question. Blue for current, Green for correct, Red for wrong, and Grey for answered (in Final Correction mode).
--   **Quick Jump**: Click any dot in the grill to navigate directly to that specific question.
--   **Live Progress**: Tracks the number of completed questions in real-time.
--   **Toggle Visibility**: Use the grid icon in the bottom-right corner of the screen to show or hide the grill sidebar.
+The **Quiz Grill** is a powerful navigation sidebar for desktop devices (≥ 1100px) that provides a "bird's-eye view" of your quiz progress:
+- **Question Map**: Each dot represents a question (Blue for current, Green for correct, Red for wrong, Yellow for partial/open, and Grey for answered in Final Correction mode).
+- **Resizable Sidebar**: Drag the right edge of the Quiz Grill sidebar to adjust its width according to your preference.
+- **Zero-Width Collapse**: Press **s** or click the toggle button to smoothly collapse the grill to zero width without pushing layout content.
+- **Quick Jump**: Click any dot in the grill to navigate directly to that specific question.
+- **Review Progress**: Automatically updates to display active review progress (`x / N`) during answer review mode.
 
+## Finish Confirmation Modal
+
+To prevent accidental submissions, clicking **Finish Quiz** triggers a smart confirmation modal:
+- **Unanswered Warning**: Dynamically counts and displays an alert badge (e.g. *"3 unanswered questions remaining"*) if questions are left incomplete.
+- **Clean Submission**: If all questions are answered, the warning automatically hides.
+- **Theme Support**: Seamlessly styled for both Light and Dark modes.
 
 ## Navigation Protection
 
-To prevent accidental data loss, the application includes a protection mechanism:
--   **Active Quiz**: If you try to reload the page, close the tab, or navigate away while a quiz is in progress, the browser will display a confirmation dialog.
--   **Safe States**: Navigation is free (no warning) when on the Home screen, Setup screens, Results screen, or while Reviewing answers.
+To prevent accidental data loss, the application includes a browser navigation protection mechanism:
+- **Active Quiz**: If you try to reload the page, close the tab, or navigate away while a quiz is in progress, the browser will display a confirmation warning.
+- **Safe States**: Navigation protection is disabled when on the Home screen, Setup screens, Results screen, or while Reviewing answers.
 
-## Review Features
+## Review Features & Score Syncing
 
 After completing a quiz, you can review your performance:
 
--   **Results Screen**: Displays your score percentage, total time, and a breakdown of correct/incorrect answers.
--   **Review Answers**: Click the "Review Answers" button on the results screen to navigate through the questions again.
-    -   See exactly what you answered vs. the correct answer.
-    -   Read detailed explanations for each question.
--   **Review Wrong Answers**: A specific mode to review only the questions you missed.
-    -   Focus your study time on weak points.
-    -   Visible only if you have incorrectly answered questions.
+- **Results Screen**: Displays your score percentage, animated score ring, total time, and exact counts of Correct, Wrong, Skipped, and Total questions.
+- **Open-Ended Self-Evaluation Note**: Prompts you to self-evaluate any unconfirmed open-ended answers during review.
+- **Review Answers**: Navigate through questions again to inspect your answers, correct answers, and detailed explanations. Clock display is hidden to keep navigation focused.
+- **Review Wrong Answers**: Filter to review only missed or skipped questions to focus on weak points.
+- **Open-Ended Grading**: Self-evaluate open answers with **Incorrect (`✗`)** on the left and **Correct (`✓`)** on the right.
+- **Dynamic Score Recalculation**: Exiting review mode automatically recalculates and syncs your final score, percentage, ring chart, and stats.
 
-## Accessibility
+## Accessibility & Dark Mode
 
-The application is built with accessibility in mind:
--   **Semantic HTML**: Uses proper semantic tags for structure.
--   **ARIA Labels**: Interactive elements include labels for screen readers.
--   **Keyboard Navigation**: Full support for navigating and interacting via keyboard.
--   **Visual Feedback**: Distinct colors and icons (now minimal and centered) for correct/wrong states.
+The application is built with accessibility and visual excellence in mind:
+- **Semantic HTML**: Uses HTML5 structure and descriptive unique IDs.
+- **ARIA Labels**: Interactive buttons and inputs include labels for screen readers.
+- **Keyboard Navigation**: Full support for navigating, selecting, and confirming via keyboard.
+- **Dark Mode**: Native CSS variable-driven light and dark mode with automatic system theme adaptation.
 
 ## How to add a new subject
 
-To add a new subject to Quizium, you need to follow these steps:
+To add a new subject to Active Recall Hub, follow these steps:
 
 ### 1. Create the Data File
 
-Create a new JSON file in the `data/` folder. The filename should be the unique ID of your subject (e.g., `history.json`).
+Create a new JSON file in the `data/` folder. The filename should match the subject's unique ID (e.g., `history.json`).
 
-> **Tip**: You can use the **Quiz Workshop** (found on the Home Screen) to easily generate the JSON structure or edit existing quizzes.
+> [!TIP]
+> You can use the **Quiz Workshop** (found on the Home Screen) to easily generate the JSON structure or edit existing quizzes.
 
-Quiz files are stored as objects containing both `metadata` and a `questions` array.
+Quiz files contain `metadata` and a `questions` array.
 
 **JSON Format:**
 ```json
@@ -138,7 +142,7 @@ Quiz files are stored as objects containing both `metadata` and a `questions` ar
     {
       "id": 3,
       "type": "open",
-      "question": "Open-ended question with some code:\n```rust\nlet x = 5;\n```",
+      "question": "Open-ended question with code:\n```rust\nlet x = 5;\n```",
       "explanation": "Self-assessment explanation."
     },
     {
@@ -171,30 +175,23 @@ Quiz files are stored as objects containing both `metadata` and a `questions` ar
   - `name`: Display name.
   - `icon`: Emoji representing the subject.
   - `color`: Primary accent color for UI elements.
-  - `bg`: Soft background color for the card.
+  - `bg`: Soft background color for the subject card.
   - `language`: `'EN'` or `'IT'` for UI labels.
   - `category`: Used to group quizzes on the home screen.
 
-*   **id**: Unique integer identifier for the question.
-*   **type**: `"multiple"` (single choice), `"multiselect"` (multiple checkboxes), `"boolean"` (True/False), `"match"` (dropdown pairs), or `"open"` (open-ended).
-*   **question**: The text of the question. You can use markdown code blocks (e.g., ` ```rust\ncode\n``` `) and they will be rendered with a beautiful retro green-on-black terminal aesthetic!
-*   **options**: Array of strings (up to 5 options!) for `"multiple"` and `"multiselect"`. For `"match"`, it must be an array of `{value, text}` objects for the dropdowns.
-*   **answer**: 
-    *   For `multiple`: Integer index (0-based) of the correct option.
-    *   For `multiselect`: Array of integer indices (e.g., `[0, 2]`).
-    *   For `boolean`: Integer `0` (False) or `1` (True).
-*   **pairs**: Array of `{left, answer}` objects (Required only for `"match"` type).
-
-
-Adding a and subject is now entirely data-driven:
-
-### 1. Create the Data File
-Create a new JSON file in the `data/` folder (e.g., `history.json`) following the structure above. 
-
-> [!TIP]
-> Use the **Quiz Workshop** to easily generate and save these files. It automatically handles the metadata wrapping for you.
+- **Question Fields**:
+  - `id`: Unique integer identifier for the question.
+  - `type`: `"multiple"` (single choice), `"multiselect"` (multiple checkboxes), `"boolean"` (True/False), `"match"` (dropdown pairs), or `"open"` (open-ended).
+  - `question`: The text of the question. Markdown code blocks (e.g., ` ```rust\ncode\n``` `) are supported and styled.
+  - `options`: Array of strings for `"multiple"` and `"multiselect"`. For `"match"`, an array of `{value, text}` objects.
+  - `answer`: 
+    - For `multiple`: Integer index (0-based) of correct option.
+    - For `multiselect`: Array of integer indices (e.g., `[0, 2]`).
+    - For `boolean`: Integer `0` (False) or `1` (True).
+  - `pairs`: Array of `{left, answer}` objects (Required only for `"match"` type).
 
 ### 2. Update the Manifest
+
 Open `data/quizzes.json` and add your new quiz ID to the array:
 
 ```json
@@ -206,26 +203,21 @@ Open `data/quizzes.json` and add your new quiz ID to the array:
 ]
 ```
 
-The app will automatically detect the new file, read its metadata, and place it in the correct category section on the home screen. No code changes in `app.js` are required!
+The app will automatically discover the new file, extract its metadata, and present it on the home screen.
 
-## Developer Tools
+## Developer Tools & Quiz Workshop
 
-### Question Builder & Utility
+The **Quiz Workshop** is an integrated suite of tools for content creation and management, accessible directly from the Home Screen or Setup screen.
 
-The **Quiz Workshop** is an integrated suite of tools for content creation and management, accessible directly from the Home Screen.
-
--   **Access**: Click the **Quiz Workshop** 🛠️ button on the Home Screen.
--   **Edit Mode**: You can also enter the workshop with an existing quiz loaded by clicking **Edit Questions** ✏️ in the setup screen.
+- **Access**: Click **Quiz Workshop** 🛠️ on the Home Screen, or **Edit Questions** ✏️ on the Setup screen.
 
 **Features:**
-1.  **Question Builder Tab**:
-    -   Converts raw text questions into valid JSON.
-    -   Smart detection of Multiple Choice vs Boolean.
-    -   Validates structure and indices.
-    -   Smart JSON output (array vs list) based on Starting ID.
+1. **Question Builder Tab**:
+    - Converts raw text format into structured JSON.
+    - Validates types, options, and answer indices.
+    - Renders live preview of question layout.
 
-**Builder Input Format:**
-To use the generator, paste your questions using the following structure (separate blocks with an empty line):
+**Builder Input Format (separated by blank lines):**
 
 *Multiple Choice:*
 ```text
@@ -233,14 +225,14 @@ Question Text
 Option 1
 Option 2
 ... (Up to 5 options)
-0 (Correct Index: 0 for first, 1 for second, etc.)
-Expanation (Optional)
+0 (Correct Index)
+Explanation (Optional)
 ```
 
 *Boolean:*
 ```text
 Question Text
-b (identifies the block as boolean)
+b (identifies block as boolean)
 1 (1 for True, 0 for False)
 Explanation (Optional)
 ```
@@ -248,14 +240,14 @@ Explanation (Optional)
 *Open-ended:*
 ```text
 Question Text
-o (identifies the block as open-ended)
+o (identifies block as open-ended)
 Self-assessment Explanation
 ```
 
 *Multiselect:*
 ```text
 Question Text
-m (identifies the block as multiselect)
+m (identifies block as multiselect)
 Option 1
 Option 2
 Option 3
@@ -266,19 +258,60 @@ Explanation (Optional)
 *Match:*
 ```text
 Question Text
-match (identifies the block as match)
+match (identifies block as match)
 [val1] First Option Text
 [val2] Second Option Text
--- (Separator for pairs)
+-- (Separator)
 Left Side 1 = val1
 Left Side 2 = val2
 Explanation (Optional)
 ```
 
-2.  **Reorder IDs Tab**:
-    -   Accepts an existing JSON array of questions.
-    -   Sorts them by their current `id`.
-    -   Renumbers `id` sequentially starting from 1.
-    -   Outputs normalized JSON ready for use.
+### Complete Working Example (Copy & Paste into Question Builder)
+
+Below is a complete 5-question text block featuring one working question for every supported type. You can copy and paste this block directly into the **Question Builder** tab to test or build a quiz instantly:
+
+```text
+What is the capital of France?
+Paris
+London
+Berlin
+Madrid
+0
+Paris is the capital and largest city of France.
+
+The Earth orbits around the Sun.
+b
+1
+Earth completes one full orbit around the Sun in approximately 365.25 days.
+
+Explain the difference between let, const, and var in JavaScript.
+o
+let is block-scoped and reassignable, const is block-scoped and immutable, and var is function-scoped.
+
+Which of the following are primary colors?
+m
+Red
+Green
+Blue
+Yellow
+0,2,3
+Red, Yellow, and Blue are traditional primary colors.
+
+Match each programming language to its primary paradigm:
+match
+[fp] Functional Programming
+[oo] Object-Oriented Programming
+--
+Haskell = fp
+Java = oo
+Haskell is purely functional while Java is object-oriented.
+```
+
+2. **Reorder IDs Tab**:
+    - Accepts an existing JSON array of questions.
+    - Sorts them by their current `id`.
+    - Renumbers `id` sequentially starting from 1.
+    - Outputs normalized JSON ready for production.
 
 

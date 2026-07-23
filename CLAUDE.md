@@ -1,6 +1,20 @@
 # Project Overview
 
-**Quizium** is a high-performance, dynamic quiz application built with vanilla JavaScript. It offers a premium, interactive experience for testing knowledge across various subjects without the overhead of heavy frameworks. The app features real-time feedback, multiple timing modes (Stopwatch/Timer), and a specialized **Quiz Workshop** for seamless content creation and validation.
+**Active Recall Hub** is a high-performance, dynamic quiz application built with vanilla JavaScript. It offers a premium, interactive experience for testing knowledge across various subjects without the overhead of heavy frameworks. The app features real-time feedback, multiple timing modes (Stopwatch/Timer), an interactive **Review Mode** with open-ended self-assessment, a resizable desktop **Quiz Grill**, and a specialized **Quiz Workshop** for seamless content creation and validation.
+
+---
+
+# Key Features
+
+- **Multiple Question Types**: Single Choice (`multiple`), Multiple Choice (`multiselect`), True/False (`boolean`), Matching Pairs (`match`), and Open-Ended (`open`).
+- **Flexible Modes**:
+  - **Correction Modes**: *Instant* (immediate feedback & explanations) vs. *Final* (changeable answers, deferred scoring).
+  - **Timing Modes**: *None*, *Stopwatch*, and *Timer* (with custom duration and auto-timeout).
+- **Desktop Quiz Grill**: Drag-to-resize navigation sidebar utilizing CSS custom variables (`--grill-width`) and responsive zero-width collapse.
+- **Finish Confirmation Modal**: Smart submission alert with dynamic unanswered question counter (`#modalUnansweredWarning`) tailored for light & dark modes.
+- **Open-Ended Self-Assessment**: Integrated self-grading UI (**Incorrect** `✗` on left, **Correct** `✓` on right) active during Review Mode in *Final* correction mode.
+- **Review Mode & Score Syncing**: Real-time review progress tracking (`x / N`), hidden clock during review, and automatic score/stat recalculation on review exit.
+- **Quiz Workshop**: Built-in content editor and validator for creating, testing, and reordering quiz JSON files.
 
 ---
 
@@ -43,14 +57,14 @@
 
 ### Styling System
 The project uses **pure CSS variables** defined in `variables.css` for theme consistency. 
-- **Palette**: Primary `#6366f1` (Indigo), Success `#10b981`, Error `#ef4444`.
-- **Dark Mode**: Automatic support via `prefers-color-scheme` media query.
+- **Palette**: Primary `#6366f1` (Indigo), Success `#10b981`, Error `#ef4444`, Warning/Partial `#f59e0b`.
+- **Dark Mode**: Automatic support via `prefers-color-scheme` media query and semantic CSS color tokens (`--bg-body`, `--bg-card`, `--partial-bg`, `--partial-text`).
 - **Layout**: Flexible CSS Grid and Flexbox for responsiveness across mobile and desktop.
 
 ### User Interface
-- **Micro-animations**: Subtle transitions on button hovers and screen switches.
+- **Micro-animations**: Subtle transitions on button hovers, modal pops (`@keyframes modal-pop`), and screen switches.
 - **Icons**: Mix of native emojis and optimized SVG paths for UI actions.
-- **Components**: Custom-built toggles, range sliders, and modal overlays.
+- **Components**: Custom-built toggles, range sliders, status badges, and modal overlays.
 
 ---
 
@@ -61,6 +75,7 @@ The project uses **pure CSS variables** defined in `variables.css` for theme con
 ├── index.html              # Main application shell (multi-screen container)
 ├── README.md               # User-facing documentation
 ├── GEMINI.md               # AI collaborator context guide [THIS FILE]
+├── CLAUDE.md               # Claude collaborator context guide
 ├── data/
 │   ├── quizzes.json        # Discovery manifest
 │   └── [id].json           # Self-describing quiz data (metadata + questions)
@@ -91,5 +106,6 @@ The project uses **pure CSS variables** defined in `variables.css` for theme con
 - **Navigation Protection**: The `beforeunload` listener prevents data loss during active quizzes or unsaved workshop sessions.
 - **Dynamic Discovery**: Quizzes are self-describing; the app reads `metadata` directly from quiz JSONs, allowing for zero-code subject additions.
 - **State Separation**: Isolating `allQuestions` (pool) from `questions` (current session) ensures sampling and shuffling don't mutate source data.
-- **Grill Navigation**: The "Quiz Grill" uses a sidebar layout on desktop for better visibility, with a custom resizer for user preference.
-- **Correction Logic**: Separating `Instant` vs `Final` correction modes requires strict tracking of locked vs. mutable answers in `this.state`.
+- **Grill Resizing Specificity**: Controlling the Quiz Grill width via a CSS variable (`--grill-width`) prevents inline styles from overriding `.grill-hidden` collapse rules.
+- **Open-Ended Review Self-Evaluation**: In *Final Correction* mode, open questions defer self-assessment (`evaluating`) to Review Mode, allowing users to self-grade answers and update final scores upon exiting review.
+- **Results Syncing**: Invoking `showResults()` when leaving Review Mode (`exitReview()`) ensures that newly self-graded questions dynamically update score percentages, ring charts, and stats rows.

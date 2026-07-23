@@ -295,7 +295,7 @@ class QuizApp {
         try {
             const [handle] = await window.showOpenFilePicker({
                 types: [{
-                    description: 'Quizium JSON Files',
+                    description: 'Active Recall Hub JSON Files',
                     accept: { 'application/json': ['.json'] }
                 }],
                 multiple: false
@@ -377,7 +377,7 @@ class QuizApp {
 
             } catch (err) {
                 console.error("Local Quiz Upload Error:", err);
-                alert("Invalid Quiz File. Please check that the file is a properly formatted Quizium JSON.");
+                alert("Invalid Quiz File. Please check that the file is a properly formatted Active Recall Hub JSON.");
                 event.target.value = '';
             }
         };

@@ -776,8 +776,34 @@ input[type=range]::-moz-range-track {
 
 .modal-text {
     color: var(--text-secondary);
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     line-height: 1.5;
+}
+
+.modal-unanswered-warning {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--partial-bg);
+    color: var(--partial-text);
+    padding: 10px 16px;
+    border-radius: var(--radius-m, 12px);
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 1.4;
+}
+
+.modal-unanswered-warning.hidden {
+    display: none !important;
+}
+
+.modal-unanswered-warning svg {
+    flex-shrink: 0;
 }
 
 .modal-actions {

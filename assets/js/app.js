@@ -1234,6 +1234,40 @@ class QuizApp {
         this.showConfirmation('exit');
     }
 
+    isQuestionAnswered(index) {
+        const ans = this.state.allAnswers[index];
+        if (!ans) return false;
+        const q = this.state.questions[index];
+        if (!q) return false;
+
+        if (ans.selectedValue === null || ans.selectedValue === undefined) return false;
+
+        if (q.type === 'multiselect') {
+            if (!Array.isArray(ans.selectedValue) || ans.selectedValue.length === 0) return false;
+            if (this.state.correctionMode === 'instant' && !ans.confirmed) return false;
+        } else if (q.type === 'match') {
+            if (typeof ans.selectedValue !== 'object' || ans.selectedValue === null) return false;
+            const totalPairs = q.pairs ? q.pairs.length : 0;
+            const selectedPairs = Object.keys(ans.selectedValue).length;
+            if (selectedPairs < totalPairs) return false;
+            if (this.state.correctionMode === 'instant' && !ans.confirmed) return false;
+        } else if (q.type === 'open') {
+            if (typeof ans.selectedValue === 'string' && ans.selectedValue.trim() === '') return false;
+            if (this.state.correctionMode === 'instant' && !ans.confirmed) return false;
+        }
+        return true;
+    }
+
+    getUnansweredCount() {
+        let count = 0;
+        for (let i = 0; i < this.state.totalQuestions; i++) {
+            if (!this.isQuestionAnswered(i)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     showConfirmation(action = 'finish') {
         if (this.state.isReviewing && action === 'finish') {
             this.exitReview();
@@ -1243,12 +1277,35 @@ class QuizApp {
         const modal = document.getElementById('confirmationModal');
         const title = modal.querySelector('.modal-title');
         const text = modal.querySelector('.modal-text');
+        const unansweredWarning = document.getElementById('modalUnansweredWarning');
+        const unansweredText = document.getElementById('modalUnansweredText');
+        const isItalian = (this.state.currentSubject && this.state.currentSubject.lang === 'IT');
+
         if (action === 'exit') {
-            title.textContent = 'Exit Quiz?';
-            text.textContent = 'Are you sure you want to exit and lose the current progress?';
+            title.textContent = isItalian ? 'Uscire dal quiz?' : 'Exit Quiz?';
+            text.textContent = isItalian ? 'Sei sicuro di voler uscire? I tuoi progressi andranno persi.' : 'Are you sure you want to exit and lose the current progress?';
+            if (unansweredWarning) unansweredWarning.classList.add('hidden');
         } else {
-            title.textContent = 'Finish Quiz?';
-            text.textContent = "Are you sure you want to finish the quiz? You can't change your answers after submitting.";
+            title.textContent = isItalian ? 'Concludere il quiz?' : 'Finish Quiz?';
+            text.textContent = isItalian 
+                ? "Sei sicuro di voler concludere il quiz? Non potrai modificare le tue risposte dopo l'invio." 
+                : "Are you sure you want to finish the quiz? You can't change your answers after submitting.";
+
+            const unansweredCount = this.getUnansweredCount();
+            if (unansweredCount > 0 && unansweredWarning && unansweredText) {
+                if (isItalian) {
+                    unansweredText.textContent = unansweredCount === 1 
+                        ? '1 domanda senza risposta rimasta' 
+                        : `${unansweredCount} domande senza risposta rimaste`;
+                } else {
+                    unansweredText.textContent = unansweredCount === 1 
+                        ? '1 unanswered question remaining' 
+                        : `${unansweredCount} unanswered questions remaining`;
+                }
+                unansweredWarning.classList.remove('hidden');
+            } else if (unansweredWarning) {
+                unansweredWarning.classList.add('hidden');
+            }
         }
         modal.classList.remove('hidden');
     }

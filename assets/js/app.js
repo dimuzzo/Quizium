@@ -626,6 +626,11 @@ class QuizApp {
         document.getElementById(CONFIG.SELECTORS.TOTAL_QUESTIONS).textContent = displayTotal;
         document.getElementById(CONFIG.SELECTORS.QUESTION_ID).innerHTML = `ID <span class="id-val">${question.id}</span>`;
 
+        if (this.state.isReviewing) {
+            const timeDisplay = document.getElementById(CONFIG.SELECTORS.TIME_DISPLAY);
+            if (timeDisplay) timeDisplay.classList.add('hidden');
+        }
+
         this.updateProgressBar();
 
         let qText = question.question || '';
@@ -1610,6 +1615,9 @@ class QuizApp {
         document.getElementById(CONFIG.SELECTORS.WRONG_COUNT).parentElement.classList.remove('hidden');
         document.getElementById(CONFIG.SELECTORS.CORRECT_COUNT).textContent = this.state.correctAnswers;
         document.getElementById(CONFIG.SELECTORS.WRONG_COUNT).textContent = this.state.wrongAnswers;
+
+        const timeDisplay = document.getElementById(CONFIG.SELECTORS.TIME_DISPLAY);
+        if (timeDisplay) timeDisplay.classList.add('hidden');
 
         this.renderNavigator();
         this.renderGrill();

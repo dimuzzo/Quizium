@@ -725,7 +725,7 @@ class QuizApp {
             textarea.oninput = (e) => this.handleOpenAnswer(e.target.value, question);
             container.appendChild(textarea);
 
-            if (!this.state.isReviewing && !this.state.quizCompleted) {
+            if (this.state.correctionMode === 'instant' && !this.state.isReviewing && !this.state.quizCompleted) {
                 const confirmBtn = document.createElement('button');
                 confirmBtn.className = 'btn btn-primary full-width';
                 confirmBtn.style.marginTop = '16px';
@@ -733,7 +733,7 @@ class QuizApp {
                 confirmBtn.textContent = 'Confirm Answer';
                 confirmBtn.onclick = () => this.confirmOpenAnswer(question);
 
-                if (savedAnswer && savedAnswer.confirmed) {
+                if (savedAnswer && (savedAnswer.confirmed || savedAnswer.evaluating)) {
                     confirmBtn.classList.add('hidden');
                 }
 
@@ -875,10 +875,10 @@ class QuizApp {
     }
 
     evaluateOpenAnswer(points) {
-        const index = this.state.currentQuestionIndex;
-        const answer = this.state.allAnswers[index];
-        const question = this.state.questions[this.getRealQuestionIndex()];
-        if (!answer || !answer.evaluating) return;
+        const realIndex = this.getRealQuestionIndex();
+        const answer = this.state.allAnswers[realIndex];
+        const question = this.state.questions[realIndex];
+        if (!answer) return;
 
         answer.evaluating = false;
         answer.confirmed = true;
@@ -887,10 +887,12 @@ class QuizApp {
         
         if (points === 1) {
             this.state.correctAnswers++;
-            document.getElementById(CONFIG.SELECTORS.CORRECT_COUNT).textContent = this.state.correctAnswers;
+            const correctEl = document.getElementById(CONFIG.SELECTORS.CORRECT_COUNT);
+            if (correctEl) correctEl.textContent = this.state.correctAnswers;
         } else {
             this.state.wrongAnswers++;
-            document.getElementById(CONFIG.SELECTORS.WRONG_COUNT).textContent = this.state.wrongAnswers;
+            const wrongEl = document.getElementById(CONFIG.SELECTORS.WRONG_COUNT);
+            if (wrongEl) wrongEl.textContent = this.state.wrongAnswers;
         }
 
         this.showAnswerState(answer, question, false);
@@ -1186,7 +1188,10 @@ class QuizApp {
         }
         const exp = document.getElementById(CONFIG.SELECTORS.EXPLANATION);
         if (exp) {
-            let isEvaluating = answerData && answerData.evaluating;
+            let isEvaluating = answerData && (
+                answerData.evaluating || 
+                (this.state.isReviewing && question.type === 'open' && !answerData.confirmed && answerData.selectedValue && typeof answerData.selectedValue === 'string' && answerData.selectedValue.trim() !== '')
+            );
             if ((showFeedback || isEvaluating) && (question.explanation || isEvaluating)) {
                 exp.className = 'callout';
                 let expText = question.explanation ? `<strong>Explanation:</strong> ${question.explanation}` : `<strong>Ideal Answer:</strong> (No explanation provided)`;
@@ -1496,6 +1501,24 @@ class QuizApp {
         const skippedEl = document.getElementById('skippedResult');
         if (skippedEl) skippedEl.textContent = this.state.skippedAnswers;
 
+        const hasPendingOpen = this.state.questions.some((q, idx) => {
+            if (q.type !== 'open') return false;
+            const ans = this.state.allAnswers[idx];
+            return !ans || !ans.confirmed;
+        });
+        const autoEvalNote = document.getElementById('resultsAutoEvalNote');
+        const autoEvalText = document.getElementById('resultsAutoEvalText');
+
+        if (hasPendingOpen && autoEvalNote && autoEvalText) {
+            const isItalian = (this.state.currentSubject && this.state.currentSubject.lang === 'IT');
+            autoEvalText.textContent = isItalian 
+                ? "Autovaluta le risposte alle domande aperte durante la revisione per aggiornare il tuo punteggio finale."
+                : "Review your open-ended questions to self-evaluate your answers and update your final score.";
+            autoEvalNote.classList.remove('hidden');
+        } else if (autoEvalNote) {
+            autoEvalNote.classList.add('hidden');
+        }
+
         document.getElementById(CONFIG.SELECTORS.BTN_REVIEW).classList.remove('hidden');
         const btnWrong = document.getElementById('btnReviewWrong');
         const actionableCount = this.state.wrongAnswers + this.state.skippedAnswers;
@@ -1600,7 +1623,7 @@ class QuizApp {
     exitReview() {
         this.state.isReviewing = false;
         if (this.state.originalTotalQuestions) this.state.totalQuestions = this.state.originalTotalQuestions;
-        this.showScreen(CONFIG.SCREENS.RESULTS);
+        this.showResults();
     }
 
     toggleShuffle(checked) { this.state.shuffleQuestions = checked; }

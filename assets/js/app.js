@@ -598,8 +598,13 @@ class QuizApp {
     }
 
     updateProgressBar() {
-        const answeredCount = this.state.allAnswers.filter(a => a !== null).length;
-        updateProgressBar(answeredCount, this.state.totalQuestions);
+        if (this.state.isReviewing) {
+            const currentProgress = this.state.currentQuestionIndex + 1;
+            updateProgressBar(currentProgress, this.state.totalQuestions);
+        } else {
+            const answeredCount = this.state.allAnswers.filter(a => a !== null).length;
+            updateProgressBar(answeredCount, this.state.totalQuestions);
+        }
     }
 
     getRealQuestionIndex(viewIndex = this.state.currentQuestionIndex) {
@@ -616,11 +621,6 @@ class QuizApp {
 
         let displayCurrent = this.state.currentQuestionIndex + 1;
         let displayTotal = this.state.totalQuestions;
-
-        if (this.state.isReviewing) {
-            displayCurrent = realIndex + 1;
-            displayTotal = this.state.originalTotalQuestions || this.state.questions.length;
-        }
 
         document.getElementById(CONFIG.SELECTORS.CURRENT_QUESTION).textContent = displayCurrent;
         document.getElementById(CONFIG.SELECTORS.TOTAL_QUESTIONS).textContent = displayTotal;
@@ -1184,10 +1184,10 @@ class QuizApp {
                 badge.classList.add('hidden');
             }
         }
-        let isEvaluating = answerData && answerData.evaluating;
-        if (showFeedback || isEvaluating) {
-            if (question.explanation || isEvaluating) {
-                const exp = document.getElementById(CONFIG.SELECTORS.EXPLANATION);
+        const exp = document.getElementById(CONFIG.SELECTORS.EXPLANATION);
+        if (exp) {
+            let isEvaluating = answerData && answerData.evaluating;
+            if ((showFeedback || isEvaluating) && (question.explanation || isEvaluating)) {
                 exp.className = 'callout';
                 let expText = question.explanation ? `<strong>Explanation:</strong> ${question.explanation}` : `<strong>Ideal Answer:</strong> (No explanation provided)`;
                 exp.innerHTML = expText;
@@ -1209,9 +1209,10 @@ class QuizApp {
                     exp.appendChild(evalUI);
                 }
                 exp.classList.remove('hidden');
+            } else {
+                exp.classList.add('hidden');
+                exp.innerHTML = '';
             }
-        } else {
-            document.getElementById(CONFIG.SELECTORS.EXPLANATION).classList.add('hidden');
         }
     }
 
@@ -1429,7 +1430,14 @@ class QuizApp {
             if (this.state.flaggedQuestions.has(realIndex)) dot.classList.add('flagged');
         }
         const countEl = document.getElementById('grillCompletedCount');
-        if (countEl) countEl.textContent = `${answeredCount} / ${this.state.totalQuestions}`;
+        if (countEl) {
+            if (this.state.isReviewing) {
+                const currentPos = this.state.currentQuestionIndex + 1;
+                countEl.textContent = `${currentPos} / ${this.state.totalQuestions}`;
+            } else {
+                countEl.textContent = `${answeredCount} / ${this.state.totalQuestions}`;
+            }
+        }
         const currentGrillDot = document.getElementById(`grill-dot-${this.state.currentQuestionIndex}`);
         if (currentGrillDot) currentGrillDot.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }

@@ -638,10 +638,10 @@ class QuizApp {
         let hintText = '';
         switch (question.type) {
             case 'multiple':
-                hintText = isItalian ? 'Seleziona una risposta:' : 'Select one answer:';
+                hintText = isItalian ? 'Seleziona UNA risposta:' : 'Select ONE answer:';
                 break;
             case 'multiselect':
-                hintText = isItalian ? 'Seleziona una o più risposte:' : 'Select one or more answers:';
+                hintText = isItalian ? 'Seleziona UNA o PIÙ risposte:' : 'Select ONE or MORE answers:';
                 break;
             case 'boolean':
                 hintText = isItalian ? 'Seleziona Vero o Falso:' : 'Select True or False:';

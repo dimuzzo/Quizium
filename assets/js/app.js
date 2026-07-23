@@ -1193,16 +1193,21 @@ class QuizApp {
                 exp.innerHTML = expText;
                 
                 if (isEvaluating) {
+                    const isItalian = (this.state.currentSubject && this.state.currentSubject.lang === 'IT');
+                    const promptText = isItalian ? 'In base alla spiegazione sopra, come valuti la tua risposta?' : 'Based on the explanation above, how did you do?';
+                    const correctLabel = isItalian ? 'Corretta' : 'Correct';
+                    const incorrectLabel = isItalian ? 'Errata' : 'Incorrect';
+
                     const evalUI = document.createElement('div');
                     evalUI.className = 'self-eval-container';
                     evalUI.innerHTML = `
-                        <div class="self-eval-prompt">Based on the explanation above, how did you do?</div>
+                        <div class="self-eval-prompt">${promptText}</div>
                         <div class="self-eval-buttons">
-                            <button class="btn-eval btn-eval-correct" onclick="evaluateOpenAnswer(1)">
-                                <span class="icon">✓</span> Correct
-                            </button>
                             <button class="btn-eval btn-eval-incorrect" onclick="evaluateOpenAnswer(0)">
-                                <span class="icon">✗</span> Incorrect
+                                <span class="icon">✗</span> ${incorrectLabel}
+                            </button>
+                            <button class="btn-eval btn-eval-correct" onclick="evaluateOpenAnswer(1)">
+                                <span class="icon">✓</span> ${correctLabel}
                             </button>
                         </div>
                     `;

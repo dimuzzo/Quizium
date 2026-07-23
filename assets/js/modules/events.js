@@ -35,8 +35,7 @@ export const initGrillResizer = (grill, resizer) => {
         if (newWidth < minWidth) newWidth = minWidth;
         if (newWidth > maxWidth) newWidth = maxWidth;
 
-        grill.style.flex = `0 0 ${newWidth}px`;
-        grill.style.maxWidth = `${newWidth}px`;
+        grill.style.setProperty('--grill-width', `${newWidth}px`);
     });
 
     document.addEventListener('mouseup', () => {

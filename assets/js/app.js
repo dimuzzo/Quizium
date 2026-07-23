@@ -295,7 +295,7 @@ class QuizApp {
         try {
             const [handle] = await window.showOpenFilePicker({
                 types: [{
-                    description: 'Quizium JSON Files',
+                    description: 'Active Recall Hub JSON Files',
                     accept: { 'application/json': ['.json'] }
                 }],
                 multiple: false
@@ -377,7 +377,7 @@ class QuizApp {
 
             } catch (err) {
                 console.error("Local Quiz Upload Error:", err);
-                alert("Invalid Quiz File. Please check that the file is a properly formatted Quizium JSON.");
+                alert("Invalid Quiz File. Please check that the file is a properly formatted Active Recall Hub JSON.");
                 event.target.value = '';
             }
         };
@@ -598,8 +598,13 @@ class QuizApp {
     }
 
     updateProgressBar() {
-        const answeredCount = this.state.allAnswers.filter(a => a !== null).length;
-        updateProgressBar(answeredCount, this.state.totalQuestions);
+        if (this.state.isReviewing) {
+            const currentProgress = this.state.currentQuestionIndex + 1;
+            updateProgressBar(currentProgress, this.state.totalQuestions);
+        } else {
+            const answeredCount = this.state.allAnswers.filter(a => a !== null).length;
+            updateProgressBar(answeredCount, this.state.totalQuestions);
+        }
     }
 
     getRealQuestionIndex(viewIndex = this.state.currentQuestionIndex) {
@@ -617,14 +622,14 @@ class QuizApp {
         let displayCurrent = this.state.currentQuestionIndex + 1;
         let displayTotal = this.state.totalQuestions;
 
-        if (this.state.isReviewing) {
-            displayCurrent = realIndex + 1;
-            displayTotal = this.state.originalTotalQuestions || this.state.questions.length;
-        }
-
         document.getElementById(CONFIG.SELECTORS.CURRENT_QUESTION).textContent = displayCurrent;
         document.getElementById(CONFIG.SELECTORS.TOTAL_QUESTIONS).textContent = displayTotal;
         document.getElementById(CONFIG.SELECTORS.QUESTION_ID).innerHTML = `ID <span class="id-val">${question.id}</span>`;
+
+        if (this.state.isReviewing) {
+            const timeDisplay = document.getElementById(CONFIG.SELECTORS.TIME_DISPLAY);
+            if (timeDisplay) timeDisplay.classList.add('hidden');
+        }
 
         this.updateProgressBar();
 
@@ -638,10 +643,10 @@ class QuizApp {
         let hintText = '';
         switch (question.type) {
             case 'multiple':
-                hintText = isItalian ? 'Seleziona una risposta:' : 'Select one answer:';
+                hintText = isItalian ? 'Seleziona UNA risposta:' : 'Select ONE answer:';
                 break;
             case 'multiselect':
-                hintText = isItalian ? 'Seleziona una o più risposte:' : 'Select one or more answers:';
+                hintText = isItalian ? 'Seleziona UNA o PIÙ risposte:' : 'Select ONE or MORE answers:';
                 break;
             case 'boolean':
                 hintText = isItalian ? 'Seleziona Vero o Falso:' : 'Select True or False:';
@@ -725,7 +730,7 @@ class QuizApp {
             textarea.oninput = (e) => this.handleOpenAnswer(e.target.value, question);
             container.appendChild(textarea);
 
-            if (!this.state.isReviewing && !this.state.quizCompleted) {
+            if (this.state.correctionMode === 'instant' && !this.state.isReviewing && !this.state.quizCompleted) {
                 const confirmBtn = document.createElement('button');
                 confirmBtn.className = 'btn btn-primary full-width';
                 confirmBtn.style.marginTop = '16px';
@@ -733,7 +738,7 @@ class QuizApp {
                 confirmBtn.textContent = 'Confirm Answer';
                 confirmBtn.onclick = () => this.confirmOpenAnswer(question);
 
-                if (savedAnswer && savedAnswer.confirmed) {
+                if (savedAnswer && (savedAnswer.confirmed || savedAnswer.evaluating)) {
                     confirmBtn.classList.add('hidden');
                 }
 
@@ -875,10 +880,10 @@ class QuizApp {
     }
 
     evaluateOpenAnswer(points) {
-        const index = this.state.currentQuestionIndex;
-        const answer = this.state.allAnswers[index];
-        const question = this.state.questions[this.getRealQuestionIndex()];
-        if (!answer || !answer.evaluating) return;
+        const realIndex = this.getRealQuestionIndex();
+        const answer = this.state.allAnswers[realIndex];
+        const question = this.state.questions[realIndex];
+        if (!answer) return;
 
         answer.evaluating = false;
         answer.confirmed = true;
@@ -887,10 +892,12 @@ class QuizApp {
         
         if (points === 1) {
             this.state.correctAnswers++;
-            document.getElementById(CONFIG.SELECTORS.CORRECT_COUNT).textContent = this.state.correctAnswers;
+            const correctEl = document.getElementById(CONFIG.SELECTORS.CORRECT_COUNT);
+            if (correctEl) correctEl.textContent = this.state.correctAnswers;
         } else {
             this.state.wrongAnswers++;
-            document.getElementById(CONFIG.SELECTORS.WRONG_COUNT).textContent = this.state.wrongAnswers;
+            const wrongEl = document.getElementById(CONFIG.SELECTORS.WRONG_COUNT);
+            if (wrongEl) wrongEl.textContent = this.state.wrongAnswers;
         }
 
         this.showAnswerState(answer, question, false);
@@ -1184,34 +1191,43 @@ class QuizApp {
                 badge.classList.add('hidden');
             }
         }
-        let isEvaluating = answerData && answerData.evaluating;
-        if (showFeedback || isEvaluating) {
-            if (question.explanation || isEvaluating) {
-                const exp = document.getElementById(CONFIG.SELECTORS.EXPLANATION);
+        const exp = document.getElementById(CONFIG.SELECTORS.EXPLANATION);
+        if (exp) {
+            let isEvaluating = answerData && (
+                answerData.evaluating || 
+                (this.state.isReviewing && question.type === 'open' && !answerData.confirmed && answerData.selectedValue && typeof answerData.selectedValue === 'string' && answerData.selectedValue.trim() !== '')
+            );
+            if ((showFeedback || isEvaluating) && (question.explanation || isEvaluating)) {
                 exp.className = 'callout';
                 let expText = question.explanation ? `<strong>Explanation:</strong> ${question.explanation}` : `<strong>Ideal Answer:</strong> (No explanation provided)`;
                 exp.innerHTML = expText;
                 
                 if (isEvaluating) {
+                    const isItalian = (this.state.currentSubject && this.state.currentSubject.lang === 'IT');
+                    const promptText = isItalian ? 'In base alla spiegazione sopra, come valuti la tua risposta?' : 'Based on the explanation above, how did you do?';
+                    const correctLabel = isItalian ? 'Corretta' : 'Correct';
+                    const incorrectLabel = isItalian ? 'Errata' : 'Incorrect';
+
                     const evalUI = document.createElement('div');
                     evalUI.className = 'self-eval-container';
                     evalUI.innerHTML = `
-                        <div class="self-eval-prompt">Based on the explanation above, how did you do?</div>
+                        <div class="self-eval-prompt">${promptText}</div>
                         <div class="self-eval-buttons">
-                            <button class="btn-eval btn-eval-correct" onclick="evaluateOpenAnswer(1)">
-                                <span class="icon">✓</span> Correct
-                            </button>
                             <button class="btn-eval btn-eval-incorrect" onclick="evaluateOpenAnswer(0)">
-                                <span class="icon">✗</span> Incorrect
+                                <span class="icon">✗</span> ${incorrectLabel}
+                            </button>
+                            <button class="btn-eval btn-eval-correct" onclick="evaluateOpenAnswer(1)">
+                                <span class="icon">✓</span> ${correctLabel}
                             </button>
                         </div>
                     `;
                     exp.appendChild(evalUI);
                 }
                 exp.classList.remove('hidden');
+            } else {
+                exp.classList.add('hidden');
+                exp.innerHTML = '';
             }
-        } else {
-            document.getElementById(CONFIG.SELECTORS.EXPLANATION).classList.add('hidden');
         }
     }
 
@@ -1234,6 +1250,40 @@ class QuizApp {
         this.showConfirmation('exit');
     }
 
+    isQuestionAnswered(index) {
+        const ans = this.state.allAnswers[index];
+        if (!ans) return false;
+        const q = this.state.questions[index];
+        if (!q) return false;
+
+        if (ans.selectedValue === null || ans.selectedValue === undefined) return false;
+
+        if (q.type === 'multiselect') {
+            if (!Array.isArray(ans.selectedValue) || ans.selectedValue.length === 0) return false;
+            if (this.state.correctionMode === 'instant' && !ans.confirmed) return false;
+        } else if (q.type === 'match') {
+            if (typeof ans.selectedValue !== 'object' || ans.selectedValue === null) return false;
+            const totalPairs = q.pairs ? q.pairs.length : 0;
+            const selectedPairs = Object.keys(ans.selectedValue).length;
+            if (selectedPairs < totalPairs) return false;
+            if (this.state.correctionMode === 'instant' && !ans.confirmed) return false;
+        } else if (q.type === 'open') {
+            if (typeof ans.selectedValue === 'string' && ans.selectedValue.trim() === '') return false;
+            if (this.state.correctionMode === 'instant' && !ans.confirmed) return false;
+        }
+        return true;
+    }
+
+    getUnansweredCount() {
+        let count = 0;
+        for (let i = 0; i < this.state.totalQuestions; i++) {
+            if (!this.isQuestionAnswered(i)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     showConfirmation(action = 'finish') {
         if (this.state.isReviewing && action === 'finish') {
             this.exitReview();
@@ -1243,12 +1293,35 @@ class QuizApp {
         const modal = document.getElementById('confirmationModal');
         const title = modal.querySelector('.modal-title');
         const text = modal.querySelector('.modal-text');
+        const unansweredWarning = document.getElementById('modalUnansweredWarning');
+        const unansweredText = document.getElementById('modalUnansweredText');
+        const isItalian = (this.state.currentSubject && this.state.currentSubject.lang === 'IT');
+
         if (action === 'exit') {
-            title.textContent = 'Exit Quiz?';
-            text.textContent = 'Are you sure you want to exit and lose the current progress?';
+            title.textContent = isItalian ? 'Uscire dal quiz?' : 'Exit Quiz?';
+            text.textContent = isItalian ? 'Sei sicuro di voler uscire? I tuoi progressi andranno persi.' : 'Are you sure you want to exit and lose the current progress?';
+            if (unansweredWarning) unansweredWarning.classList.add('hidden');
         } else {
-            title.textContent = 'Finish Quiz?';
-            text.textContent = "Are you sure you want to finish the quiz? You can't change your answers after submitting.";
+            title.textContent = isItalian ? 'Concludere il quiz?' : 'Finish Quiz?';
+            text.textContent = isItalian 
+                ? "Sei sicuro di voler concludere il quiz? Non potrai modificare le tue risposte dopo l'invio." 
+                : "Are you sure you want to finish the quiz? You can't change your answers after submitting.";
+
+            const unansweredCount = this.getUnansweredCount();
+            if (unansweredCount > 0 && unansweredWarning && unansweredText) {
+                if (isItalian) {
+                    unansweredText.textContent = unansweredCount === 1 
+                        ? '1 domanda senza risposta rimasta' 
+                        : `${unansweredCount} domande senza risposta rimaste`;
+                } else {
+                    unansweredText.textContent = unansweredCount === 1 
+                        ? '1 unanswered question remaining' 
+                        : `${unansweredCount} unanswered questions remaining`;
+                }
+                unansweredWarning.classList.remove('hidden');
+            } else if (unansweredWarning) {
+                unansweredWarning.classList.add('hidden');
+            }
         }
         modal.classList.remove('hidden');
     }
@@ -1372,7 +1445,14 @@ class QuizApp {
             if (this.state.flaggedQuestions.has(realIndex)) dot.classList.add('flagged');
         }
         const countEl = document.getElementById('grillCompletedCount');
-        if (countEl) countEl.textContent = `${answeredCount} / ${this.state.totalQuestions}`;
+        if (countEl) {
+            if (this.state.isReviewing) {
+                const currentPos = this.state.currentQuestionIndex + 1;
+                countEl.textContent = `${currentPos} / ${this.state.totalQuestions}`;
+            } else {
+                countEl.textContent = `${answeredCount} / ${this.state.totalQuestions}`;
+            }
+        }
         const currentGrillDot = document.getElementById(`grill-dot-${this.state.currentQuestionIndex}`);
         if (currentGrillDot) currentGrillDot.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
@@ -1396,9 +1476,26 @@ class QuizApp {
 
     showResults(isTimeOut = false) {
         this.stopTimer();
-        this.state.correctAnswers = this.state.allAnswers.filter(a => a && a.isCorrect).length;
-        this.state.wrongAnswers = this.state.allAnswers.filter(a => a && a.confirmed && !a.isCorrect).length;
-        this.state.skippedAnswers = this.state.allAnswers.filter(a => !a || !a.confirmed).length;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let skippedCount = 0;
+
+        for (let i = 0; i < this.state.totalQuestions; i++) {
+            if (this.isQuestionAnswered(i)) {
+                const ans = this.state.allAnswers[i];
+                if (ans && ans.isCorrect) {
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                }
+            } else {
+                skippedCount++;
+            }
+        }
+
+        this.state.correctAnswers = correctCount;
+        this.state.wrongAnswers = wrongCount;
+        this.state.skippedAnswers = skippedCount;
 
         const percent = Math.round((this.state.correctAnswers / this.state.totalQuestions) * 100);
         document.getElementById('scorePercentage').textContent = `${percent}%`;
@@ -1408,6 +1505,24 @@ class QuizApp {
 
         const skippedEl = document.getElementById('skippedResult');
         if (skippedEl) skippedEl.textContent = this.state.skippedAnswers;
+
+        const hasPendingOpen = this.state.questions.some((q, idx) => {
+            if (q.type !== 'open') return false;
+            const ans = this.state.allAnswers[idx];
+            return !ans || !ans.confirmed;
+        });
+        const autoEvalNote = document.getElementById('resultsAutoEvalNote');
+        const autoEvalText = document.getElementById('resultsAutoEvalText');
+
+        if (hasPendingOpen && autoEvalNote && autoEvalText) {
+            const isItalian = (this.state.currentSubject && this.state.currentSubject.lang === 'IT');
+            autoEvalText.textContent = isItalian 
+                ? "Autovaluta le risposte alle domande aperte durante la revisione per aggiornare il tuo punteggio finale."
+                : "Review your open-ended questions to self-evaluate your answers and update your final score.";
+            autoEvalNote.classList.remove('hidden');
+        } else if (autoEvalNote) {
+            autoEvalNote.classList.add('hidden');
+        }
 
         document.getElementById(CONFIG.SELECTORS.BTN_REVIEW).classList.remove('hidden');
         const btnWrong = document.getElementById('btnReviewWrong');
@@ -1501,6 +1616,9 @@ class QuizApp {
         document.getElementById(CONFIG.SELECTORS.CORRECT_COUNT).textContent = this.state.correctAnswers;
         document.getElementById(CONFIG.SELECTORS.WRONG_COUNT).textContent = this.state.wrongAnswers;
 
+        const timeDisplay = document.getElementById(CONFIG.SELECTORS.TIME_DISPLAY);
+        if (timeDisplay) timeDisplay.classList.add('hidden');
+
         this.renderNavigator();
         this.renderGrill();
         this.loadQuestion();
@@ -1513,7 +1631,7 @@ class QuizApp {
     exitReview() {
         this.state.isReviewing = false;
         if (this.state.originalTotalQuestions) this.state.totalQuestions = this.state.originalTotalQuestions;
-        this.showScreen(CONFIG.SCREENS.RESULTS);
+        this.showResults();
     }
 
     toggleShuffle(checked) { this.state.shuffleQuestions = checked; }
